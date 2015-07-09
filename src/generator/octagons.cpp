@@ -44,8 +44,8 @@ int main()
         // condition O1
         int potential = 8+3*(a0+a2+a4+a6)+4*(a1+a3+a5+a7);
 
-        int area = (1+a7+a0+a1)*(a1+a2+a3+1) - a1*(a1+1)/2 - a3*(a3+1)/2 -
-            a5*(a5+1)/2 - a7*(a7+1)/2;
+        //int area = (1+a7+a0+a1)*(a1+a2+a3+1) - a1*(a1+1)/2 - a3*(a3+1)/2 -
+        //    a5*(a5+1)/2 - a7*(a7+1)/2;
         
         // octagon has two opposite corners
         bool two_corners = (a1 == 0 && a5 == 0) || (a3 == 0 && a7 == 0);
@@ -76,8 +76,8 @@ int main()
         // condition O8
         if (a7 < a1) continue;
 
-        int w = a7+a0+a1;
-        int h = a1+a2+a3;
+        //int w = a7+a0+a1;
+        //int h = a1+a2+a3;
 
         cnt++;
         
