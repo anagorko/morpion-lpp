@@ -1,6 +1,8 @@
 cmake_minimum_required (VERSION 2.8)
 project("Upper Bounds for Morpion Solitaire")
 
+enable_testing()
+
 set(warnings "-Wall -Wextra -Werror")
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${warnings} -std=c++11")
