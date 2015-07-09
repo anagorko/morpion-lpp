@@ -1,6 +1,6 @@
 #include "morpion_lpp.h"
 
-void MorpionSolution::getGraph(std::string filename)
+void MorpionSolution::getGraph(std::string)
 {
 /*
     Agraph_t *g = agopen((char *) std::string("Solution").c_str(), Agdirected, NULL);

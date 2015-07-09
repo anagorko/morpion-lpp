@@ -292,7 +292,7 @@ int main(int argc, char** argv)
 
     std::cout << endl << endl;
     
-    if (vm["solve"].as<bool>() || 0 && vm.count("graph")) {
+    if ((vm["solve"].as<bool>() || 0) && vm.count("graph")) {
         Solution sol = lpp -> solve();
 
         std::cout << endl << sol;  

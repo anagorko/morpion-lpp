@@ -265,7 +265,7 @@ public:
         return r;
     }
     
-    bool placesSegment(Dot p, int d) const
+    bool placesSegment(Dot p, int) const
     {
         return p.x == dot.x && p.y == dot.y;
     }
@@ -559,8 +559,6 @@ public:
     
     bool validLine(const Line &l) const
     {
-        int x = l.st.x;
-        int y = l.st.y;
         int d = l.dir;
         
         Dot en = l.st + direction[d] * line_length[getVariant()];
