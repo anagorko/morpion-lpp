@@ -4,7 +4,6 @@
 
 import unittest
 import copy
-from sortedcontainers import SortedList
 from dot import Dot
 
 # Hull class
@@ -126,12 +125,13 @@ class Hull:
     def edge(self, dir):
         self.compute()
         
-        t = SortedList()
+        norm = -1000000
         
         for d in self.interior_set:
-            t.add(d.x * dir.x + d.y * dir.y)
-
-        norm = t.pop()
+            n = d.x * dir.x + d.y * dir.y
+            if t > norm:
+                norm = t
+    
         len = 0
            
         for d in self.interior_set:
