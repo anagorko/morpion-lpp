@@ -25,7 +25,7 @@ class Hull:
         self.put(Dot(-9,3))
         self.put(Dot(-3,9))
 
-    def init_from_id(self, id):
+    def initFromId(self, id):
         self.sides = map(int,id.split('_')[1:])
         self.dirty=True
         # todo: find a reference point inside
@@ -129,8 +129,8 @@ class Hull:
         
         for d in self.interior_set:
             n = d.x * dir.x + d.y * dir.y
-            if t > norm:
-                norm = t
+            if n > norm:
+                norm = n
     
         len = 0
            
@@ -181,6 +181,16 @@ class Hull:
             
         return model.SolCount
 
+    @staticmethod
+    def createFromId(id):
+        if id.startswith("rect"):
+            h = Rectangle()
+        else:
+            h = Octagon()
+
+        h.initFromId(id)
+        return h
+        
 class Rectangle(Hull):
     def __init__(self):
         self.sides = [ 0, 0, 0, 0 ]
@@ -193,7 +203,7 @@ class Rectangle(Hull):
         Hull.__init__(self)
 
     def params(self):
-        return Hull.params(self) + ' --rhull';
+        return Hull.params(self)
 
     def symmetryClass(self):
         cl = copy.copy(self.sides)
@@ -207,6 +217,16 @@ class Rectangle(Hull):
             cl[1], cl[3] = cl[3], cl[1]
     
         return "rect_" + "_".join(map(str, cl))
+
+    def g(self):
+        return str(self.edge(Dot(0,-1))) + " " +\
+                "0" + " " +\
+                str(self.edge(Dot(1, 0))) + " " +\
+                "0" + " " +\
+                str(self.edge(Dot(0, 1))) + " " +\
+                "0" + " " +\
+                str(self.edge(Dot(-1,0))) + " " +\
+                "0"
         
 class Octagon(Hull):
     def __init__(self):
@@ -234,8 +254,7 @@ class Octagon(Hull):
                 str(self.edge(Dot(-1,-1)))
 
     def params(self):
-        return Hull.params(self) + ' --hull'\
-                + ' -g ' + self.g();
+        return Hull.params(self) + ' -g ' + self.g();
 
     def symmetryClass(self):
         cl = copy.copy(self.sides)
