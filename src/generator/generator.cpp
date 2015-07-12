@@ -64,6 +64,8 @@ int main(int argc, char** argv)
     // int lengthsArr[8] = {10,10,10,10,10,10,10,10};
     // std::vector<int> lengths (lengthsArr, lengthsArr + sizeof(lengthsArr) / sizeof(lengthsArr[0]) );
     
+    std::vector<int> hplanes = boost::assign::list_of(1)(1)(1)(1)(1)(1)(1)(1);
+    
     options.add_options()
         ("help", "this help message")
         ("variant,v", po::value<Variant>()->default_value(T5), "variant (5T, 5D, 4T or 4D)")
@@ -79,6 +81,7 @@ int main(int argc, char** argv)
         ("binary-moves", po::bool_switch()->default_value(false), "make move variables binary")
         ("print,p", po::bool_switch()->default_value(false), "print board")
         ("octagon,g", po::value<std::vector<int> >(&lengths)->multitoken(), "lenghts of edges of the octagon")
+        ("halfplanes", po::value<std::vector<int> >(&hplanes)->multitoken(), "specify the board by giving distances from the center of the cross to the boundaries of the half-planes")
         ("hull", po::bool_switch()->default_value(false), "force the board to be the convex hull of the solution")
         ("shape", po::value<std::string>(), "load shape of the board from a pentasol game")
         ("rim", po::value<int>()->default_value(0), "create rim of allowed dots of given thickness")
@@ -139,6 +142,10 @@ int main(int argc, char** argv)
         b.setHull(lengths);
    }
 
+    if (vm.count("halfplanes")) {
+        b.setHalfplaneHull(hplanes);
+    }
+    
     b.setRim(vm["rim"].as<int>());
     b.putRim();
     

@@ -42,6 +42,22 @@ public:
     {
         return x < d.x || (x == d.x && y < d.y);
     }
+    
+    int operator*(const Dot &d) {
+        return x * d.x + y * d.y;
+    }
+    
+    Dot operator+(const Dot &d) {
+        return Dot(x + d.x, y + d.y);
+    }
+
+    Dot operator-(const Dot &d) {
+        return Dot(x - d.x, y - d.y);
+    }
+    
+    Dot operator*(int m) {
+        return Dot(x*m, y*m);
+    }
 };
 
 Dot operator+(const Dot &a, const Dot &b);
@@ -416,7 +432,8 @@ public:
     
     void putRim();
     void setHull(Octagon lengths);
-
+    void setHalfplaneHull(Octagon distances);
+    
     int getWidth() const { return w; }
     int getHeight() const { return h; }
     int getMaxWidth() { return max_w; }

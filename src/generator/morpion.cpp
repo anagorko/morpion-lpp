@@ -266,6 +266,31 @@ void Board::setHull(Octagon lengths)
     }
 }
 
+void Board::setHalfplaneHull(Octagon lengths)
+{
+    std::vector<Dot> directions {
+        Dot(0, 2),   // N
+        Dot(2, 2),   // NE
+        Dot(2, 0),   // E
+        Dot(2, -2),  // SE
+        Dot(0, -2),  // S
+        Dot(-2, -2), // SW
+        Dot(-2, 0),  // W
+        Dot(-2, 2)   // NW
+    };
+    
+    for (int x = 0; x < getWidth(); x++) {
+        for (int y = 0; y < getHeight(); y++) {
+            for (int i = 0; i < 8; i++) {
+                if (lengths[i] < (Dot(2*x,2*y) - getReference()*2 - Dot(3,3)) * directions[i]) {
+                    disallowDot(Dot(x,y));
+                    break;
+                }
+            }
+        }
+    }
+}
+
 void Board::putRim()
 {
     bool t[getWidth()][getHeight()];
