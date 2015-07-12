@@ -140,10 +140,6 @@ class Hull:
                  
         return len - 1
 
-    def r(self):
-        self.compute()
-        return str(-self.lx()/2 - 1) + "," + str(-self.ly()/2 - 1)
-
     def width(self):
         self.compute()
         return 1 + (self.hx() - self.lx()) / 2
@@ -152,34 +148,8 @@ class Hull:
         self.compute()
         return 1 + (self.hy() - self.ly()) / 2
 
-    def params(self):
-        return ' -w ' + str(self.width()) +\
-               ' -h ' + str(self.height()) +\
-               ' -r ' + self.r();
-
     def symmetryClass(self):
         return self.id()
-
-    def solve_lpp(self):            
-        cmd = './generator --exact --potential ' + self.params() + ' -p -v 5d';
-        if symmetric:
-            cmd = cmd + ' --symmetric'
-
-        print cmd                  
-        os.system(cmd)
-
-        model = read("morpion_lpp.lp")
-        model.params.threads = 4
-        model.params.mIPfocus = 3
-        model.optimize(only_feasible_callback)
-        
-        self.RunTime = model.RunTime
-
-        if model.SolCount > 0:
-            self.ObjVal = model.ObjVal
-            self.ObjBound = model.ObjBound
-            
-        return model.SolCount
 
     @staticmethod
     def createFromId(id):
@@ -202,9 +172,6 @@ class Rectangle(Hull):
         self.dirty = True
         Hull.__init__(self)
 
-    def params(self):
-        return Hull.params(self)
-
     def symmetryClass(self):
         cl = copy.copy(self.sides)
         
@@ -218,16 +185,6 @@ class Rectangle(Hull):
     
         return "rect_" + "_".join(map(str, cl))
 
-    def g(self):
-        return str(self.edge(Dot(0,-1))) + " " +\
-                "0" + " " +\
-                str(self.edge(Dot(1, 0))) + " " +\
-                "0" + " " +\
-                str(self.edge(Dot(0, 1))) + " " +\
-                "0" + " " +\
-                str(self.edge(Dot(-1,0))) + " " +\
-                "0"
-        
 class Octagon(Hull):
     def __init__(self):
         self.sides = [ 0, 0, 0, 0, 0, 0, 0, 0 ]
@@ -242,19 +199,6 @@ class Octagon(Hull):
                     Dot(-2, 2) ] # NW
         self.dirty = True
         Hull.__init__(self)
-
-    def g(self):
-        return str(self.edge(Dot(0,-1))) + " " +\
-                str(self.edge(Dot(1,-1))) + " " +\
-                str(self.edge(Dot(1, 0))) + " " +\
-                str(self.edge(Dot(1, 1))) + " " +\
-                str(self.edge(Dot(0, 1))) + " " +\
-                str(self.edge(Dot(-1,1))) + " " +\
-                str(self.edge(Dot(-1,0))) + " " +\
-                str(self.edge(Dot(-1,-1)))
-
-    def params(self):
-        return Hull.params(self) + ' -g ' + self.g();
 
     def symmetryClass(self):
         cl = copy.copy(self.sides)
