@@ -151,6 +151,10 @@ class Hull:
     def symmetryClass(self):
         return self.id()
 
+    # return distances of half-plane boundaries
+    def halfplanes(self):
+        return " ".join(map(str, self.sides))
+        
     @staticmethod
     def createFromId(id):
         if id.startswith("rect"):
@@ -184,6 +188,11 @@ class Rectangle(Hull):
             cl[1], cl[3] = cl[3], cl[1]
     
         return "rect_" + "_".join(map(str, cl))
+
+    # return distances of half-plane boundaries, with corners
+    def halfplanes(self):
+        
+        return " 0 ".join(map(str, self.sides)) + " 0"
 
 class Octagon(Hull):
     def __init__(self):
