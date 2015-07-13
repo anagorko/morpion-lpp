@@ -282,7 +282,7 @@ void Board::setHalfplaneHull(Octagon lengths)
     for (int x = 0; x < getWidth(); x++) {
         for (int y = 0; y < getHeight(); y++) {
             for (int i = 0; i < 8; i++) {
-                if (lengths[i] < (Dot(2*x,2*y) - getReference()*2 - Dot(3,3)) * directions[i]) {
+                if (lengths[i] != 0 && lengths[i] < (Dot(2*x,2*y) - getReference()*2 - Dot(3,3)) * directions[i]) {
                     disallowDot(Dot(x,y));
                     break;
                 }
