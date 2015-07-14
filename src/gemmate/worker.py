@@ -1,5 +1,10 @@
 #!/usr/bin/env python
 
+# TODO:
+#   add request timeout and retry
+#   run in background mode with given # of tasks
+#   send computation time
+
 import requests
 import json
 import os
@@ -70,18 +75,31 @@ while runs != 0:
     os.remove(filename)
     
     model.params.Threads = 1
+    model.params.MIPFocus = 3
+    if problem['cutoff']:
+        model.params.Cutoff = problem['lower_bound']
+
     callback_interrupt = False
     model.optimize(cutoff_callback)
     
     if model.Status != GRB.OPTIMAL and model.Status != GRB.INFEASIBLE and \
-            model.Status != GRB.INF_OR_UNBD and not callback_interrupt:
+            model.Status != GRB.INF_OR_UNBD and not callback_interrupt and\
+            (model.Status == GRB.CUTOFF and not problem['cutoff']):
         print "Computation interrupted, terminating."
         break
 
     url = host + "ProblemDB.postSolution"
     headers = {'content-type': 'application/json'}
     
-    if model.SolCount > 0:
+    if model.Status == GRB.CUTOFF:
+        payload = {
+            "problem_id": problem['problem_id'],
+            "solved": True,
+            "computation_time": 1,
+            "solution_type": "CUTOFF",
+            "upper_bound": problem['lower_bound']
+        }        
+    elif model.SolCount > 0:
         payload = {
             "problem_id": problem['problem_id'],
             "solved": True,
