@@ -24,7 +24,16 @@ class Hull:
         self.put(Dot(-9,-3))
         self.put(Dot(-9,3))
         self.put(Dot(-3,9))
-
+        self.fill_directions =\
+                  [ Dot(0, 2),   # N
+                    Dot(2, 2),   # NE
+                    Dot(2, 0),   # E
+                    Dot(2, -2),  # SE
+                    Dot(0, -2),  # S
+                    Dot(-2, -2), # SW
+                    Dot(-2, 0),  # W
+                    Dot(-2, 2) ] # NW
+                    
     def initFromId(self, id):
         self.sides = map(int,id.split('_')[1:])
         self.dirty=True
@@ -63,7 +72,7 @@ class Hull:
                 self._ly = dot.y
             if dot.y > self._hy:
                 self._hy = dot.y
-            for d in self.directions:
+            for d in self.fill_directions:
                 self.fill(dot + d)
         else:
             self.boundary_set.add(dot)
@@ -114,14 +123,23 @@ class Hull:
     def pr(self):
         self.compute()
         
+        cross = [ Dot(3,9), Dot(9,3), Dot(9, -3), Dot(3, -9),
+                  Dot(-3,-9), Dot(-9,-3), Dot(-9,3), Dot(-3,9) ]
+
+        bd = '';
+        
         for y in range(self.ly(), self.hy()+1,2):
             for x in range(self.lx(), self.hx()+1,2):
-                if Dot(x,y) in self.interior():
-                    print '*',
+                if Dot(x,y) in cross:
+                    bd = bd + '#'
+                elif Dot(x,y) in self.interior():
+                    bd = bd + '*'
                 else:
-                    print '-',
-            print
+                    bd = bd + '-'
+            bd = bd + '\n'
 
+        return bd
+        
     def edge(self, dir):
         self.compute()
         
@@ -218,11 +236,11 @@ class Octagon(Hull):
             x = cl.pop(0)
             cl.append(x)
         
-        if cl[0] < cl[4]:
+        if cl[0] < cl[4] or (cl[0] == cl[4] and cl[1] < cl[3]):
             cl[0], cl[4] = cl[4], cl[0]
             cl[1], cl[3] = cl[3], cl[1]
             cl[7], cl[5] = cl[5], cl[7]
-        if cl[2] < cl[6]: 
+        if cl[2] < cl[6] or (cl[2] == cl[6] and cl[6] < cl[1]): 
             cl[2], cl[6] = cl[6], cl[2]
             cl[1], cl[7] = cl[7], cl[1]
             cl[3], cl[5] = cl[5], cl[3]
