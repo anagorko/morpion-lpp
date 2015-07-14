@@ -84,7 +84,7 @@ while runs != 0:
     
     if model.Status != GRB.OPTIMAL and model.Status != GRB.INFEASIBLE and \
             model.Status != GRB.INF_OR_UNBD and not callback_interrupt and\
-            (model.Status == GRB.CUTOFF and not problem['cutoff']):
+            not (model.Status == GRB.CUTOFF and problem['cutoff']):
         print "Computation interrupted, terminating."
         break
 
