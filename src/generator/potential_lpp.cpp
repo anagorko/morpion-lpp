@@ -169,6 +169,26 @@ LPP* PotentialLPP::getLPP()
             
             addConstraint(c);
         }
+
+        for (const Dot& d: b.getDotList()) {
+            std::string v_name = "symdot_" + to_string(d);
+
+            Dot sd = b.centerSymmetry(d);
+            
+            if (b.hasDot(d) || b.hasDot(sd)) {
+                continue;
+            }
+            
+            Constraint c;
+            
+            c.addVariable("dot_" + to_string(d), 1.0);
+            c.addVariable("dot_" + to_string(sd), -1.0);
+            c.setType(Constraint::EQ);
+            c.setBound(0.0);
+            c.setName("symdot_" + to_string(d));
+            
+            addConstraint(c);
+        }
     }
     
     return this;
