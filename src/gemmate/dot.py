@@ -26,6 +26,9 @@ class Dot:
     def __add__(self, d):
         return Dot(self.x+d.x, self.y + d.y)
 
+    def __sub__(self, d):
+        return Dot(self.x-d.x, self.y - d.y)
+
     def __str__(self):
         return "(" + str(self.x) + "," + str(self.y) + ")"
 
