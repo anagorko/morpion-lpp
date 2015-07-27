@@ -302,9 +302,21 @@ LPP* MorpionLPP::getLPP()
         }      
     }
 
-    // Constraints that enforce that the board (if it is an octagon) is 
+    // Constraints that enforce that the board (if it is rectangle) is 
     // the convex hull of the solution
-    // FIXME: currently works only with dot-acyclic flag!
+    if (getFlag("rhull")) {
+        // right side
+        addConstraint(getSideConstraint(1,0,true));        
+        // left side
+        addConstraint(getSideConstraint(1,0,false));
+        // top side
+        addConstraint(getSideConstraint(0,1,true));
+        // bottom side
+        addConstraint(getSideConstraint(0,1,false));        
+    }
+    
+    // Constraints that enforce that the board (if it is octagon) is 
+    // the convex hull of the solution
 
     if (getFlag("hull")) {
         // right side
