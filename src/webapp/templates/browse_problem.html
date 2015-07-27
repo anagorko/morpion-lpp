@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+{% autoescape on %}
+<html>
+  <head>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
+    
+    <style type="text/css">
+      body {
+        font-family: 'Open Sans', sans-serif;
+      }
+      h1 {
+        font-size: 200%
+      }
+      h2 {
+        font-weight: normal;
+        font-size: 160%,
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Browse Problem Tree</h1>
+
+    <a href="/">Back to list of trees.</a> <br>
+    
+    <h3>Node</h3>
+    
+    Key: {{node}}.
+    
+    {% for p in problems %}
+      <ul>{{p}}</ul>
+    {% endfor %}
+    
+    <h3>Children</h3>
+    
+    {% for c in children %}
+      <ul><a href="?problem={{c.key}}">{{c.name}}</a>
+        <pre>{{c.board}}</pre>
+      </ul>
+    {% endfor %}
+  </body>
+</html>
+{% endautoescape %}

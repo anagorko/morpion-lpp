@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+{% autoescape on %}
+<html>
+  <head>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
+    
+    <style type="text/css">
+      body {
+        font-family: 'Open Sans', sans-serif;
+      }
+      h1 {
+        font-size: 200%
+      }
+      h2 {
+        font-weight: normal;
+        font-size: 160%,
+      }
+      
+      th {
+        background: #e0e0e0;
+      }      
+    </style>
+  </head>
+  <body>
+    <h1>Morpion Solitaire Gemmate Solver Frontend</h1>
+    
+    <h2>Search Trees</h2>
+    
+    <table width="100%">
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Table</th>
+        <th>Tree</th>
+        <th>Last activity</th>
+      </tr>
+    {% for t in trees %}
+      <tr>
+        <td>{{t.tree_id}}</td>
+        <td>{{t.name}}</td>
+        <td><a href="/list?tree={{t.tree_id}}">Link</a></td>
+        <td><a href="?problem={{t.root_id}}">Link</a></td>
+        <td>{{t.last_activity}}</td>
+      </tr>
+    {% endfor %}
+    </table>
+    
+    <br>
+    
+    <img style="float:left; margin: 1em; margin-right: 3em" src="images/unclesam.jpg">
+    
+    <h2>Workers</h2>
+    
+    Quick and dirty guide on how to run a worker on a tree.
+    
+    <ol>
+      <li>Clone branch <tt>gemmate</tt> from <tt>https://github.com/anagorko/morpion-lpp</tt>
+        <pre>
+    $ git clone https://github.com/anagorko/morpion-lpp.git
+    $ cd morpion-lpp
+    $ git pull origin gemmate
+        </pre>
+      </li>
+      <li>Build <tt>generator</tt>
+        <pre>
+    $ mkdir build
+    $ cd build
+    $ cmake ../src
+    $ make
+        </pre>
+      </li>
+      <li>Install python requests package</li>
+      <li>Install gurobi (gurobipy included) and a gurobi license</li>
+      <li>Run worker
+        <pre>
+    $ cd ../src/gemmate
+    $ ./worker.py --tree "tree id" --host "hostname"
+        </pre>
+      </li>
+    </ol>
+  </body>
+</html>
+{% endautoescape %}

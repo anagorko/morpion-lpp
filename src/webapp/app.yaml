@@ -1,0 +1,16 @@
+application: morpion-gemmate
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: yes
+
+handlers:
+- url: /images
+  static_dir: images
+
+- url: /ProblemDB.*
+  script: gemmate_rpc.app
+
+- url: /.*
+  script: gemmate_www.app
+  login: required
