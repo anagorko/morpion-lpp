@@ -241,7 +241,7 @@ int main(int argc, char** argv)
         p -> setFlag(flag, vm[flag].as<bool>());
     }
         
-    std::string values[] = { "tiers" };
+    std::string values[] = { "tiered" };
     for (const std::string& value: values) {
         p -> setValue(value, vm[value].as<int>());
     }
