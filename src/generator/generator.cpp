@@ -243,7 +243,7 @@ int main(int argc, char** argv)
         
     std::string values[] = { "tiers" };
     for (const std::string& value: values) {
-        p -> setValue(values, vm[value].as<int>());
+        p -> setValue(value, vm[value].as<int>());
     }
     
     
