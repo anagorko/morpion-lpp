@@ -98,6 +98,7 @@ int main(int argc, char** argv)
         ("ord", po::bool_switch()->default_value(false), "create .ord file corresponding to the problem")
         ("rhull", po::bool_switch()->default_value(false),"force the solution to touch edges of the rectangular hull of the board")
         ("rside", po::bool_switch()->default_value(false),"force the solution to touch right edge of rectangular hull of the board")
+        ("tiered", po::value<int>()->default_value(10), "create LPP with tiered moves")
     ; // for some unclear reasons it does not accept ->default_value(lengths)   
 
     po::variables_map vm;
@@ -236,11 +237,16 @@ int main(int argc, char** argv)
     std::string flags[] = { "symmetric", "acyclic", "bacyclic", "dot-acyclic", "exact",
                             "binary-moves", "hull", "short-cycles", "extra", "rhull",
                             "rside" };
-
     for (const std::string& flag: flags) {
         p -> setFlag(flag, vm[flag].as<bool>());
     }
         
+    std::string values[] = { "tiers" };
+    for (const std::string& value: values) {
+        p -> setValue(values, vm[value].as<int>());
+    }
+    
+    
     output_filename = vm["output"].as<std::string>();
     
     if (!p -> getFlag("exact") && p -> getFlag("acyclic")) {

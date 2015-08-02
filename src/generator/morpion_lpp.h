@@ -33,11 +33,13 @@ protected:
     Board b;
 
     std::map<std::string,bool> f;
+    std::map<std::string,int> v;
     
 public:
     BaseMorpionLPP()
     {
         f.clear();
+        v.clear();
     }
     
     const Board& getBoard() const { return b; }
@@ -56,6 +58,18 @@ public:
     }
     bool isFlagSet(std::string flag) { 
         return f.find(flag) != f.end();
+    }
+
+    int getValue(std::string name) {
+        try {
+            return v.at(name);
+        } catch (const std::out_of_range& oor) {
+            return -1;
+        }
+    }
+    void setValue(std::string name, int value) { v[name] = value; }
+    bool isValueSet(std::string name) {
+        return v.find(name) != v.end();
     }
     
     std::string gameId()
@@ -197,6 +211,11 @@ public:
 };
 
 class PotentialLPP : public BaseMorpionLPP
+{
+    LPP* getLPP();
+};
+
+class TieredLPP : public BaseMorpionLPP
 {
     LPP* getLPP();
 };
