@@ -372,6 +372,7 @@ private:
     std::map<Segment, std::vector<Move> > placing_segment;
     std::map<Dot, std::vector<Move> > placing_dot;
     std::map<Segment, std::vector<Line> > lines_using_segment;
+    std::map<Dot, std::vector<Move> > using_dot;
     std::map<Dot, std::vector<Line> > lines_using_dot;
     
 public:
@@ -535,6 +536,7 @@ public:
         removing_segment.clear();
         placing_segment.clear();
         placing_dot.clear();
+        using_dot.clear();
         
         for (const Move& m: getMoveList()) {
             for (const Segment& s: m.removedSegments(v)) {
@@ -544,6 +546,9 @@ public:
                 placing_segment[s].push_back(m);
             }
             placing_dot[m.placedDot()].push_back(m);
+            for (const Dot &d: m.requiredDots(v)) {
+                using_dot[d].push_back(m);
+            }
         }
         
         lines_using_segment.clear();        
@@ -568,6 +573,7 @@ public:
     std::vector<Move>& getMovesRemovingSegment(Segment s) { return removing_segment[s]; }
     std::vector<Move>& getMovesPlacingSegment(Segment s) { return placing_segment[s]; }
     std::vector<Move>& getMovesPlacingDot(Dot d) { return placing_dot[d]; }
+    std::vector<Move>& getMovesUsingDot(Dot d) { return using_dot[d]; }
     
     bool validSegment(const Segment &s) const
     {

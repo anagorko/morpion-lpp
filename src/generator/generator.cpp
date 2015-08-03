@@ -98,7 +98,7 @@ int main(int argc, char** argv)
         ("ord", po::bool_switch()->default_value(false), "create .ord file corresponding to the problem")
         ("rhull", po::bool_switch()->default_value(false),"force the solution to touch edges of the rectangular hull of the board")
         ("rside", po::bool_switch()->default_value(false),"force the solution to touch right edge of rectangular hull of the board")
-        ("tiered", po::value<int>()->default_value(10), "create LPP with tiered moves")
+        ("tiered", po::value<int>()->default_value(-1), "create LPP with tiered moves")
     ; // for some unclear reasons it does not accept ->default_value(lengths)   
 
     po::variables_map vm;
@@ -224,6 +224,8 @@ int main(int argc, char** argv)
         ((CnLPP*) p) -> setN(vm["n"].as<int>());
     } else if (vm["potential"].as<bool>()) {
         p = new PotentialLPP();
+    } else if (vm["tiered"].as<int>() != -1) {
+        p = new TieredLPP();
     } else {
         p = new MorpionLPP();
     }
