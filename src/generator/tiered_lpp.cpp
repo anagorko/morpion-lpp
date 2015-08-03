@@ -2,183 +2,153 @@
 
 // Tiered Morpion LPP
 
+std::string tier(int t)
+{
+    return "t" + to_string(t) + "_";
+}
+
 LPP* TieredLPP::getLPP()
 {
     int tiers = getValue("tiered") + 1;
     
     std::cout << "Tiers: " << tiers << std::endl;
+    std::cout << "Number of dots: " << b.getDotList().size() << std::endl;
+    std::cout << "Number of segments: " << b.getSegmentList().size() << std::endl;
+    std::cout << "Number of moves: " << b.getMoveList().size() << std::endl;
     
     setComment("Tiered Morpion LPP " + gameId());
     
     // each move is a structural variable
     
-    for (const Move& l: b.getMoveList()) {        
-        std::string v_name = to_string(l);
+    for (const Move& m: b.getMoveList()) {  
+        if (b.hasDot(m.placedDot())) continue;
+              
+        std::string v_name = to_string(m);
 
-        for (int i = 0; i < tiers; i++) {
-            setVariableBounds("t" + to_string(i) + "_" + v_name, 0.0, 1.0);
+        for (int t = 0; t < tiers; t++) {
+            if (t == tiers - 1) {
+                setVariableBounds(tier(t) + v_name, 0.0, 0.0);
+            } else {
+                setVariableBounds(tier(t) + v_name, 0.0, 1.0);
+            }
+            
+            getObjective().push_back(std::pair<std::string, double>(tier(t) + v_name, 1.0)); 
         }
     }
     
-    // each dot is a structural variable
+    // each segment is a structural variable
 
-    for (const Dot& d: b.getDotList()) {
-        std::string v_name = "dot_" + to_string(d);
-
-        for (int i = 0; i < tiers; i++) {
-            std::string tier_v_name = "t" + to_string(i) + "_" + v_name;
-            
-            
-            // dots are the only boolean variables        
-            if (getFlag("exact") && i == tiers-1) {
-                setVariableBoolean(tier_v_name, true);
-            }
-
-        // dots that are placed on board have dot variable equal to 1
-            if (b.hasDot(d)) {
-                setVariableBounds(tier_v_name, 1.0, 1.0);
-            } else {
-                if (i > 0) {
-                    setVariableBounds(tier_v_name, 0.0, 1.0);
-                } else {
-                    setVariableBounds(tier_v_name, 0.0, 0.0);
-                }
-            }
+    for (const Segment& s: b.getSegmentList()) {
+        if (b.hasDot(s.first)) continue;
+        
+        // tier 0
+        
+        if (b.hasDot(s.first)) {
+            setVariableBounds(tier(0) + "sgm" + to_string(s), 1.0, 1.0);
+        } else {
+            setVariableBounds(tier(0) + "sgm" + to_string(s), 0.0, 0.0);
         }
-
-        if (!b.hasDot(d)) {
-            getObjective().push_back(std::pair<std::string, double>("t" + to_string(tiers-1) + "_" + v_name, 1.0)); 
+   
+        // tiers > 0
+             
+        for (int t = 1; t < tiers; t++) {
+            setVariableBounds(tier(t) + "sgm" + to_string(s), 0.0, 1.0);
         }
     }
-                
+    
+    // each dot is structural variable
+    for (const Dot &d: b.getDotList()) {
+        if (b.hasDot(d)) continue;
+        
+        setVariableBounds("dot_" + to_string(d), 0.0, 1.0);
+
+        // dots are only boolean variables
+        if (getFlag("exact")) {
+            setVariableBoolean("dot_" + to_string(d), true);
+        }
+        
+    }
+    
     // constraints:
     //
-    //   (1) for each tier tier:
-    //          for each segment s with starting dot d:
-    //              d_tier - sum t <= tier: sum of moves_t that remove but not place s >= 0
     //
-    //   (2) for each tier t:
-    //         for each dot d:
-    //           d_t = d_{t-1} + sum of weights of moves_{t-1} that place the dot             
+    //  (1) for each segment s, tier t > 0:
+    //      s'_t = s_{t-1} - weights of moves_{t-1} that remove but not place s 
+    //      s_t = s'_t + weights of moves_{t-1} that place but not remove s
+    //      s'_t >= 0
     //
-    //   (3) sum of weights of dots_tier - (sum t < tier: sum of weights of moves_t) <= 36
+    //      for tier = 0:
+    //      s_t = 1 if starting dot is on board, 0 otherwise
     //
-    //   (4) for tier t:
-    //          for move m:
-    //              for each required dot d:
-    //                  m_t <= sum over moves n placing dots required by m: n_{t-1}
-
-    // (1)
+    //  (2) for each dot d:
+    //      d = sum of moves that place d over all tiers
+    //
     
-    for (int tier = 0; tier < tiers; tier++) {
+    for (int t = 0; t < tiers; t++) {
         for (const Segment& s: b.getSegmentList()) {
-            Constraint c;
-            c.setName("sgm_t" + to_string(tier) + "_" + to_string(s));        
-
-            c.addVariable("t" + to_string(tier) + "_dot_" + to_string(s.first), 1.0);
-            
-            for (const Move& m: b.getMovesRemovingSegment(s)) {
-                for (int t = 0; t <= tier; t++) {
-                    if (m.placesSegment(s.first, s.second) && t == tier) continue;
+            if (t > 0) {
+                {
+                Constraint c;
+                c.setName("s1a_" + tier(t) + "sgmP" + to_string(s));
                 
-                    c.addVariable("t" + to_string(t) + "_" + to_string(m), -1.0);
+                c.addVariable(tier(t) + "sgmP" + to_string(s), 1.0);
+                c.addVariable(tier(t-1) + "sgm" + to_string(s), -1.0);
+                
+                for (const Move& m: b.getMovesRemovingSegment(s)) {
+                    if (m.placedDot() == s.first) continue;
+                    
+                    c.addVariable(tier(t-1) + to_string(m), 1.0); 
                 }
+                
+                setVariableBounds(tier(t) + "sgmP" + to_string(s), 0.0, 1.0);
+                             
+                c.setType(Constraint::EQ);
+                c.setBound(0.0);
+                addConstraint(c);
+                }
+
+                {
+                Constraint c;
+                c.setName("s1a_" + tier(t) + "sgm" + to_string(s));
+                
+                c.addVariable(tier(t) + "sgm" + to_string(s), 1.0);
+                c.addVariable(tier(t) + "sgmP" + to_string(s), -1.0);
+                
+                for (const Move& m: b.getMovesPlacingSegment(s)) {
+                    if (m.removesSegment(s, b.getVariant())) continue;
+                    
+                    c.addVariable(tier(t-1) + to_string(m), -1.0); 
+                }
+                
+                c.setType(Constraint::EQ);
+                c.setBound(0.0);
+                addConstraint(c);
+                }
+
+            } else {
             }
-            
-            c.setType(Constraint::GT);
-            c.setBound(0.0);
-            addConstraint(c);        
         }
     }
     
     // (2)
     
-    for (int t = 1; t < tiers; t++) {
-        for (const Dot &d: b.getDotList()) {
-            if (b.hasDot(d)) continue;
-            
-            Constraint c;
-            c.setName("dotmv_" + to_string(t) + "_" + to_string(d));
-            
-            for (const Move &m: b.getMovesPlacingDot(d)) {
-                c.addVariable("t" + to_string(t-1) + "_" + to_string(m), -1.0);
-            }
-            c.addVariable("t" + to_string(t-1) + "_dot_" + to_string(d), -1.0);
-            c.addVariable("t" + to_string(t) + "_dot_" + to_string(d), 1.0);
-            c.setBound(0.0);
-            c.setType(Constraint::EQ);
-            addConstraint(c);
-        }
-    }
-        
-    // (3)
-/*
-    for (int tier = 0; tier < tiers; tier++)
-    {
-        Constraint c;
-        c.setName("dots_moves");
-        
-        for (const Dot &d: b.getDotList()) {
-            c.addVariable("t" + to_string(tier) + "_dot_"+to_string(d), 1.0);
-        }    
-        for (const Move &m: b.getMoveList()) {
-            for (int t = 0; t < tier; t++) {
-                c.addVariable("t" + to_string(t) + "_" + to_string(m), -1.0);
-            }
-        }
-        c.setBound(36.0);
-        c.setType(Constraint::LT); // EQ?
-        addConstraint(c);
-    }
-*/
-    //   (4) for tier t:
-    //          for move m:
-    //              for each required dot d:
-    //                  m_t <= sum over moves n placing dots required by m: n_{t-1}
-
-    for (int t = 1; t < tiers; t++) {
-        for (const Move& m: b.getMoveList()) {
-            Constraint c;
-            c.setName("nogaps_t" + to_string(t) + "_" + to_string(m));
-            
-            c.addVariable("t" + to_string(t) + "_" + to_string(m), 1.0);
-            
-            for (const Dot& d: m.requiredDots(b.getVariant())) {
-                for (const Move& n: b.getMovesPlacingDot(d)) {
-                    c.addVariable("t" + to_string(t-1) + "_" + to_string(n), -1.0);
-                }
-            }
-            
-            c.setBound(0.0);
-            c.setType(Constraint::LT);
-            addConstraint(c);
-        }
-    }
-
-    // dots that are not placed have dot_ variable equal to 0
-    // this is important for --hull option
-    // use this not only for dot-acyclic problems
-
-    /*    
-    for (const Dot& d: b.getDotList())
-    {
+    for (const Dot &d: b.getDotList()) {
         if (b.hasDot(d)) continue;
         
         Constraint c;
-        
-        c.setName("dotmove_" + to_string(d));
-        
-        c.addVariable("dot_" + to_string(d), 1.0);
+        c.setName("dtb_" + to_string(d));
         
         for (const Move& m: b.getMovesPlacingDot(d)) {
-            c.addVariable(to_string(m), -b.bound());
+            for (int t = 0; t < tiers; t++) {
+                c.addVariable(tier(t) + to_string(m), 1.0);
+            }
         }
-        c.setType(Constraint::LT);
+        c.addVariable("dot_" + to_string(d), -1.0);
+        c.setType(Constraint::EQ);
         c.setBound(0.0);
-        addConstraint(c);                    
+        addConstraint(c);
     }
-    */
-    
+        
     // Constraints that enforce that the board (if it is an octagon) is 
     // the convex hull of the solution
     /*
@@ -219,6 +189,7 @@ LPP* TieredLPP::getLPP()
     }
     */
 
+    /*
     if (getFlag("symmetric")) {
         for (int t = 0; t < tiers; t++) {
             for (const Move&m: b.getMoveList()) {
@@ -256,6 +227,7 @@ LPP* TieredLPP::getLPP()
             }
         }
     }
+    */
     
     return this;
 }
