@@ -63,15 +63,14 @@ while runs != 0:
     
     best_known_bound = problem['lower_bound']
     
-    (fd, filename) = tempfile.mkstemp()
-
-    filename = filename + ".lp"
+    (fd, filename) = tempfile.mkstemp(".lp")
 
     cmd = generator + " -p -w 30 -h 30 " + problem['generator_command'] + " -o " + filename
     print "Running " + cmd
     os.system(cmd)
 
     model = read(filename)
+    os.close(fd)
     os.remove(filename)
     
     model.params.Threads = 1
