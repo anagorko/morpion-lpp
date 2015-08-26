@@ -1,7 +1,6 @@
 #ifndef __LPP__
 #define __LPP__
 
-#include<glpk.h>
 #include<vector>
 #include<map>
 #include<string>
