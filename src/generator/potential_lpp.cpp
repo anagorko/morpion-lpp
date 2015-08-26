@@ -13,6 +13,10 @@ LPP* PotentialLPP::getLPP()
 
         setVariableBounds(v_name, 0.0, 1.0);
 
+        if (getFlag("exact")) {
+            setVariableBoolean(v_name, true);
+            setVariableOrd(v_name, 0);
+        }
     }
     
     // each dot is a structural variable
@@ -27,6 +31,7 @@ LPP* PotentialLPP::getLPP()
         // dots are the only boolean variables        
         if (getFlag("exact")) {
             setVariableBoolean(v_name, true);
+            setVariableOrd(v_name, 1);
         }
 
         // dots that are placed on board have dot variable equal to 1
@@ -191,6 +196,51 @@ LPP* PotentialLPP::getLPP()
         }
     }
     
+    // create only acyclic solutions
+    
+    if (getFlag("dot-acyclic")) {
+        for (int x = 0; x < b.getWidth(); x++) {
+            for (int y= 0; y < b.getHeight(); y++) {
+                if (b.infeasibleDot(Dot(x,y)) || b.hasDot(Dot(x,y))) continue;
+                
+                setVariableBounds("ord_" + to_string(Dot(x,y)), 0, b.bound());
+
+                if (getFlag("symmetric")) {
+                    Constraint c;
+                    
+                    if (b.infeasibleDot(b.centerSymmetry(Dot(x,y)))) continue;
+                    
+                    c.setName("ordsym_");
+                    c.addVariable("ord_" + to_string(Dot(x,y)), 1.0);
+                    c.addVariable("ord_" + to_string(b.centerSymmetry(Dot(x,y))), -1.0);
+                    c.setType(Constraint::EQ);
+                    c.setBound(0.0);
+                    addConstraint(c);
+                }                
+            }
+        }
+        
+        for (const Move& m: b.getMoveList()) {
+            for (const Dot& rq: m.requiredDots(b.getVariant())) {
+                if (b.hasDot(rq)) continue;
+                
+                Constraint c;
+                
+                // dot_placed >= dot_required + 1 - (1 - m) * bound
+                // i.e. dot_placed - dot_required - bound * m >= 1 - bound
+                
+                c.setName("ord_");
+                c.addVariable("ord_" + to_string(m.placedDot()), 1.0);
+                c.addVariable("ord_" + to_string(rq), -1.0);
+                c.addVariable(to_string(m), -b.bound());
+                c.setBound(1 - b.bound());
+                c.setType(Constraint::GT);
+                
+                addConstraint(c);
+            }
+        }      
+    }
+
     return this;
 }
 

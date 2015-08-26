@@ -99,14 +99,14 @@ class Variable
     double up;
     bool boolean;
     
-    double ord;
+    int ord;
     
 public:
     Variable()
     {
         setName("unknown");
         setBoolean(false);
-        setOrd(0.0);
+        setOrd(0);
     }
     
     Variable(std::string n, int g, double l = 0.0, double u = 1.0, bool b = false) {
@@ -117,7 +117,7 @@ public:
         setBoolean(b);
     }
     
-    void setOrd(double o) { ord = o; }
+    void setOrd(int o) { ord = o; }
     double getOrd() { return ord; }
     
     void setName(std::string n) { name = n; }
@@ -208,7 +208,7 @@ public:
         vars[v].setBoolean(b);
     }
     
-    void setVariableOrd(std::string v, double o)
+    void setVariableOrd(std::string v, int o)
     {
         if (vars.find(v) == vars.end()) {
             vars[v] = Variable(v, 0);
