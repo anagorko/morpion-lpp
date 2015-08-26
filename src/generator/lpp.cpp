@@ -9,6 +9,7 @@ Solution LPP::solve_gurobi()
 
 Solution LPP::solve_glpk()
 {
+/*
     glp_prob *lp = glp_create_prob();
     
     glp_set_prob_name(lp, getComment().c_str());
@@ -111,8 +112,10 @@ Solution LPP::solve_glpk()
             sol.valuation[v.first] = glp_mip_col_val(lp, v.second.getGoedelNumber());
         }
     }
-    
+*/
+    Solution sol;    
     return sol;
+
 }
 
 std::ostream& operator<<(std::ostream& os, const Solution& sol)
