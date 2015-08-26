@@ -229,7 +229,7 @@ LPP* PotentialLPP::getLPP()
                 // dot_placed >= dot_required + 1 - (1 - m) * bound
                 // i.e. dot_placed - dot_required - bound * m >= 1 - bound
                 
-                c.setName("ord_");
+                c.setName("ord_" + to_string(m) + "_" + to_string(rq));
                 c.addVariable("ord_" + to_string(m.placedDot()), 1.0);
                 c.addVariable("ord_" + to_string(rq), -1.0);
                 c.addVariable(to_string(m), -b.bound());
