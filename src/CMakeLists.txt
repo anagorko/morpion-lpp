@@ -38,7 +38,7 @@ program_options serialization)
 # /BOOST
 #########
 
-set(COMMON_LIBRARIES ${Boost_LIBRARIES} glpk)
+set(COMMON_LIBRARIES ${Boost_LIBRARIES})
 
 add_subdirectory(generator)
 add_subdirectory(gemmate)

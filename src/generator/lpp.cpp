@@ -112,9 +112,10 @@ Solution LPP::solve_glpk()
             sol.valuation[v.first] = glp_mip_col_val(lp, v.second.getGoedelNumber());
         }
     }
-    
-    return sol;
 */
+    Solution sol;    
+    return sol;
+
 }
 
 std::ostream& operator<<(std::ostream& os, const Solution& sol)
