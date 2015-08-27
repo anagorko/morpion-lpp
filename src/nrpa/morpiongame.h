@@ -2,12 +2,15 @@
 #define __MORPION_H__
 #include <vector>
 #include <string>
+#include <iostream>
 
 const int T5 = 0;
 const int D5 = 1;
 
 class MorpionGame
 {
+	int octagon[8] = { 18, 24, 18, 24, 18, 24, 18, 24 };
+
 public:
     static const int variant = D5;
 
@@ -80,12 +83,62 @@ protected:
     int CharDirToIntDir(char c);
     char IntDirToCharDir(int dir);
 
+	// Directions:
+	//   N NE E SE S SW W NW
+    //   0 1  2 3  4 5  6 7
+
+	const int nx[8] = { 0, 2, 2, 2,  0,  -2, -2, -2 };
+	const int ny[8] = { 2, 2, 0, -2, -2, -2, 0,  2  };
+
+    int DistanceFromOrigin(Position p, int dir)
+    {
+		int px, py; 
+		CoordsOfPosition(p, px, py);
+
+		int rx, ry;
+		CoordsOfPosition(ReferencePoint(), rx, ry);
+
+		return (2*(px - rx) - 3) * nx[dir] + (2*(py - ry) - 3) * ny[dir];
+    }
+
+	bool InsideBoard(Position p)
+	{
+		for (int dir = 0; dir < 8; dir++) {
+			if (DistanceFromOrigin(p, dir) > octagon[dir]) return false;
+		}
+		return true;
+	}
+
+	bool LineInsideBoard(Position p, Direction d)
+	{
+ 		return InsideBoard(p) && InsideBoard(p + dir[d] * (LINE - 1));
+	}
+
 public:
     static const int max_goedel_number = DIRS * ARRAY_SIZE;
     static inline int goedel_number(const Move &m)
     {
         return m.dir * ARRAY_SIZE + m.pos;
     }
+
+	void print()
+	{
+		for (int y = 0; y < SIZE; y++) {
+			for (int x = 0; x < SIZE; x++) {
+				if (PositionOfCoords(x,y) == ReferencePoint()) {
+					std::cout << "R";
+				} else if (has_dot[PositionOfCoords(x,y)]) {
+					std::cout << "*";
+				} else if (InsideBoard(PositionOfCoords(x,y))) {
+					std::cout << ".";
+				} else {
+					std::cout << " ";
+				}
+			}
+			std::cout << std::endl;
+		}
+	}
+
 };
 
 inline std::vector<MorpionGame::Move> MorpionGame::Moves() const

@@ -157,7 +157,10 @@ void nrpa(int level, Weights &w, line &l)
 
 int main()
 {
-	generator.seed(7);
+	MorpionGame g;
+	g.print();
+
+	generator.seed(13);
 
 	line l; init(l); init(global_best);
 

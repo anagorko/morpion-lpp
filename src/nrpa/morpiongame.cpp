@@ -30,6 +30,15 @@ MorpionGame::MorpionGame()
             PutDot(p, 1);
         }
     }
+
+	// Invalidate moves that are outside of the octagonal board
+	for (Position p = 0; p < ARRAY_SIZE; p++) {
+		for (Direction d = 0; d < DIRS; d++) {
+			if (!LineInsideBoard(p,d)) {
+				IncDotCount(p,d,LINE);
+			}
+		}
+	}
 }
 
 void MorpionGame::IncDotCount(Position pos, Direction d, int count)
