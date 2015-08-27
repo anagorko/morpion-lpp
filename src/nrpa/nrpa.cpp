@@ -1,3 +1,19 @@
+/*
+ * TODO:
+ *  -command line arguments: 
+ *     number of iterations per level
+ *     number of levels
+ *     variant
+ *	   octagon
+ *     seed
+ *  - copying constructor + its use in nrpa simulation and adapt (DONE)
+ *  - benchmark
+ *  - SIGINT handling
+ *  - best line saving
+ *  - handling of dominating moves
+ *  - log file
+ */
+
 #include<iostream>
 #include<random>
 #include<vector>
@@ -6,6 +22,8 @@
 #include<string.h>
 
 #include "morpiongame.h"
+
+MorpionGame root;
 
 long long int simuls = 0;
 
@@ -60,7 +78,7 @@ void simulate(line &l, Weights &w)
 
 	l.length = 0;
 
-	MorpionGame simulation;
+	MorpionGame simulation(root);
 
 	while(!simulation.Moves().empty()) {
 		float s = 0.0f;
@@ -89,7 +107,7 @@ void simulate(line &l, Weights &w)
 
 void adapt(line &l, Weights &w)
 {
-	MorpionGame simulation;
+	MorpionGame simulation(root);
 
 	Weights ww(w);
 

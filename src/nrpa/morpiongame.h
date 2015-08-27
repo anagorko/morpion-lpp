@@ -3,13 +3,14 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <string.h>
 
 const int T5 = 0;
 const int D5 = 1;
 
 class MorpionGame
 {
-	int octagon[8] = { 18, 24, 18, 24, 18, 24, 18, 24 };
+	int octagon[8] = { 22, 24, 30, 48, 34, 28, 26, 40 };
 
 public:
     static const int variant = D5;
@@ -45,6 +46,15 @@ public:
     std::vector<HistoryMove> LoadMovesFile(const std::string & filename);
     void SaveMovesFile(const std::vector<HistoryMove> & history, const std::string & filename);
 
+	MorpionGame(const MorpionGame& g)
+	{
+		memcpy(has_dot, g.has_dot, sizeof(has_dot));
+		memcpy(dots_count, g.dots_count, sizeof(dots_count));
+		memcpy(move_index, g.move_index, sizeof(move_index));
+		legal_moves = g.legal_moves;
+		history = g.history;
+	}
+
 protected:
     /*  o-
      * /|\ */
@@ -62,7 +72,6 @@ protected:
     int dots_count[ARRAY_SIZE][DIRS];
     int move_index[ARRAY_SIZE][DIRS];
     std::vector<Move> legal_moves;
-
     std::vector<Undo> history;
     
     bool CanMove(Position pos, Direction d) const
