@@ -42,3 +42,4 @@ set(COMMON_LIBRARIES ${Boost_LIBRARIES})
 
 add_subdirectory(generator)
 add_subdirectory(gemmate)
+add_subdirectory(nrpa)
