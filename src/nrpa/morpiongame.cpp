@@ -69,7 +69,7 @@ void MorpionGame::MakeMove(const Move& move)
     Undo undo;
     undo.move = move;
     /* Block moves overlaping with segments added by the move */
-    for (int i = -(LINE - 2); i <= LINE - 2; i++)
+    for (int i = -(LINE - 2 + variant); i <= LINE - 2 + variant; i++)
         IncDotCount(move.pos + dir[move.dir] * i, move.dir, LINE);
     /* Find dot and put it */
     for (int i = 0; i < LINE; i++)
@@ -92,7 +92,7 @@ void MorpionGame::UndoMove()
     /* Remove dot */
     PutDot(undo.dot, -1);
     /* Unblock moves overlaping with segments added by the move */
-    for (int i = -(LINE - 2); i <= LINE - 2; i++)
+    for (int i = -(LINE - 2 + variant); i <= LINE - 2 + variant; i++)
         IncDotCount(move.pos + dir[move.dir] * i, move.dir, -LINE);
 }
 
@@ -123,7 +123,6 @@ void MorpionGame::Init(const vector<MorpionGame::HistoryMove> & history)
         MakeMove(hm.move);
     }
 }
-
 
 vector<MorpionGame::HistoryMove> MorpionGame::GetResults()
 {

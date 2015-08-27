@@ -3,10 +3,14 @@
 #include <vector>
 #include <string>
 
+const int T5 = 0;
+const int D5 = 1;
 
 class MorpionGame
 {
 public:
+    static const int variant = D5;
+
     typedef int Direction;
     typedef int Position;
     Position PositionOfCoords(int x, int y);
