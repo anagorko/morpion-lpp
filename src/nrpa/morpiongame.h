@@ -7,13 +7,15 @@
 
 class MorpionGame
 {
-	int octagon[8] = { 22, 24, 30, 48, 34, 28, 26, 40 };
-
 public:
 	static const int T5 = 0;
 	static const int D5 = 1;
 
     static const int variant = D5;
+	int octagon[8] = { 22, 24, 30, 48, 34, 28, 26, 40 };
+	bool use_octagon = true;
+    static const int SIZE = 32;
+
 
     typedef int Direction;
     typedef int Position;
@@ -65,7 +67,6 @@ protected:
     typedef HistoryMove Undo;
     
     static const int DIRS = 4;
-    static const int SIZE = 24;
     static const int ARRAY_SIZE = SIZE * SIZE;
     static const int LINE = 5; // in number of dots
     static const int dir[DIRS];
@@ -140,7 +141,7 @@ public:
 					std::cout << "R";
 				} else if (has_dot[PositionOfCoords(x,y)]) {
 					std::cout << "*";
-				} else if (InsideBoard(PositionOfCoords(x,y))) {
+				} else if (InsideBoard(PositionOfCoords(x,y)) || !use_octagon) {
 					std::cout << ".";
 				} else {
 					std::cout << " ";

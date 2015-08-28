@@ -23,6 +23,8 @@
 #include<string.h>
 #include<iomanip>
 
+#include "fastexp.h"
+
 #include<boost/program_options.hpp>
 namespace po = boost::program_options;
 
@@ -108,6 +110,17 @@ void init(line &l) {
 	l.length = 0;
 }
 
+void saveLine(line &l, std::string filename)
+{
+	MorpionGame simulation(root);
+
+	for (unsigned int i = 0; i < l.length; i++) {
+		simulation.MakeMove(l.mv[i]);		
+	}
+
+	simulation.SaveMovesFile(simulation.GetResults(), filename);
+}
+
 void simulate(line &l, Weights &w)
 {
 	simuls++; if (simuls % 100000 == 0) { std::cout << simuls << " simulations." << std::endl; }
@@ -128,7 +141,7 @@ void simulate(line &l, Weights &w)
 
 		s = 0.0f;
 
-		MorpionGame::Move chosen;
+		MorpionGame::Move chosen = simulation.Moves().back(); // sometimes r would be greater than s!
 
         for (const MorpionGame::Move& m: simulation.Moves()) {
            	s += w[MorpionGame::goedel_number(m)];
@@ -200,11 +213,13 @@ void nrpa(int level, Weights &w, line &l)
 				std::cout << "Iteration " << simuls << " at level " << level << " global best " << global_best.length << " time " 
 					 << std::fixed << std::setprecision(2) << elapsed_time / 1000000.0 << "s, " << ips << " ips" << std::endl;
 			}
-
 		}
 	}
 	if (l.length > global_best.length) {
 		global_best = l;
+		if (global_best.length > 70) {
+			saveLine(l, std::to_string(global_best.length) + ".psol");
+		}
 	}
 }
 
@@ -220,6 +235,7 @@ int main(int argc, char** argv)
         ("variant,v", po::value<Variant>()->default_value(T5), "variant (5T or 5D)")
 		("iterations,n", po::value<int>()->default_value(100), "number of iterations per level")
 		("levels,l", po::value<int>()->default_value(4), "number of levels")
+		("seed,s", po::value<int>()->default_value(1), "random seed")
 	;	
 
     po::variables_map vm;
@@ -240,7 +256,7 @@ int main(int argc, char** argv)
 
 	root.print();
 
-	generator.seed(303);
+	generator.seed(vm["seed"].as<int>());
 
 	line l; init(l); init(global_best);
 

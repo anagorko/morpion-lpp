@@ -31,11 +31,13 @@ MorpionGame::MorpionGame()
         }
     }
 
-	// Invalidate moves that are outside of the octagonal board
-	for (Position p = 0; p < ARRAY_SIZE; p++) {
-		for (Direction d = 0; d < DIRS; d++) {
-			if (!LineInsideBoard(p,d)) {
-				IncDotCount(p,d,LINE);
+	if (use_octagon) {
+		// Invalidate moves that are outside of the octagonal board
+		for (Position p = 0; p < ARRAY_SIZE; p++) {
+			for (Direction d = 0; d < DIRS; d++) {
+				if (!LineInsideBoard(p,d)) {
+					IncDotCount(p,d,LINE);
+				}
 			}
 		}
 	}
