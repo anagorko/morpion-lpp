@@ -168,7 +168,7 @@ void adapt(line &l, Weights &w)
        	}
 
        	for (const auto &k: simulation.Moves()) {
-	    	w[MorpionGame::goedel_number(k)] /= exp(alpha * 
+	    	w[MorpionGame::goedel_number(k)] /= fastexp(alpha * 
 						w[MorpionGame::goedel_number(k)] / W);
 	    }
 

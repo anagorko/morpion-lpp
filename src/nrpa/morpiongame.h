@@ -12,7 +12,7 @@ public:
 	static const int D5 = 1;
 
     static const int variant = D5;
-	int octagon[8] = { 22, 24, 30, 48, 34, 28, 26, 40 };
+	int octagon[8] = { 22, 20, 30, 48, 34, 28, 26, 40 };
 	bool use_octagon = true;
     static const int SIZE = 32;
 
@@ -123,7 +123,10 @@ protected:
 
 	bool LineInsideBoard(Position p, Direction d)
 	{
- 		return InsideBoard(p) && InsideBoard(p + dir[d] * (LINE - 1));
+		for (int i = 0; i < LINE; i++) {
+			if (!has_dot[p + dir[d] * i] && !InsideBoard(p + dir[d] * i)) return false;
+		}
+		return true;
 	}
 
 public:
