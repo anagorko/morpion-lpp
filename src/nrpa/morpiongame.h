@@ -5,16 +5,18 @@
 #include <iostream>
 #include <string.h>
 
-const int T5 = 0;
-const int D5 = 1;
+// const int T5 = 0;
+// const int D5 = 1;
+enum Variant { T5 = 0, D5 = 1 };
 
 class MorpionGame
 {
-	int octagon[8] = { 22, 24, 30, 48, 34, 28, 26, 40 };
+    int octagon[8]; // = { 22, 24, 30, 48, 34, 28, 26, 40 };
 
 public:
-    static const int variant = D5;
-
+    static Variant variant; // static const int variant = D5
+    static int iter;
+ 
     typedef int Direction;
     typedef int Position;
     Position PositionOfCoords(int x, int y);
@@ -46,14 +48,20 @@ public:
     std::vector<HistoryMove> LoadMovesFile(const std::string & filename);
     void SaveMovesFile(const std::vector<HistoryMove> & history, const std::string & filename);
 
-	MorpionGame(const MorpionGame& g)
-	{
-		memcpy(has_dot, g.has_dot, sizeof(has_dot));
-		memcpy(dots_count, g.dots_count, sizeof(dots_count));
-		memcpy(move_index, g.move_index, sizeof(move_index));
-		legal_moves = g.legal_moves;
-		history = g.history;
-	}
+    MorpionGame(const MorpionGame& g)
+    {
+	memcpy(has_dot, g.has_dot, sizeof(has_dot));
+	memcpy(dots_count, g.dots_count, sizeof(dots_count));
+	memcpy(move_index, g.move_index, sizeof(move_index));
+	legal_moves = g.legal_moves;
+	history = g.history;
+    }
+
+    // Three setters to deal with passed paramteteres of the NRPA module
+
+    void setIter(int _iter) { iter = _iter; }
+    void setVariant(Variant _variant) { variant = _variant; }
+    void setOctagon(int _octagon[8]) { memcpy(octagon,_octagon,8*sizeof(int)); } // std::copy(std::begin(_octagon),std::end(_octagon),std::begin(octagon));
 
 protected:
     /*  o-

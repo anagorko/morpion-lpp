@@ -20,15 +20,18 @@
 #include<set>
 #include <algorithm>
 #include<string.h>
+#include<boost/program_options.hpp>
+
+namespace po = boost::program_options;
+using namespace std;
 
 #include "morpiongame.h"
 
 MorpionGame root;
+std::seed_seq random_seed( { 12 }); 
+std::mt19937_64 generator(random_seed);
 
 long long int simuls = 0;
-
-std::seed_seq random_seed( { 12 });
-std::mt19937_64 generator(random_seed);
 
 const float alpha = 1.0f;
 
@@ -173,12 +176,54 @@ void nrpa(int level, Weights &w, line &l)
 }
 
 
-int main()
+int main(int argc, char** argv)
 {
+	
 	MorpionGame g;
-	g.print();
 
-	generator.seed(13);
+	cout << "\033[1;34mMorpion Solitaire - NRPA instance runner.\033[0m" << endl << endl;
+
+	/* Options:
+ 	*     variant
+	*     number of iterations per level
+ 	*     number of levels
+ 	*     octagon
+ 	*     seed
+	*/
+
+  	options.add_options()
+       		("help", "this help message")
+    		("variant,v", po::value<Variant>()->default_value(D5), "variant (5T or 5D)")
+        	("number of iterations per level,iter", po::value<int>()->default_value(100), "width of the board")
+        	("octagon,octagon", po::value<int[8]>()->default_value({ 22, 24, 30, 48, 34, 28, 26, 40 }), "octagon")
+        	("seed,seed", po::value<int>()->default_value(12), "random seed")
+    	;  
+
+    	po::variables_map vm;
+    
+    	try {
+       	 	po::store(po::parse_command_line(argc, argv, options), vm);
+        	po::notify(vm);
+    	} catch( const std::exception& e) {
+        	cerr << "\033[1mError:\033[0m \033[1;31m" << e.what() << "\033[0m" << endl << endl;
+        	cout << options << endl;
+        	return 1;
+    	}
+    
+    	if (vm.count("help")) {
+        	cout << options << endl;
+        	return 0;
+    	}
+
+    	g.setVariant(vm["variant"].as<Variant>());    
+	g.setIter(vm["octagon"].as<int>());
+	g.setOctagon(vm["octagon"].as<int[8]>());
+
+	//std::seed_seq random_seed( { vm["seed"].as<Int>()) }); // 
+	//std::mt19937_64 generator(random_seed);
+	generator.seed(vm["seed"].as<int>());
+
+	g.print();
 
 	line l; init(l); init(global_best);
 
