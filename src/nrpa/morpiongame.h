@@ -5,14 +5,14 @@
 #include <iostream>
 #include <string.h>
 
-const int T5 = 0;
-const int D5 = 1;
-
 class MorpionGame
 {
-	int octagon[8] = { 22, 24, 30, 48, 34, 28, 26, 40 };
+	int octagon[8] = { 22, 24, 30, 44, 34, 28, 26, 40 };
 
 public:
+	static const int T5 = 0;
+	static const int D5 = 1;
+
     static const int variant = D5;
 
     typedef int Direction;
