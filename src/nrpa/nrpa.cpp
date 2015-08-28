@@ -18,9 +18,10 @@
 #include<random>
 #include<vector>
 #include<set>
-#include <algorithm>
+#include<algorithm>
 #include<string.h>
 #include<boost/program_options.hpp>
+#include<boost/assign/list_of.hpp>
 
 namespace po = boost::program_options;
 using namespace std;
@@ -149,7 +150,7 @@ void nrpa(int level, Weights &w, line &l)
 
 		Weights wc(w);
 
-		for (int i = 0; i < 100; i++) {
+		for (int i = 0; i < root.iter; i++) {
 			init(nl);
 
 			nrpa(level - 1, wc, nl);
@@ -179,7 +180,7 @@ void nrpa(int level, Weights &w, line &l)
 int main(int argc, char** argv)
 {
 	
-	MorpionGame g;
+	// MorpionGame g = root;
 
 	cout << "\033[1;34mMorpion Solitaire - NRPA instance runner.\033[0m" << endl << endl;
 
@@ -193,12 +194,14 @@ int main(int argc, char** argv)
 
         po::options_description options("Allowed parameters");
 
+	std::vector<int> lengths = boost::assign::list_of(22)(24)(30)(48)(34)(28)(26)(40);
+
   	options.add_options()
        		("help", "this help message")
-    		("variant,v", po::value<int>()->default_value(D5), "variant (5T or 5D)") // ("variant,v", po::value<Variant>()->default_value(D5), "variant (5T or 5D)")
-        	("number of iterations per level,iter", po::value<int>()->default_value(100), "iterations per level")
-        	("octagon,octagon", po::value<std::vector<int>>()->default_value(std::vector<int>(), "22 24 30 48 34 28 26 40"), "octagon")
-        	("seed,seed", po::value<int>()->default_value(12), "random seed")
+    		("variant,v", po::value<int>()->default_value(D5), "variant (0=5T or 1=5D)") // ("variant,v", po::value<Variant>()->default_value(D5), "variant (5T or 5D)")
+        	("iter,i", po::value<int>()->default_value(100), "iterations per level")
+        	("octagon,o", po::value<std::vector<int>>(&lengths)->multitoken()  , "octagon")
+        	("seed,s", po::value<int>()->default_value(12), "random seed")
     	;  
 
     	po::variables_map vm;
@@ -217,15 +220,26 @@ int main(int argc, char** argv)
         	return 0;
     	}
 
-    	g.setVariant(vm["variant"].as<int>());  // g.setVariant(vm["variant"].as<Variant>());    
-	g.setIter(vm["iter"].as<int>());
-	g.setOctagon(vm["octagon"].as<std::vector<int>>());
+    	root.setVariant(vm["variant"].as<int>());  // g.setVariant(vm["variant"].as<Variant>());    
+	root.setIter(vm["iter"].as<int>());
+	root.setOctagon(lengths);  //vm["octagon"].as<std::vector<int>>()
 
 	//std::seed_seq random_seed( { vm["seed"].as<Int>()) }); // 
 	//std::mt19937_64 generator(random_seed);
 	generator.seed(vm["seed"].as<int>());
 
-	g.print();
+	root.print();
+        std::cout << "Variant: \033[1;33m" << root.getVariant() << "\033[0m" << endl;
+        std::cout << "Iterations: \033[1;33m" << root.getIter() << "\033[0m" << endl;
+        std::cout << "Seed: \033[1;33m" << vm["seed"].as<int>() << "\033[0m" << endl;
+	lengths = root.getOctagon();
+        std::cout << "Octagon: \033[1;33m";
+	for (std::vector<int>::const_iterator i = lengths.begin(); i != lengths.end(); ++i)
+    		std::cout << *i << ' ';
+        std::cout << "\033[0m" << endl;
+        std::cout << "Use --help for help." << endl;
+        std::cout << endl;
+
 
 	line l; init(l); init(global_best);
 

@@ -57,11 +57,15 @@ public:
 	history = g.history;
     }
 
-    // Three setters to deal with passed paramteteres of the NRPA module
+    // Three setters and getters to deal with passed paramteteres of the NRPA module
 
     void setIter(int _iter) { iter = _iter; }   // void setVariant(Variant _variant) { variant = _variant; }
     void setVariant(int _variant) { variant = _variant; }
     void setOctagon(std::vector<int> _octagon) {  std::copy(std::begin(_octagon),std::end(_octagon),octagon); } 
+
+    int getIter() { return(iter); }   // void setVariant(Variant _variant) { variant = _variant; }
+    int getVariant() { return(variant); }
+    std::vector<int> getOctagon() { return(std::vector<int>(octagon, octagon + sizeof octagon / sizeof octagon[0])); } 
 
 
 protected:
