@@ -191,11 +191,13 @@ int main(int argc, char** argv)
  	*     seed
 	*/
 
+        po::options_description options("Allowed parameters");
+
   	options.add_options()
        		("help", "this help message")
-    		("variant,v", po::value<Variant>()->default_value(D5), "variant (5T or 5D)")
-        	("number of iterations per level,iter", po::value<int>()->default_value(100), "width of the board")
-        	("octagon,octagon", po::value<int[8]>()->default_value({ 22, 24, 30, 48, 34, 28, 26, 40 }), "octagon")
+    		("variant,v", po::value<int>()->default_value(D5), "variant (5T or 5D)") // ("variant,v", po::value<Variant>()->default_value(D5), "variant (5T or 5D)")
+        	("number of iterations per level,iter", po::value<int>()->default_value(100), "iterations per level")
+        	("octagon,octagon", po::value<std::vector<int>>()->default_value(std::vector<int>(), "22 24 30 48 34 28 26 40"), "octagon")
         	("seed,seed", po::value<int>()->default_value(12), "random seed")
     	;  
 
@@ -215,9 +217,9 @@ int main(int argc, char** argv)
         	return 0;
     	}
 
-    	g.setVariant(vm["variant"].as<Variant>());    
-	g.setIter(vm["octagon"].as<int>());
-	g.setOctagon(vm["octagon"].as<int[8]>());
+    	g.setVariant(vm["variant"].as<int>());  // g.setVariant(vm["variant"].as<Variant>());    
+	g.setIter(vm["iter"].as<int>());
+	g.setOctagon(vm["octagon"].as<std::vector<int>>());
 
 	//std::seed_seq random_seed( { vm["seed"].as<Int>()) }); // 
 	//std::mt19937_64 generator(random_seed);

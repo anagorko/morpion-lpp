@@ -8,15 +8,15 @@
 // const int T5 = 0;
 // const int D5 = 1;
 enum Variant { T5 = 0, D5 = 1 };
+std::ostream& operator<<(std::ostream& os, Variant v);
 
 class MorpionGame
 {
-    int octagon[8]; // = { 22, 24, 30, 48, 34, 28, 26, 40 };
-
 public:
-    static Variant variant; // static const int variant = D5
-    static int iter;
- 
+    int octagon[8]; // = { 22, 24, 30, 48, 34, 28, 26, 40 };
+    int variant; // static Variant variant; // static const int variant = D5
+    int iter;
+
     typedef int Direction;
     typedef int Position;
     Position PositionOfCoords(int x, int y);
@@ -59,9 +59,10 @@ public:
 
     // Three setters to deal with passed paramteteres of the NRPA module
 
-    void setIter(int _iter) { iter = _iter; }
-    void setVariant(Variant _variant) { variant = _variant; }
-    void setOctagon(int _octagon[8]) { memcpy(octagon,_octagon,8*sizeof(int)); } // std::copy(std::begin(_octagon),std::end(_octagon),std::begin(octagon));
+    void setIter(int _iter) { iter = _iter; }   // void setVariant(Variant _variant) { variant = _variant; }
+    void setVariant(int _variant) { variant = _variant; }
+    void setOctagon(std::vector<int> _octagon) {  std::copy(std::begin(_octagon),std::end(_octagon),octagon); } 
+
 
 protected:
     /*  o-
