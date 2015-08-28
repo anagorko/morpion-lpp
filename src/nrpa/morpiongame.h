@@ -50,6 +50,9 @@ public:
 
     MorpionGame(const MorpionGame& g)
     {
+	variant = g.variant;
+	iter = g.iter;
+	memcpy(octagon, g.octagon, sizeof(octagon));
 	memcpy(has_dot, g.has_dot, sizeof(has_dot));
 	memcpy(dots_count, g.dots_count, sizeof(dots_count));
 	memcpy(move_index, g.move_index, sizeof(move_index));
