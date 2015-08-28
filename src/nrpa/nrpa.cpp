@@ -40,7 +40,6 @@ std::seed_seq random_seed( { 12 });
 std::mt19937_64 generator(random_seed);
 
 enum Variant { T5 = 0, D5 };
-
 std::ostream& operator<<(std::ostream& os, Variant v)
 {
     switch (v) {
@@ -269,6 +268,17 @@ int main(int argc, char** argv)
 	std::cout << "Elapsed time: " << std::chrono::duration_cast<std::chrono::microseconds>(computation_end - computation_begin).count() / 1000000 << "s" << std::endl;
 
 	std::cout << l.length << std::endl;
+
+        std::cout << "Variant: \033[1;33m" << vm["variant"].as<Variant>() << "\033[0m" << std::endl;
+        std::cout << "Iterations: \033[1;33m" << vm["iter"].as<int>() << "\033[0m" << std::endl;
+        std::cout << "Seed: \033[1;33m" << vm["seed"].as<int>() << "\033[0m" << std::endl;
+        std::cout << "Number of levels: \033[1;33m" << vm["levels"].as<int>() << "\033[0m" << std::endl;
+	// lengths = root.getOctagon();
+        // std::cout << "Octagon: \033[1;33m";
+	// for (std::vector<int>::const_iterator i = lengths.begin(); i != lengths.end(); ++i)
+    	// 	std::cout << *i << ' ';
+        // std::cout << "\033[0m" << endl;
+        std::cout << std::endl;
 
 	return 0;
 }
