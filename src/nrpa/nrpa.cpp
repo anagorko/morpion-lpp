@@ -21,6 +21,7 @@
 #include<algorithm>
 #include<chrono>
 #include<string.h>
+#include<iomanip>
 
 #include<boost/program_options.hpp>
 namespace po = boost::program_options;
@@ -118,9 +119,9 @@ void simulate(line &l, Weights &w)
 	while(!simulation.Moves().empty()) {
 		float s = 0.0f;
 
-	        for (const MorpionGame::Move& m: simulation.Moves()) {
-	            s += exp(w[MorpionGame::goedel_number(m)]);
-        	}
+        for (const MorpionGame::Move& m: simulation.Moves()) {
+            s += exp(w[MorpionGame::goedel_number(m)]);
+       	}
 
 	 	std::uniform_real_distribution<> dis(0.0, s);
         	float r = dis(generator);
@@ -128,15 +129,16 @@ void simulate(line &l, Weights &w)
 		s = 0.0f;
 
 		MorpionGame::Move chosen;
-	        for (const MorpionGame::Move& m: simulation.Moves()) {
-	            	s += exp(w[MorpionGame::goedel_number(m)]);
+
+        for (const MorpionGame::Move& m: simulation.Moves()) {
+           	s += exp(w[MorpionGame::goedel_number(m)]);
 			if (s >= r) {
 				chosen = m; break;
 			}
-        	}
+       	}
+
 		l.mv[l.length++] = chosen;
 		simulation.MakeMove(chosen);
-
 	}
 }
 
@@ -144,29 +146,23 @@ void adapt(line &l, Weights &w)
 {
 	MorpionGame simulation(root);
 
-	Weights ww(w);
-
 	for (unsigned int i = 0; i < l.length; i++) {
 		MorpionGame::Move &m = l.mv[i];
 
-		ww[MorpionGame::goedel_number(m)] *= exp(alpha);
-
 		float W = 0.0f;
+        for (const auto &k: simulation.Moves()) {
+            W += w[MorpionGame::goedel_number(k)];
+       	}
 
-	        for (const auto &k: simulation.Moves()) {
-	            W += w[MorpionGame::goedel_number(k)];
-        	}
-
-
-        	for (const auto &k: simulation.Moves()) {
-	            ww[MorpionGame::goedel_number(k)] /= exp(alpha * 
+       	for (const auto &k: simulation.Moves()) {
+	    	w[MorpionGame::goedel_number(k)] /= exp(alpha * 
 						w[MorpionGame::goedel_number(k)] / W);
-	        }
+	    }
+
+		w[MorpionGame::goedel_number(m)] *= exp(alpha);
 
 		simulation.MakeMove(m);		
 	}
-
-	w = ww;
 }
 
 line global_best;
@@ -199,7 +195,10 @@ void nrpa(int level, Weights &w, line &l)
 			if (level >= 3) {
 				long int elapsed_time = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now() - computation_begin).count();
 
-				std::cout << "Iteration " << simuls << " at level " << level << " global best " << global_best.length << " time " << elapsed_time / 1000000 << "s" << std::endl;
+				double ips = (double) simuls / ((double)elapsed_time / 1000000.0);
+
+				std::cout << "Iteration " << simuls << " at level " << level << " global best " << global_best.length << " time " 
+					 << std::fixed << std::setprecision(2) << elapsed_time / 1000000.0 << "s, " << ips << " ips" << std::endl;
 			}
 
 		}
@@ -241,7 +240,7 @@ int main(int argc, char** argv)
 
 	root.print();
 
-	generator.seed(33);
+	generator.seed(41);
 
 	line l; init(l); init(global_best);
 

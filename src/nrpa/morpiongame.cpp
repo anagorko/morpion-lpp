@@ -219,7 +219,7 @@ vector<MorpionGame::HistoryMove> MorpionGame::LoadMovesFile(const string &filena
     vector<MorpionGame::HistoryMove> result;
 
     bool reference_set = false;
-    int reference_delta;
+    int reference_delta = 0;
 
     while (getline(moves_file, line))
     {
@@ -267,5 +267,4 @@ void MorpionGame::SaveMovesFile(const vector<MorpionGame::HistoryMove> & history
     f.open(filename);
     f << content;
 }
-
 

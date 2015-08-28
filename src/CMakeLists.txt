@@ -7,14 +7,14 @@ set(warnings "-Wall -Wextra -Werror")
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${warnings} -std=c++11")
 set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g")
-set(CMAKE_CXX_FLAGS_RELEASE "-O3 -g")
+set(CMAKE_CXX_FLAGS_RELEASE "-Ofast -flto -march=native -funroll-loops -fomit-frame-pointer")
 
 # build configurations (picked when running cmake-gui)
 # default: Debug
 # OptimizedWithAssert = optimized with asserts
 # Release = Release without asserts (-DNDEBUG)
 if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE Debug)
+  set(CMAKE_BUILD_TYPE Release)
 endif()
 set(CMAKE_CXX_FLAGS_OPTIMIZEDWITHASSERT "${CMAKE_CXX_FLAGS} -O3")
 

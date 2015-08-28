@@ -7,7 +7,7 @@
 
 class MorpionGame
 {
-	int octagon[8] = { 22, 24, 30, 44, 34, 28, 26, 40 };
+	int octagon[8] = { 22, 24, 30, 48, 34, 28, 26, 40 };
 
 public:
 	static const int T5 = 0;
@@ -17,8 +17,10 @@ public:
 
     typedef int Direction;
     typedef int Position;
+
     Position PositionOfCoords(int x, int y);
     void CoordsOfPosition(Position p, int & x, int & y);
+
     struct Move
     {
         Position pos;
@@ -63,7 +65,7 @@ protected:
     typedef HistoryMove Undo;
     
     static const int DIRS = 4;
-    static const int SIZE = 64;
+    static const int SIZE = 32;
     static const int ARRAY_SIZE = SIZE * SIZE;
     static const int LINE = 5; // in number of dots
     static const int dir[DIRS];
