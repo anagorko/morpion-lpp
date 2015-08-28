@@ -65,7 +65,7 @@ protected:
     typedef HistoryMove Undo;
     
     static const int DIRS = 4;
-    static const int SIZE = 32;
+    static const int SIZE = 24;
     static const int ARRAY_SIZE = SIZE * SIZE;
     static const int LINE = 5; // in number of dots
     static const int dir[DIRS];

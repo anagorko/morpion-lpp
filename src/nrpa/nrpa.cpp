@@ -120,18 +120,18 @@ void simulate(line &l, Weights &w)
 		float s = 0.0f;
 
         for (const MorpionGame::Move& m: simulation.Moves()) {
-            s += exp(w[MorpionGame::goedel_number(m)]);
+            s += w[MorpionGame::goedel_number(m)];
        	}
 
 	 	std::uniform_real_distribution<> dis(0.0, s);
-        	float r = dis(generator);
+        float r = dis(generator);
 
 		s = 0.0f;
 
 		MorpionGame::Move chosen;
 
         for (const MorpionGame::Move& m: simulation.Moves()) {
-           	s += exp(w[MorpionGame::goedel_number(m)]);
+           	s += w[MorpionGame::goedel_number(m)];
 			if (s >= r) {
 				chosen = m; break;
 			}
@@ -240,7 +240,7 @@ int main(int argc, char** argv)
 
 	root.print();
 
-	generator.seed(41);
+	generator.seed(303);
 
 	line l; init(l); init(global_best);
 
