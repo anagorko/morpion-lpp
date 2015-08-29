@@ -30,17 +30,6 @@ MorpionGame::MorpionGame()
             PutDot(p, 1);
         }
     }
-
-	if (use_octagon) {
-		// Invalidate moves that are outside of the octagonal board
-		for (Position p = 0; p < ARRAY_SIZE; p++) {
-			for (Direction d = 0; d < DIRS; d++) {
-				if (!LineInsideBoard(p,d)) {
-					IncDotCount(p,d,LINE);
-				}
-			}
-		}
-	}
 }
 
 void MorpionGame::IncDotCount(Position pos, Direction d, int count)
@@ -268,5 +257,14 @@ void MorpionGame::SaveMovesFile(const vector<MorpionGame::HistoryMove> & history
     ofstream f;
     f.open(filename);
     f << content;
+}
+
+std::ostream& operator<<(std::ostream& os, MorpionGame::Variant v)
+{
+    switch (v) {
+        case MorpionGame::D5: os << "5D"; break;
+        case MorpionGame::T5: os << "5T"; break;
+    }
+    return os;
 }
 

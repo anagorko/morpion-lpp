@@ -8,18 +8,23 @@
 class MorpionGame
 {
 public:
-	static const int T5 = 0;
-	static const int D5 = 1;
+	enum Variant { T5 = 0, D5 = 1 };
 
-//	static const int variant = D5;
-//	int octagon[8] = { 22, 20, 30, 48, 34, 28, 26, 40 };
-//	int octagon[8] = { 26, 24, 34, 52, 38, 32, 30, 44 };
-	static const int variant = T5;
-//	int octagon[8] = { 26, 44, 30, 52, 54, 72, 34, 28 };
-	int octagon[8] = { 30, 48, 34, 56, 58, 76, 38, 32 };
-	bool use_octagon = true;
+	int variant = D5;
+
     static const int SIZE = 36;
 
+	// Invalidate moves that are outside of the octagonal board
+	void clipBoard(int o[8])
+	{
+		for (Position p = 0; p < ARRAY_SIZE; p++) {
+			for (Direction d = 0; d < DIRS; d++) {
+				if (!LineInsideBoard(p,d,o)) {
+					IncDotCount(p,d,LINE);
+				}
+			}
+		}
+	}
 
     typedef int Direction;
     typedef int Position;
@@ -34,6 +39,27 @@ public:
         Move() {}
         Move(Position pos, Direction dir) : pos(pos), dir(dir) {}
     };
+
+	class Sequence {
+		static const int bound = 200;
+
+	public:
+		unsigned int length;
+		Move mv[bound];
+
+		Sequence() {
+		}
+
+		void init() {
+			length = 0;
+		}
+
+		Sequence& operator=(const Sequence& s) {
+			length = s.length;
+			memcpy(mv, s.mv, length * sizeof(Move));
+			return *this;
+		}
+	};
 
     struct HistoryMove {
         Move move;
@@ -56,6 +82,7 @@ public:
 
 	MorpionGame(const MorpionGame& g)
 	{
+		variant = g.variant;
 		memcpy(has_dot, g.has_dot, sizeof(has_dot));
 		memcpy(dots_count, g.dots_count, sizeof(dots_count));
 		memcpy(move_index, g.move_index, sizeof(move_index));
@@ -117,18 +144,19 @@ protected:
 		return (2*(px - rx) - 3) * nx[dir] + (2*(py - ry) - 3) * ny[dir];
     }
 
-	bool InsideBoard(Position p)
+	bool InsideBoard(Position p, int octagon[8])
 	{
 		for (int dir = 0; dir < 8; dir++) {
+			if (octagon[dir] == 0) continue;
 			if (DistanceFromOrigin(p, dir) > octagon[dir]) return false;
 		}
 		return true;
 	}
 
-	bool LineInsideBoard(Position p, Direction d)
+	bool LineInsideBoard(Position p, Direction d, int o[8])
 	{
 		for (int i = 0; i < LINE; i++) {
-			if (!has_dot[p + dir[d] * i] && !InsideBoard(p + dir[d] * i)) return false;
+			if (!has_dot[p + dir[d] * i] && !InsideBoard(p + dir[d] * i,o)) return false;
 		}
 		return true;
 	}
@@ -140,7 +168,7 @@ public:
         return m.dir * ARRAY_SIZE + m.pos;
     }
 
-	void print()
+	void print(int o[8])
 	{
 		for (int y = 0; y < SIZE; y++) {
 			for (int x = 0; x < SIZE; x++) {
@@ -148,7 +176,7 @@ public:
 					std::cout << "R";
 				} else if (has_dot[PositionOfCoords(x,y)]) {
 					std::cout << "*";
-				} else if (InsideBoard(PositionOfCoords(x,y)) || !use_octagon) {
+				} else if (InsideBoard(PositionOfCoords(x,y),o)) {
 					std::cout << ".";
 				} else {
 					std::cout << " ";
@@ -175,6 +203,9 @@ inline void MorpionGame::CoordsOfPosition(Position p, int & x, int & y)
     x = p % SIZE;
     y = p / SIZE;
 }
+
+std::ostream& operator<<(std::ostream& os, MorpionGame::Variant v);
+std::ostream& operator<<(std::ostream& os, MorpionGame::Sequence v);
 
 #endif
 
