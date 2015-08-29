@@ -10,6 +10,8 @@
  *  - save full search parameters
  *  - unique save file
  *	- replace vectors in MorpionGame with arrays (for performance)
+ *  - lazy weight copying
+ *  - no move undo
  */
 
 #include<iostream>
@@ -261,7 +263,7 @@ void adapt(Weights &w, const MorpionGame::Sequence &l)
 }
 
 /*
- * Probability weights adaptation. Standard way (gradient ascent layer by layer).
+ * Probability weights adaptation. Non-standard way (gradient ascent layer by layer).
  */
 
 long long int layer[MorpionGame::max_goedel_number];
@@ -369,6 +371,7 @@ void nrpa(int level, Weights &w, MorpionGame::Sequence &l)
 		if (userInterrupt) break;
 	}
 
+	// record best sequence
 	if (l.length > state.best.length) {
 		state.best = l;
 		if (state.best.length > (opts.v == MorpionGame::D5 ? 70 : 150)) {
@@ -458,7 +461,8 @@ int main(int argc, char** argv)
 	opts.alpha = vm["alpha"].as<float>();
 	opts.fastexp = vm["fastexp"].as<bool>();
 	opts.extend = vm["extend"].as<bool>();
-	
+	opts.standard = vm["standard"].as<bool>();
+
 	if (vm.count("clip")) {
 		if (opts.v == MorpionGame::T5) {
 			hplanes = { 30, 48, 34, 56, 58, 76, 38, 32 };
