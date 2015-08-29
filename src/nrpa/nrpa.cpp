@@ -270,7 +270,7 @@ int main(int argc, char** argv)
 	std::cout << l.length << std::endl;
 
         std::cout << "Variant: \033[1;33m" << vm["variant"].as<Variant>() << "\033[0m" << std::endl;
-        std::cout << "Iterations: \033[1;33m" << vm["iter"].as<int>() << "\033[0m" << std::endl;
+        std::cout << "Iterations: \033[1;33m" << vm["iterations"].as<int>() << "\033[0m" << std::endl;
         std::cout << "Seed: \033[1;33m" << vm["seed"].as<int>() << "\033[0m" << std::endl;
         std::cout << "Number of levels: \033[1;33m" << vm["levels"].as<int>() << "\033[0m" << std::endl;
 	// lengths = root.getOctagon();
