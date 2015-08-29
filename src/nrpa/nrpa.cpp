@@ -41,7 +41,6 @@ std::seed_seq random_seed( { 12 });
 std::mt19937_64 generator(random_seed);
 
 enum Variant { T5 = 0, D5 };
-
 std::ostream& operator<<(std::ostream& os, Variant v)
 {
     switch (v) {
@@ -304,7 +303,7 @@ int main(int argc, char** argv)
         ("help", "this help message")
         ("variant,v", po::value<Variant>()->default_value(T5), "variant (5T or 5D)")
 		("iterations,n", po::value<int>()->default_value(100), "number of iterations per level")
-		("levels,l", po::value<int>()->default_value(4), "number of levels")
+		("levels,l", po::value<int>()->default_value(5), "number of levels")
 		("seed,s", po::value<int>()->default_value(1), "random seed")
 	;	
 
@@ -333,12 +332,23 @@ int main(int argc, char** argv)
 	Weights w;
 
 	sigint_time = computation_begin = std::chrono::steady_clock::now();
-	nrpa(5, w, l);
+	nrpa(vm["levels"].as<int>(), w, l);
 	computation_end = std::chrono::steady_clock::now();
 
 	std::cout << "Elapsed time: " << std::chrono::duration_cast<std::chrono::microseconds>(computation_end - computation_begin).count() / 1000000 << "s" << std::endl;
 
 	std::cout << l.length << std::endl;
+
+        std::cout << "Variant: \033[1;33m" << vm["variant"].as<Variant>() << "\033[0m" << std::endl;
+        std::cout << "Iterations: \033[1;33m" << vm["iterations"].as<int>() << "\033[0m" << std::endl;
+        std::cout << "Seed: \033[1;33m" << vm["seed"].as<int>() << "\033[0m" << std::endl;
+        std::cout << "Number of levels: \033[1;33m" << vm["levels"].as<int>() << "\033[0m" << std::endl;
+	// lengths = root.getOctagon();
+        // std::cout << "Octagon: \033[1;33m";
+	// for (std::vector<int>::const_iterator i = lengths.begin(); i != lengths.end(); ++i)
+    	// 	std::cout << *i << ' ';
+        // std::cout << "\033[0m" << endl;
+        std::cout << std::endl;
 
 	return 0;
 }
