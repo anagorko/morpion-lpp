@@ -4,14 +4,14 @@
  *  - copying constructor + its use in nrpa simulation and adapt (DONE)
  *  - benchmark (DONE)
  *  - SIGINT handling (DONE)
- *  - best line saving (DONE)
+ *	- replace vectors in MorpionGame with arrays (for performance) (DONE)
+ *  - no move undo (DONE)
+ *  - best line saving 
  *  - handling of dominating moves
  *  - log file
  *  - save full search parameters
  *  - unique save file
- *	- replace vectors in MorpionGame with arrays (for performance) (DONE)
  *  - lazy weight copying
- *  - no move undo (DONE)
  */
 
 #include<iostream>
@@ -209,7 +209,7 @@ void simulate(const Weights &w, MorpionGame::Sequence &l)
 
 	MorpionGame simulation(root);
 
-	while(!simulation.Moves().length == 0) {
+	while(simulation.Moves().length > 0) {
 		float s = 0.0f;
 
         for (unsigned int i = 0; i < simulation.Moves().length; i++) {
@@ -221,7 +221,7 @@ void simulate(const Weights &w, MorpionGame::Sequence &l)
 
 		s = 0.0f;
 
-		MorpionGame::Move chosen = simulation.Moves().mv[simulation.Moves().length]; // sometimes r would be greater than s!
+		MorpionGame::Move chosen = simulation.Moves().mv[simulation.Moves().length-1]; // sometimes r would be greater than s!
 
         for (unsigned int i = 0; i < simulation.Moves().length; i++) {
            	s += w[MorpionGame::goedel_number(simulation.Moves().mv[i])];
