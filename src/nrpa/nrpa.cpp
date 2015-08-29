@@ -9,9 +9,9 @@
  *  - log file
  *  - save full search parameters
  *  - unique save file
- *	- replace vectors in MorpionGame with arrays (for performance)
+ *	- replace vectors in MorpionGame with arrays (for performance) (DONE)
  *  - lazy weight copying
- *  - no move undo
+ *  - no move undo (DONE)
  */
 
 #include<iostream>
@@ -130,7 +130,7 @@ std::ostream& operator<<(std::ostream& os, SearchState& s)
 	return os;
 }
 
-void saveLine(MorpionGame::Sequence &s, std::string filename)
+void saveLine(MorpionGame::Sequence &s, std::string ) // filename)
 {
 	MorpionGame simulation(root);
 
@@ -138,7 +138,7 @@ void saveLine(MorpionGame::Sequence &s, std::string filename)
 		simulation.MakeMove(s.mv[i]);		
 	}
 
-	simulation.SaveMovesFile(simulation.GetResults(), filename);
+//	simulation.SaveMovesFile(simulation.GetResults(), filename);
 }
 
 /*
@@ -209,11 +209,11 @@ void simulate(const Weights &w, MorpionGame::Sequence &l)
 
 	MorpionGame simulation(root);
 
-	while(!simulation.Moves().empty()) {
+	while(!simulation.Moves().length == 0) {
 		float s = 0.0f;
 
-        for (const MorpionGame::Move& m: simulation.Moves()) {
-            s += w[MorpionGame::goedel_number(m)];
+        for (unsigned int i = 0; i < simulation.Moves().length; i++) {
+            s += w[MorpionGame::goedel_number(simulation.Moves().mv[i])];
        	}
 
 	 	std::uniform_real_distribution<> dis(0.0, s);
@@ -221,12 +221,12 @@ void simulate(const Weights &w, MorpionGame::Sequence &l)
 
 		s = 0.0f;
 
-		MorpionGame::Move chosen = simulation.Moves().back(); // sometimes r would be greater than s!
+		MorpionGame::Move chosen = simulation.Moves().mv[simulation.Moves().length]; // sometimes r would be greater than s!
 
-        for (const MorpionGame::Move& m: simulation.Moves()) {
-           	s += w[MorpionGame::goedel_number(m)];
+        for (unsigned int i = 0; i < simulation.Moves().length; i++) {
+           	s += w[MorpionGame::goedel_number(simulation.Moves().mv[i])];
 			if (s >= r) {
-				chosen = m; break;
+				chosen = simulation.Moves().mv[i]; break;
 			}
        	}
 
@@ -247,18 +247,18 @@ void adapt(Weights &w, const MorpionGame::Sequence &l)
 		const MorpionGame::Move &m = l.mv[i];
 
 		float W = 0.0f;
-        for (const auto &k: simulation.Moves()) {
-            W += w[MorpionGame::goedel_number(k)];
+        for (unsigned int j = 0; j < simulation.Moves().length; j++) {
+            W += w[MorpionGame::goedel_number(simulation.Moves().mv[j])];
        	}
 
-       	for (const auto &k: simulation.Moves()) {
-	    	w[MorpionGame::goedel_number(k)] /= e(opts.alpha * 
-						w[MorpionGame::goedel_number(k)] / W);
+        for (unsigned int j = 0; j < simulation.Moves().length; j++) {
+	    	w[MorpionGame::goedel_number(simulation.Moves().mv[j])] /= e(opts.alpha * 
+						w[MorpionGame::goedel_number(simulation.Moves().mv[j])] / W);
 	    }
 
 		w[MorpionGame::goedel_number(m)] *= e(opts.alpha);
 
-		simulation.MakeMove(m);		
+		simulation.MakeMove(m);
 	}
 }
 
@@ -286,20 +286,20 @@ void adapt_layers(Weights &w, const MorpionGame::Sequence& l)
 		std::vector<MorpionGame::Move> mvs;
 
 		float W = 0.0f; float M = 0.0f;
-        for (const auto &k: simulation.Moves()) {
-			if (layer[MorpionGame::goedel_number(k)] == ln) {
+        for (unsigned int j = 0; j < simulation.Moves().length; j++) {
+			if (layer[MorpionGame::goedel_number(simulation.Moves().mv[j])] == ln) {
 				M += opts.alpha;
-				mvs.push_back(k);
+				mvs.push_back(simulation.Moves().mv[j]);
 			}
 
-            W += w[MorpionGame::goedel_number(k)];
+            W += w[MorpionGame::goedel_number(simulation.Moves().mv[j])];
        	}
 
 		if (M == 0.0f) continue;
 
-       	for (const auto &k: simulation.Moves()) {
-	    	w[MorpionGame::goedel_number(k)] /= e(M *
-						w[MorpionGame::goedel_number(k)] / W);
+        for (unsigned int j = 0; j < simulation.Moves().length; j++) {
+	    	w[MorpionGame::goedel_number(simulation.Moves().mv[j])] /= e(M *
+						w[MorpionGame::goedel_number(simulation.Moves().mv[j])] / W);
 	    }
 
 		for (const auto &k: mvs) {

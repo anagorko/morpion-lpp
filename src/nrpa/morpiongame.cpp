@@ -37,16 +37,16 @@ void MorpionGame::IncDotCount(Position pos, Direction d, int count)
     if (CanMove(pos, d))
     {
         int idx = move_index[pos][d];
-        Move& back = legal_moves.back();
+        Move& back = legal_moves.mv[legal_moves.length-1];
         move_index[back.pos][back.dir] = idx;
-        legal_moves[idx] = back;
-        legal_moves.pop_back();
+        legal_moves.mv[idx] = back;
+        legal_moves.length--;
     }
     dots_count[pos][d] += count;
     if (CanMove(pos, d))
     {
-        move_index[pos][d] = legal_moves.size();
-        legal_moves.push_back(Move(pos, d));
+        move_index[pos][d] = legal_moves.length;
+        legal_moves.mv[legal_moves.length++] = Move(pos, d);
     }
 }
 
@@ -66,8 +66,6 @@ void MorpionGame::PutDot(Position pos, int count)
 
 void MorpionGame::MakeMove(const Move& move)
 {
-    Undo undo;
-    undo.move = move;
     /* Block moves overlaping with segments added by the move */
     for (int i = -(LINE - 2 + variant); i <= LINE - 2 + variant; i++)
         IncDotCount(move.pos + dir[move.dir] * i, move.dir, LINE);
@@ -78,22 +76,8 @@ void MorpionGame::MakeMove(const Move& move)
         if (!has_dot[p])
         {
             PutDot(p, 1);
-            undo.dot = p;
         }
     }
-    history.push_back(undo);
-}
-
-void MorpionGame::UndoMove()
-{
-    Undo undo = history.back();
-    history.pop_back();
-    Move move = undo.move;
-    /* Remove dot */
-    PutDot(undo.dot, -1);
-    /* Unblock moves overlaping with segments added by the move */
-    for (int i = -(LINE - 2 + variant); i <= LINE - 2 + variant; i++)
-        IncDotCount(move.pos + dir[move.dir] * i, move.dir, -LINE);
 }
 
 MorpionGame::Position MorpionGame::ReferencePoint()
@@ -113,20 +97,6 @@ MorpionGame::Position MorpionGame::ReferencePoint()
     const int ARMLEN = LINE - 2;
     const int MIDDLE = (SIZE - ARMLEN) / 2;
     return PositionOfCoords(MIDDLE, MIDDLE);
-}
-
-void MorpionGame::Init(const vector<MorpionGame::HistoryMove> & history)
-{
-    for (MorpionGame::HistoryMove hm : history)
-    {
-        assert(CanMove(hm.move.pos, hm.move.dir));
-        MakeMove(hm.move);
-    }
-}
-
-vector<MorpionGame::HistoryMove> MorpionGame::GetResults()
-{
-    return history;
 }
 
 int MorpionGame::CharDirToIntDir(char c)
@@ -151,113 +121,6 @@ char MorpionGame::IntDirToCharDir(int dir)
     return mapping[dir];
 }
 
-int MorpionGame::TryParseReferencePoint(const string & line)
-{
-    boost::regex reference_regex("\\s*\\(\\s*(-?\\d+)\\s*,\\s*(-?\\d+)");
-    boost::cmatch reference_match_result;
-    if (!boost::regex_search(line.c_str(), reference_match_result, reference_regex))
-    {
-        cerr << "Line: \"" << line << "\" does not match data pattern" << endl;
-	return -1;
-    }
-    else
-    {
-        int x = stoi(reference_match_result[1]);
-        int y = stoi(reference_match_result[2]);
-        return ReferencePoint() - PositionOfCoords(x, y);
-    }
-}
-
-MorpionGame::HistoryMove MorpionGame::TryParseHistoryMove(const string & line, int reference_delta)
-{
-    boost::regex data_regex("\\s*\\(\\s*(-?\\d+)\\s*,\\s*(-?\\d+)\\s*\\)\\s+([\\|\\\\/-])\\s+([-\\+]?[012])");
-    boost::cmatch data_match_results;
-    if (!boost::regex_search(line.c_str(), data_match_results, data_regex))
-    {
-        cerr << "Line: \"" << line << "\" does not match data pattern" << endl;
-	
-	throw string("error");
-    }
-    else
-    {
-        int x = stoi(data_match_results[1]);
-        int y = stoi(data_match_results[2]);
-        char c_dir = string(data_match_results[3])[0];
-        int dir = CharDirToIntDir(c_dir);
-        int rel = stoi(data_match_results[4]);
-        int dist = -2 + rel;
-
-        if (c_dir == '/')
-        {
-            dist = -(4 + dist);
-        }
-
-        MorpionGame::HistoryMove history_move;
-        history_move.dot = PositionOfCoords(x, y) + reference_delta;
-
-        history_move.move.pos = dist * ShiftFromDir(dir) + history_move.dot;
-        history_move.move.dir = dir;
-        return history_move;
-    } 
-}
-
-vector<MorpionGame::HistoryMove> MorpionGame::LoadMovesFile(const string &filename)
-{
-    ifstream moves_file;
-    moves_file.open(filename);
-    string line;
-
-    vector<MorpionGame::HistoryMove> result;
-
-    bool reference_set = false;
-    int reference_delta = 0;
-
-    while (getline(moves_file, line))
-    {
-        boost::regex comment_regex("\\s*#"), only_white_regex("^\\s*$");
-        if (!boost::regex_search(line, comment_regex) && !boost::regex_search(line, only_white_regex))
-        {
-            if (!reference_set)
-            {
-                reference_delta = TryParseReferencePoint(line);
-                reference_set = true;
-            }
-            else 
-            {
-                result.push_back(TryParseHistoryMove(line, reference_delta));
-            }
-        } else {
-        }
-    }
-    return result;
-}
-
-void MorpionGame::SaveMovesFile(const vector<MorpionGame::HistoryMove> & history, const string & filename) {
-    string content;
-    auto add_point = [&](Position p) {
-        int x, y;
-        CoordsOfPosition(p, x, y);
-        content += "(" + to_string(x) + "," + to_string(y) + ")";
-    };
-    add_point(ReferencePoint());
-    content += '\n';
-
-    for (MorpionGame::HistoryMove h : history)
-    {
-        add_point(h.dot);
-        content += ' ';
-        content += IntDirToCharDir(h.move.dir);
-        int rel = 2 - (h.dot - h.move.pos) / ShiftFromDir(h.move.dir);
-//        int q = (h.dot - h.move.pos) / ShiftFromDir(h.move.dir);
-        if (h.move.dir == 3)
-            rel *= -1;
-        content += ' ' + string(rel > 0 ? "+" : "") + to_string(rel);
-        content += '\n';
-    }
-    ofstream f;
-    f.open(filename);
-    f << content;
-}
 
 std::ostream& operator<<(std::ostream& os, MorpionGame::Variant v)
 {

@@ -12,7 +12,7 @@ public:
 
 	int variant = D5;
 
-    static const int SIZE = 36;
+    static const int SIZE = 40;
 
 	// Invalidate moves that are outside of the octagonal board
 	void clipBoard(int o[8])
@@ -48,6 +48,7 @@ public:
 		Move mv[bound];
 
 		Sequence() {
+			init();
 		}
 
 		void init() {
@@ -61,24 +62,9 @@ public:
 		}
 	};
 
-    struct HistoryMove {
-        Move move;
-        Position dot;
-    };
-
-    struct NotImplementedError{};
-
     MorpionGame();
-    std::vector<Move> Moves() const;
+	const Sequence& Moves() const;
     void MakeMove(const Move& move);
-    void UndoMove();
-
-    void Init(const std::vector<HistoryMove> & history);
-
-    std::vector<HistoryMove> GetResults();
-
-    std::vector<HistoryMove> LoadMovesFile(const std::string & filename);
-    void SaveMovesFile(const std::vector<HistoryMove> & history, const std::string & filename);
 
 	MorpionGame(const MorpionGame& g)
 	{
@@ -87,7 +73,6 @@ public:
 		memcpy(dots_count, g.dots_count, sizeof(dots_count));
 		memcpy(move_index, g.move_index, sizeof(move_index));
 		legal_moves = g.legal_moves;
-		history = g.history;
 	}
 
 protected:
@@ -95,7 +80,6 @@ protected:
      * /|\ */
     
     enum { RIGHT = 0, DOWN = 2, LEFT = 4, UP = 6 };
-    typedef HistoryMove Undo;
     
     static const int DIRS = 4;
     static const int ARRAY_SIZE = SIZE * SIZE;
@@ -105,8 +89,7 @@ protected:
     bool has_dot[ARRAY_SIZE];
     int dots_count[ARRAY_SIZE][DIRS];
     int move_index[ARRAY_SIZE][DIRS];
-    std::vector<Move> legal_moves;
-    std::vector<Undo> history;
+    Sequence legal_moves;
     
     bool CanMove(Position pos, Direction d) const
     {
@@ -119,9 +102,6 @@ protected:
     int ShiftFromDir(int d) { return d < DIRS ? dir[d] : -dir[d - DIRS]; }
 
     Position ReferencePoint();
-
-    HistoryMove TryParseHistoryMove(const std::string & line, int reference_delta);
-    int TryParseReferencePoint(const std::string & line);
 
     int CharDirToIntDir(char c);
     char IntDirToCharDir(int dir);
@@ -188,7 +168,7 @@ public:
 
 };
 
-inline std::vector<MorpionGame::Move> MorpionGame::Moves() const
+inline const MorpionGame::Sequence& MorpionGame::Moves() const
 {
     return legal_moves;
 }
