@@ -262,7 +262,7 @@ int main(int argc, char** argv)
 	Weights w;
 
 	computation_begin = std::chrono::steady_clock::now();
-	nrpa(4, w, l);
+	nrpa(vm["levels"].as<int>(), w, l);
 	computation_end = std::chrono::steady_clock::now();
 
 	std::cout << "Elapsed time: " << std::chrono::duration_cast<std::chrono::microseconds>(computation_end - computation_begin).count() / 1000000 << "s" << std::endl;
