@@ -7,11 +7,12 @@
  *	   octagon
  *     seed
  *  - copying constructor + its use in nrpa simulation and adapt (DONE)
- *  - benchmark
- *  - SIGINT handling
- *  - best line saving
+ *  - benchmark (DONE)
+ *  - SIGINT handling (DONE)
+ *  - best line saving (DONE)
  *  - handling of dominating moves
  *  - log file
+ *  - save full search parameters
  */
 
 #include<iostream>
@@ -68,11 +69,24 @@ void validate(boost::any& v,
     }
 }
 
-const float alpha = 1.0f;
+const float alpha = 0.5f;
 
-const int bound = 485;
+const int bound = 200;
 
-typedef long long int hash;
+#include <signal.h>
+
+static volatile bool userInterrupt = false;
+std::chrono::steady_clock::time_point sigint_time;
+
+void SIGINTHandler(int) {
+    if (std::chrono::duration_cast<std::chrono::seconds>(std::chrono::steady_clock::now() - sigint_time).count() > 5) {
+		std::cout << "\033[1;31mPress Ctrl+C again within 5 seconds to interrupt computation.\033[0m" << std::endl;	
+		sigint_time = std::chrono::steady_clock::now();
+	} else {
+		std::cout << "\033[1;31mInterrupting computation by user request.\033[0m" << std::endl;	
+		userInterrupt = true;
+	}
+}
 
 class Weights
 {
@@ -155,6 +169,9 @@ void simulate(line &l, Weights &w)
 	}
 }
 
+long long int layer[MorpionGame::max_goedel_number];
+long long int ln = 1;
+
 void adapt(line &l, Weights &w)
 {
 	MorpionGame simulation(root);
@@ -178,6 +195,48 @@ void adapt(line &l, Weights &w)
 	}
 }
 
+void adapt_layers(line &l, Weights &w)
+{
+	MorpionGame simulation(root);
+
+	ln++;
+	for (size_t i = 0; i < l.length; i++) {
+		layer[MorpionGame::goedel_number(l.mv[i])] = ln;
+	}
+
+	for (unsigned int i = 0; i < l.length; i++) {
+		//MorpionGame::Move &m = l.mv[i];
+
+		if (layer[MorpionGame::goedel_number(l.mv[i])] < ln) continue;
+
+		std::vector<MorpionGame::Move> mvs;
+
+		float W = 0.0f; float M = 0.0f;
+        for (const auto &k: simulation.Moves()) {
+			if (layer[MorpionGame::goedel_number(k)] == ln) {
+				M += alpha;
+				mvs.push_back(k);
+			}
+
+            W += w[MorpionGame::goedel_number(k)];
+       	}
+
+		if (M == 0.0f) continue;
+
+       	for (const auto &k: simulation.Moves()) {
+	    	w[MorpionGame::goedel_number(k)] /= fastexp(M *
+						w[MorpionGame::goedel_number(k)] / W);
+	    }
+
+		for (const auto &k: mvs) {
+			w[MorpionGame::goedel_number(k)] *= exp(alpha);
+			layer[MorpionGame::goedel_number(k)]--;
+			simulation.MakeMove(k);
+
+		}	
+	}
+}
+
 line global_best;
 
 void nrpa(int level, Weights &w, line &l)
@@ -196,14 +255,21 @@ void nrpa(int level, Weights &w, line &l)
 			nrpa(level - 1, wc, nl);
 
 			if (nl.length >= l.length) {
-				if (nl.length > l.length && level > 1) {
-					std::cout << "New best line length " << nl.length << " at level " << level << std::endl;
+				if (nl.length > l.length) {
+					if (level > 1 && nl.length >= global_best.length * 0.9) {
+						std::cout << "New best line length " << nl.length << " at level " << level << std::endl;
+					}
+					i -= nl.length / 5;				
 				}
 
-				l = nl;
+				l = nl; 
 			}
 
-			adapt(l, wc);
+			if (level <= 0) {
+				adapt(l, wc);
+			} else {
+				adapt_layers(l, wc);
+			}
 
 			if (level >= 3) {
 				long int elapsed_time = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now() - computation_begin).count();
@@ -213,6 +279,8 @@ void nrpa(int level, Weights &w, line &l)
 				std::cout << "Iteration " << simuls << " at level " << level << " global best " << global_best.length << " time " 
 					 << std::fixed << std::setprecision(2) << elapsed_time / 1000000.0 << "s, " << ips << " ips" << std::endl;
 			}
+
+			if (userInterrupt) break;
 		}
 	}
 	if (l.length > global_best.length) {
@@ -227,6 +295,8 @@ void nrpa(int level, Weights &w, line &l)
 int main(int argc, char** argv)
 {
     std::cout << "\033[1;34mMorpion Solitaire NRPA Solver.\033[0m" << std::endl << std::endl;
+
+	signal(SIGINT, SIGINTHandler);
 
     po::options_description options("Allowed parameters");
 
@@ -262,8 +332,8 @@ int main(int argc, char** argv)
 
 	Weights w;
 
-	computation_begin = std::chrono::steady_clock::now();
-	nrpa(4, w, l);
+	sigint_time = computation_begin = std::chrono::steady_clock::now();
+	nrpa(5, w, l);
 	computation_end = std::chrono::steady_clock::now();
 
 	std::cout << "Elapsed time: " << std::chrono::duration_cast<std::chrono::microseconds>(computation_end - computation_begin).count() / 1000000 << "s" << std::endl;

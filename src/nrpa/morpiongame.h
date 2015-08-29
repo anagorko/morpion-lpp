@@ -11,10 +11,14 @@ public:
 	static const int T5 = 0;
 	static const int D5 = 1;
 
-    static const int variant = D5;
-	int octagon[8] = { 22, 20, 30, 48, 34, 28, 26, 40 };
+//	static const int variant = D5;
+//	int octagon[8] = { 22, 20, 30, 48, 34, 28, 26, 40 };
+//	int octagon[8] = { 26, 24, 34, 52, 38, 32, 30, 44 };
+	static const int variant = T5;
+//	int octagon[8] = { 26, 44, 30, 52, 54, 72, 34, 28 };
+	int octagon[8] = { 30, 48, 34, 56, 58, 76, 38, 32 };
 	bool use_octagon = true;
-    static const int SIZE = 32;
+    static const int SIZE = 36;
 
 
     typedef int Direction;
