@@ -273,7 +273,7 @@ void adapt_layers(Weights &w, const MorpionGame::Sequence& l)
 {
 	MorpionGame simulation(root);
 
-	ln++;
+	ln += 2;
 	for (size_t i = 0; i < l.length; i++) {
 		layer[MorpionGame::goedel_number(l.mv[i])] = ln;
 	}
@@ -283,29 +283,28 @@ void adapt_layers(Weights &w, const MorpionGame::Sequence& l)
 
 		if (layer[MorpionGame::goedel_number(l.mv[i])] < ln) continue;
 
-		std::vector<MorpionGame::Move> mvs;
+		MorpionGame::Sequence mvs;
 
-		float W = 0.0f; float M = 0.0f;
+		float W = 0.0f; 
         for (unsigned int j = 0; j < simulation.Moves().length; j++) {
 			if (layer[MorpionGame::goedel_number(simulation.Moves().mv[j])] == ln) {
-				M += opts.alpha;
-				mvs.push_back(simulation.Moves().mv[j]);
+				mvs.mv[mvs.length++] = simulation.Moves().mv[j];
+				layer[MorpionGame::goedel_number(simulation.Moves().mv[j])]--;
 			}
 
             W += w[MorpionGame::goedel_number(simulation.Moves().mv[j])];
        	}
 
-		if (M == 0.0f) continue;
-
         for (unsigned int j = 0; j < simulation.Moves().length; j++) {
-	    	w[MorpionGame::goedel_number(simulation.Moves().mv[j])] /= e(M *
-						w[MorpionGame::goedel_number(simulation.Moves().mv[j])] / W);
+	    	w[MorpionGame::goedel_number(simulation.Moves().mv[j])] /= e(opts.alpha * mvs.length *
+					w[MorpionGame::goedel_number(simulation.Moves().mv[j])] / W - 
+					(layer[MorpionGame::goedel_number(simulation.Moves().mv[j])] == ln - 1 ? 1 : 0));
 	    }
 
-		for (const auto &k: mvs) {
-			w[MorpionGame::goedel_number(k)] *= e(opts.alpha);
-			layer[MorpionGame::goedel_number(k)]--;
-			simulation.MakeMove(k);
+		for (unsigned int j = 0; j < mvs.length; j++) {
+//			w[MorpionGame::goedel_number(mvs.mv[j])] *= e(opts.alpha);
+//			layer[MorpionGame::goedel_number(mvs.mv[j])]--;
+			simulation.MakeMove(mvs.mv[j]);
 
 		}	
 	}
