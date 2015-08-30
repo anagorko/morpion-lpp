@@ -7,7 +7,7 @@ set(warnings "-Wall -Wextra -Werror")
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${warnings} -std=c++11")
 set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g")
-set(CMAKE_CXX_FLAGS_RELEASE "-Ofast -flto -march=native -funroll-loops -fomit-frame-pointer -g")
+set(CMAKE_CXX_FLAGS_RELEASE "-Ofast -flto -march=native -funroll-loops -fomit-frame-pointer -fno-trapping-math -ffinite-math-only -g")
 
 # build configurations (picked when running cmake-gui)
 # default: Debug
