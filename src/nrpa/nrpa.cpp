@@ -52,6 +52,7 @@ struct SearchOptions {
 	bool extend;				// extend search when new sequences are found
 	bool fastexp;				// use fast but lest precise exp() function			
 	int octagon[8];				// distances of sides of octagon from center of the cross; 0 represents infinity
+	bool symmetric;				// generate center-symmetric solutions
 } opts;
 
 std::ostream& operator<<(std::ostream& os, SearchOptions& s)
@@ -69,6 +70,7 @@ std::ostream& operator<<(std::ostream& os, SearchOptions& s)
 	os << "Octagon: \033[1;33m";
 	for (int i = 0; i < 8; i++) { os << s.octagon[i] << " "; }
     os << "\033[0m" << std::endl;
+    os << "Symmetric: \033[1;33m" << (s.symmetric ? "yes" : "no") << "\033[0m" << std::endl;
 
     os << std::endl;
 
@@ -232,6 +234,11 @@ void simulate(const Weights &w, MorpionGame::Sequence &l)
 
 		l.mv[l.length++] = chosen;
 		simulation.MakeMove(chosen);
+
+		if (opts.symmetric) {
+			l.mv[l.length++] = simulation.symmetric(chosen);
+			simulation.MakeMove(simulation.symmetric(chosen));
+		}
 	}
 }
 
@@ -295,19 +302,79 @@ void adapt_layers(Weights &w, const MorpionGame::Sequence& l)
             W += w[MorpionGame::goedel_number(simulation.Moves().mv[j])];
        	}
 
+
+		float invW = 1.0f / W;
+
+        for (unsigned int j = 0; j < simulation.Moves().length; j++) {
+	    	w[MorpionGame::goedel_number(simulation.Moves().mv[j])] *= e(-(opts.alpha * mvs.length *
+					w[MorpionGame::goedel_number(simulation.Moves().mv[j])] * invW - 
+					(layer[MorpionGame::goedel_number(simulation.Moves().mv[j])] == ln - 1 ? opts.alpha : 0)));
+	    }
+/*
         for (unsigned int j = 0; j < simulation.Moves().length; j++) {
 	    	w[MorpionGame::goedel_number(simulation.Moves().mv[j])] /= e(opts.alpha * mvs.length *
-					w[MorpionGame::goedel_number(simulation.Moves().mv[j])] / W - 
-					(layer[MorpionGame::goedel_number(simulation.Moves().mv[j])] == ln - 1 ? 1 : 0));
+					w[MorpionGame::goedel_number(simulation.Moves().mv[j])] * W - 
+					(layer[MorpionGame::goedel_number(simulation.Moves().mv[j])] == ln - 1 ? opts.alpha : 0));
+	    }
+*/
+		for (unsigned int j = 0; j < mvs.length; j++) {
+			simulation.MakeMove(mvs.mv[j]);
+		}	
+	}
+}
+
+void report_layer_probabilities(Weights &w, MorpionGame::Sequence &l)
+{
+	MorpionGame simulation(root);
+
+	ln += 2;
+	for (size_t i = 0; i < l.length; i++) {
+		layer[MorpionGame::goedel_number(l.mv[i])] = ln;
+	}
+
+	int lr = 1;
+
+	for (unsigned int i = 0; i < l.length; i++) {
+		//MorpionGame::Move &m = l.mv[i];
+
+		if (layer[MorpionGame::goedel_number(l.mv[i])] < ln) continue;
+
+		MorpionGame::Sequence mvs;
+
+		float W = 0.0f, lW = 0.0f; 
+        for (unsigned int j = 0; j < simulation.Moves().length; j++) {
+			if (layer[MorpionGame::goedel_number(simulation.Moves().mv[j])] == ln) {
+				mvs.mv[mvs.length++] = simulation.Moves().mv[j];
+				layer[MorpionGame::goedel_number(simulation.Moves().mv[j])]--;
+	            lW += w[MorpionGame::goedel_number(simulation.Moves().mv[j])];
+			}
+
+            W += w[MorpionGame::goedel_number(simulation.Moves().mv[j])];
+       	}
+
+		float prob = 1.0f;
+
+        for (unsigned int j = 0; j < simulation.Moves().length; j++) {
+			if (layer[MorpionGame::goedel_number(simulation.Moves().mv[j])] == ln - 1) {
+
+				prob *= lW / W;
+				lW -= w[MorpionGame::goedel_number(simulation.Moves().mv[j])];
+				W -= w[MorpionGame::goedel_number(simulation.Moves().mv[j])];
+			} else {
+			}
 	    }
 
 		for (unsigned int j = 0; j < mvs.length; j++) {
-//			w[MorpionGame::goedel_number(mvs.mv[j])] *= e(opts.alpha);
-//			layer[MorpionGame::goedel_number(mvs.mv[j])]--;
 			simulation.MakeMove(mvs.mv[j]);
-
 		}	
+
+		std::cout << " " << lr << ": " << std::fixed << std::setprecision(2) << (lr < 4 ? "\033[1;33m" : "") 
+			<< prob * 100.0f << (lr < 4 ? "\033[0m" : "") << "% ";
+		lr++;
+
+		if (lr > 15) break;
 	}
+	std::cout << std::endl;
 }
 
 /*
@@ -333,13 +400,13 @@ void nrpa(int level, Weights &w, MorpionGame::Sequence &l)
 		if (nl.length >= l.length) {
 			if (nl.length > l.length) {
 				// log search information
-				if (level > 1 && nl.length >= state.best.length * 0.9) {
+				if (level > 2 && nl.length >= state.best.length * 0.9) {
 					std::cout << "New best line length " << nl.length << " at level " << level << std::endl;
 				}
 
 				// extend search when new line is found
-				if (opts.extend) {
-					i -= nl.length / 5;
+				if (opts.extend && nl.length >= state.best.length * 0.9) {
+					i = 0;
 				}
 			}
 
@@ -354,16 +421,18 @@ void nrpa(int level, Weights &w, MorpionGame::Sequence &l)
 		}
 
 		// log search information
-		if (level >= 3) {
+		if (level >= 4) {
 			long int elapsed_time = std::chrono::duration_cast<std::chrono::microseconds>
 										(std::chrono::steady_clock::now() - state.computation_begin).count();
 
 			double sps = (double) state.simuls / ((double)elapsed_time / 1000000.0);
 
 			std::cout << "Iteration " << state.simuls << " at level " << level 
-					  << " global best " << state.best.length << " time " 
+					  << " global best \033[1;33m" << state.best.length << "\033[0m time " 
 				 	  << std::fixed << std::setprecision(2) << elapsed_time / 1000000.0 << "s, " 
 					  << sps << " sps" << std::endl;
+
+			report_layer_probabilities(wc,state.best);
 		}
 
 		// break on user interrupt
@@ -371,9 +440,9 @@ void nrpa(int level, Weights &w, MorpionGame::Sequence &l)
 	}
 
 	// record best sequence
-	if (l.length > state.best.length) {
+	if (l.length >= state.best.length) {
 		state.best = l;
-		if (state.best.length > (opts.v == MorpionGame::D5 ? 70 : 150)) {
+		if (l.length > state.best.length && state.best.length > (opts.v == MorpionGame::D5 ? 70 : 150)) {
 			saveLine(l, std::to_string(state.best.length) + ".psol");
 		}
 	}
@@ -433,6 +502,7 @@ int main(int argc, char** argv)
 		("fastexp", po::value<bool>()->default_value(true), "use fast but less accurate exp function")
 		("extend", po::value<bool>() -> default_value(false), "extend search when new sequence is found")
 		("clip,c", "clip board to default octagon for given variant")
+		("symmetric", po::value<bool>() -> default_value(false), "generate center-symmetric solutions")
 	;	
 
     po::variables_map vm;
@@ -461,10 +531,12 @@ int main(int argc, char** argv)
 	opts.fastexp = vm["fastexp"].as<bool>();
 	opts.extend = vm["extend"].as<bool>();
 	opts.standard = vm["standard"].as<bool>();
+	opts.symmetric = vm["symmetric"].as<bool>();
 
 	if (vm.count("clip")) {
 		if (opts.v == MorpionGame::T5) {
-			hplanes = { 30, 48, 34, 56, 58, 76, 38, 32 };
+//			hplanes = { 30, 48, 34, 56, 58, 76, 38, 32 };
+			hplanes = { 26, 44, 30, 52, 54, 72, 34, 28 };
 		} else {
 			hplanes = { 26, 24, 34, 52, 38, 32, 30, 44 };
 		}
@@ -478,6 +550,10 @@ int main(int argc, char** argv)
 
 	root.variant = opts.v;
 	root.clipBoard(opts.octagon);
+
+	if (opts.symmetric) {
+		root.clipAsymmetric();
+	}
 
 	if (vm.count("print")) {
 		root.print(opts.octagon);

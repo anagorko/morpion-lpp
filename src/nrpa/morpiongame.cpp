@@ -46,7 +46,8 @@ void MorpionGame::IncDotCount(Position pos, Direction d, int count)
     if (CanMove(pos, d))
     {
         move_index[pos][d] = legal_moves.length;
-        legal_moves.mv[legal_moves.length++] = Move(pos, d);
+		legal_moves.mv[legal_moves.length].dir = d;
+        legal_moves.mv[legal_moves.length++].pos = pos;
     }
 }
 
@@ -64,7 +65,7 @@ void MorpionGame::PutDot(Position pos, int count)
     }
 }
 
-void MorpionGame::MakeMove(const Move& move)
+void MorpionGame::MakeMove(Move move)
 {
     /* Block moves overlaping with segments added by the move */
     for (int i = -(LINE - 2 + variant); i <= LINE - 2 + variant; i++)
@@ -75,12 +76,12 @@ void MorpionGame::MakeMove(const Move& move)
         Position p = move.pos + dir[move.dir] * i;
         if (!has_dot[p])
         {
-            PutDot(p, 1);
+            PutDot(p, 1); break;
         }
     }
 }
 
-MorpionGame::Position MorpionGame::ReferencePoint()
+MorpionGame::Position MorpionGame::ReferencePoint() const
 //     XXXX
 //     X  X
 //     X  X

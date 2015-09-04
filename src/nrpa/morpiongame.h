@@ -26,11 +26,25 @@ public:
 		}
 	}
 
+	// Invalidate asymmetric movves
+	void clipAsymmetric()
+	{
+		IncDotCount(ReferencePoint() + PositionOfCoords(2,1), 3, LINE);
+		IncDotCount(ReferencePoint() + PositionOfCoords(3,0), 3, LINE);
+		IncDotCount(ReferencePoint() + PositionOfCoords(4,-1), 3, LINE);
+		IncDotCount(ReferencePoint() + PositionOfCoords(5,-2), 3, LINE);
+
+		IncDotCount(ReferencePoint() + PositionOfCoords(1,1), 1, LINE);
+		IncDotCount(ReferencePoint() + PositionOfCoords(0,0), 1, LINE);
+		IncDotCount(ReferencePoint() + PositionOfCoords(-1,-1), 1, LINE);
+		IncDotCount(ReferencePoint() + PositionOfCoords(-2,-2), 1, LINE);
+	}
+
     typedef int Direction;
     typedef int Position;
 
-    Position PositionOfCoords(int x, int y);
-    void CoordsOfPosition(Position p, int & x, int & y);
+    Position PositionOfCoords(int x, int y) const;
+    void CoordsOfPosition(Position p, int & x, int & y) const;
 
     struct Move
     {
@@ -64,7 +78,7 @@ public:
 
     MorpionGame();
 	const Sequence& Moves() const;
-    void MakeMove(const Move& move);
+    void MakeMove(Move move);
 
 	MorpionGame(const MorpionGame& g)
 	{
@@ -95,14 +109,14 @@ protected:
     {
         return dots_count[pos][d] == LINE - 1;
     }
-    
+
     void IncDotCount(Position pos, Direction d, int count);
     void PutDot(Position pos, int count);
 
     int ShiftFromDir(int d) { return d < DIRS ? dir[d] : -dir[d - DIRS]; }
 
-    Position ReferencePoint();
-
+    Position ReferencePoint() const;
+    
     int CharDirToIntDir(char c);
     char IntDirToCharDir(int dir);
 
@@ -142,6 +156,11 @@ protected:
 	}
 
 public:
+	Move symmetric(Move m) const
+	{
+		return Move(-m.pos + 2 * ReferencePoint() + PositionOfCoords(3,3) - 4 * dir[m.dir], m.dir);
+	}
+
     static const int max_goedel_number = DIRS * ARRAY_SIZE;
     static inline int goedel_number(const Move &m)
     {
@@ -173,12 +192,12 @@ inline const MorpionGame::Sequence& MorpionGame::Moves() const
     return legal_moves;
 }
 
-inline MorpionGame::Position MorpionGame::PositionOfCoords(int x, int y)
+inline MorpionGame::Position MorpionGame::PositionOfCoords(int x, int y) const
 {
     return x + y * SIZE;
 }
 
-inline void MorpionGame::CoordsOfPosition(Position p, int & x, int & y)
+inline void MorpionGame::CoordsOfPosition(Position p, int & x, int & y) const
 {
     x = p % SIZE;
     y = p / SIZE;
