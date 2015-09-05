@@ -1,17 +1,9 @@
 /*
  * TODO:
- *  - command line arguments (DONE)
- *  - copying constructor + its use in nrpa simulation and adapt (DONE)
- *  - benchmark (DONE)
- *  - SIGINT handling (DONE)
- *	- replace vectors in MorpionGame with arrays (for performance) (DONE)
- *  - no move undo (DONE)
- *  - best line saving 
- *  - handling of dominating moves
- *  - log file
- *  - save full search parameters
  *  - unique save file
- *  - lazy weight copying
+ *  - save best line
+ *  - log file
+ *  - quiet mode
  */
 
 #include<iostream>
