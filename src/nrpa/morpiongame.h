@@ -26,7 +26,7 @@ public:
 		}
 	}
 
-	// Invalidate asymmetric movves
+	// Invalidate asymmetric moves
 	void clipAsymmetric()
 	{
 		IncDotCount(ReferencePoint() + PositionOfCoords(2,1), 3, LINE);
