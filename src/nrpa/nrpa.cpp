@@ -1,6 +1,6 @@
 /*
  * TODO:
- *  - unique save file
+ *  - unique save file (DONE)
  *  - save best line
  *  - log file
  *  - quiet mode
@@ -45,6 +45,26 @@ struct SearchOptions {
 	bool fastexp;				// use fast but lest precise exp() function			
 	int octagon[8];				// distances of sides of octagon from center of the cross; 0 represents infinity
 	bool symmetric;				// generate center-symmetric solutions
+
+	std::string id()
+	{
+		std::string id;
+
+		id += (v == MorpionGame::T5 ? std::string("5T") : std::string("5D")) + "_";
+		id += std::to_string(n) + "_";
+		id += std::to_string(l) + "_";
+		id += std::to_string(s) + "_";
+		id += std::to_string(standard) + "_";
+		id += std::to_string(alpha) + "_";
+		id += std::to_string(extend) + "_";
+		id += std::to_string(fastexp) + "_";
+		for (int i = 0; i < 8; i++) {
+			id += std::to_string(octagon[i]) + (i < 7 ? "," : "");
+		}
+		id += "_";
+		id += std::to_string(symmetric);
+		return id;
+	}
 } opts;
 
 std::ostream& operator<<(std::ostream& os, SearchOptions& s)
@@ -554,6 +574,8 @@ int main(int argc, char** argv)
 	// Initialize search state
 
 	state.init(opts);
+
+	std::cout << opts.id() << std::endl;
 
 	// Start search
 	MorpionGame::Sequence l; l.init();
