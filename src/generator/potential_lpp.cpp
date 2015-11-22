@@ -13,7 +13,7 @@ LPP* PotentialLPP::getLPP()
 
         setVariableBounds(v_name, 0.0, 1.0);
 
-        if (getFlag("exact")) {
+        if (getFlag("exact") && getFlag("dot-acyclic")) {
             setVariableBoolean(v_name, true);
             setVariableOrd(v_name, 0);
         }
