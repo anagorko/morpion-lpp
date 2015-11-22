@@ -9,6 +9,7 @@ from gemmate_model import Tree, Problem
 from hull import Rectangle, Octagon, Hull
 from sets import Set
 import copy
+import gemmate_model
 
 # Get full path of a template file
 def get_template_path(template_file):
@@ -121,9 +122,45 @@ class Browser(webapp2.RequestHandler):
 class ProblemList(webapp2.RequestHandler):
     def get(self):        
         self.response.headers['Content-Type'] = 'text/html'
+
+class Verify(webapp2.RequestHandler):
+    def get(self):        
+        self.response.headers['Content-Type'] = 'text/plain'
+
+        if 'tree' in self.request.arguments():
+            tree_id = self.request.get("tree")
+        else:
+            tree_id = '5DR'
+            
+        tree_key = ndb.Key(gemmate_model.Tree, tree_id)
+        tree = tree_key.get();
         
+        problems = Problem.query(Problem.type==1, ancestor=tree_key).fetch()
+        
+        sql = []
+        
+        for p in problems:
+            hull = Hull.createFromId(p.hull)
+            
+            if p.solution_type == "FEASIBLE":
+                mipfocus = 1
+                feasible = True
+            else:
+                mipfocus = 3
+                feasible = False
+
+            if p.upper_bound is None:
+                upper_bound = "NULL"
+            else:
+                upper_bound = p.upper_bound
+                
+            sql.append({'hull': p.hull, 'halfplanes': hull.halfplanes(), 'mipfocus': mipfocus, 'bound': upper_bound, 'feasible': feasible})
+    
+        self.response.out.write(template.render(get_template_path('verify_tree.html'), {"tree": tree, "problems": sql} ))
+
 app = webapp2.WSGIApplication([
     ('/', Browser),
     ('/list', ProblemList),
-    ('/init', Init)
+    ('/init', Init),
+    ('/verify', Verify)
 ], debug=True)

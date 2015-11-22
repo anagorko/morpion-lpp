@@ -225,7 +225,7 @@ LPP* PotentialLPP::getLPP()
                 if (b.hasDot(rq)) continue;
                 
                 Constraint c;
-                
+
                 // dot_placed >= dot_required + 1 - (1 - m) * bound
                 // i.e. dot_placed - dot_required - bound * m >= 1 - bound
                 
@@ -235,12 +235,31 @@ LPP* PotentialLPP::getLPP()
                 c.addVariable(to_string(m), -b.bound());
                 c.setBound(1 - b.bound());
                 c.setType(Constraint::GT);
-                
+             
                 addConstraint(c);
             }
         }      
     }
 
+/*
+    enum { R = 0, D = 2, L = 4, U = 6 };
+    
+    std::vector<int> inside_path = { R, U, U, R, D, D, D, R, R, R, D, L, L, L,
+                                     D, D, D, L, U, U, U, L, L, L, U, R, R, R };
+                                
+    Dot r = b.getReference();
+    for (auto & d: inside_path) {
+        r = r + direction[d];
+        
+        Constraint c;
+        c.setName("inside_" + to_string(r));
+        c.addVariable("dot_" + to_string(r), 1.0f);
+        c.setBound(1.0f);
+        c.setType(Constraint::EQ);
+        addConstraint(c);
+    }
+*/
+    
     return this;
 }
 
