@@ -1,0 +1,24 @@
+CREATE TABLE tree
+(
+    tree_name   VARCHAR(32),
+    problem_id  VARCHAR(64),
+    command     VARCHAR(256),
+    symmetric   BOOLEAN,
+    halfplanes  VARCHAR(80),
+
+    mipfocus    INTEGER,
+        
+    r_feasible  BOOLEAN,
+    r_bound     FLOAT,
+    r_time      INTEGER,
+    
+    solved      BOOLEAN,
+    locked      BOOLEAN,
+        
+    e_feasible  BOOLEAN,
+    e_bound     FLOAT
+);
+
+{% for p in problems %}
+INSERT INTO tree VALUES ('{{tree.name}}', '{{p.hull}}', '-p --exact -w 40 -h 40 --halfplanes {{p.halfplanes}} -v {{tree.variant}} --rhull --potential', {{tree.symmetric}}, '{{p.halfplanes}}', {{p.mipfocus}}, NULL, NULL, NULL, FALSE, NULL, {{p.feasible}}, {{p.bound}});
+{% endfor %}

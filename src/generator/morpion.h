@@ -16,7 +16,7 @@ namespace po = boost::program_options;
 enum Variant { T5 = 0, D5, T4, D4 };
 const int line_length[4] = { 4, 4, 3, 3 };    // indexed by variants
 
-const int best_upper_bound[4] = { 675, 121, 62, 35 }; /// Upper bounds for Morpion variants.
+const int best_upper_bound[4] = { 485, 85, 62, 35 }; /// Upper bounds for Morpion variants.
 
 std::string to_string(const Variant &v);
 std::ostream& operator<<(std::ostream& os, Variant v); 
