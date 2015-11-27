@@ -1,15 +1,21 @@
 \section{Geometry of Morpion Solitaire positions}
 
+\todo{An introductory sentence}
 
+\begin{example}
 Consider a Morpion 5D position shown on the left in Figure~\ref{fig:small}. 
-The diagram shows a position of a Morpion 5D playout.
+The diagram shows a position of a Morpion 5D gameplay.
 We observe that such a diagram allows us to decode the move sequence,
-  even though in the example given there are three diffrent lines passing through dot with number $1$
-  and it might be not clear which line corresponds to the first move.
-However, the last move (in the given ordering) is unique. 
-The rest of the moves can be decoded recursively, descending from the last moves in the sequence.
-Observe that some of the moves in the sequence may be interchangeable.
-However, the set of the played moves is unique with respect to the positions of the moves.
+  even though in the example in Figure~\ref{fig:small} there are three diffrent lines passing through dot with number $1$
+  and it might be not clear which line corresponds to the first move.\todo{Correct the figure - it is about number 5 not number 1}
+
+However, the last move is unique. In Figure~\ref{fig:small} this is move $19$ and we can identify the whole move thanks to the fact 
+that dot $19$ was not used in previous moves. 
+The rest of the moves can be decoded recursively, descending from the last move in the sequence. \todo{Maybe a footnote about Demain's generalization}
+\end{example}
+
+%Observe that some of the moves in the sequence may be interchangeable.
+%However, the set of the played moves is unique with respect to the positions of the moves.
 
 \begin{figure}
     \includegraphics[width=0.49\textwidth]{figures/small1.pdf}
@@ -19,34 +25,49 @@ However, the set of the played moves is unique with respect to the positions of 
     }
 \end{figure}
 
-A bounding box of a Morpion 5D position is the smallest rectangular part of the grid that contains it 
-  (with edges parallel to the coordinate axes).
-Every Morpion 5D graph contains the starting cross and the smallest bounding box has dimensions $9 \times 9$.
+\begin{definition}
+A box is a rectangular subset of ${\mathbb Z}^2$ bounded by $4$ edges parallel to the coordinate axes. A bounding box of a Morpion 5D position is the smallest box
+containing this position. %rectangular part of the grid that contains this position
+%edges parallel to the coordinate axes). 
+\todo{Add a precise figure with a bounding box and dimensions, e.g. Figure~\ref{fig:small}}
+\end{definition}
+
+Every Morpion 5D graph contains the starting cross, hence the smallest bounding box has dimensions $9 \times 9$.
 The graph depicted in Figure~\ref{fig:85} has a bounding box with dimensions $14 \times 13$.
-However, the dimensions of the bounding box do not give information about the position of the starting cross inside, which is important.
-We will employ the following convention.
-We will describe a bounding box by distances of its edges from the edges of the cross.
-For graph depicted in Figure~\ref{fig:85} the distance from top edge of the cross to the top side of the bounding box is equal to $3$. For right side it is $4$, bottom $1$ and left $1$. 
-We write that graph from Figure~\ref{fig:85} has a bounding box $(3,4,1,1)$.
+However, the dimensions of the bounding box do not give information about the position of the starting cross inside. %, which is important.
+%We will employ the following convention.
+
+\begin{notation}
+The distance of a bounding box to the initial cross can be described by $4$ numbers: the distances of the sides of the box to the edges of the cross. 
+% is distances of its edges from the edges of the cross.
+For graph depicted in Figure~\ref{fig:85} the distance from top edge of the cross to the top side of the bounding box is equal to $3$. For the right side it is $4$, for the bottom side it is $1$ and for the left side it is also $1$. 
+The bounding box of the position in Figure~\ref{fig:85} is described as $(3,4,1,1)$.
+\end{notation}
   
 There is an $8$-element group of isometries of the $\mathbb{Z}^2$ grid that leave the starting cross in place.
 Up to these symmetries every Morpion 5D position is contained in a bounding box $(a,b,c,d)$ such that
-  $a \leq b,c,d$ and $b \leq d$.
-
-In the sequel we show that every Morpion 5D graph that corresponds to a Morpion 5D position
-    must be contained (up to symmetry) in one of the bounding boxes listed in table~\ref{tbl:boundingboxes}.
+  $a \leq b,c,d$ and $b \leq d$. \todo{Theorem, proved in Section 4, why is it important}
+\begin{theorem}
+\begin{enumerate}
+\item Up to symmetry every Morpion 5D graph that corresponds to a Morpion 5D position
+    is contained in one of the bounding boxes listed in table~\ref{tbl:boundingboxes}\todo{The actual table is slightly longer, there are some errors 83 -> 82}.
+\item For every row in the table $(a,b,c,d)$ and for every Morpion 5D graph contained in the bounding box  $(a,b,c,d)$,
+its size does not exceed the maximal size indicated in the table.
+\end{enumerate} 
+\label{thm:boxes}
+\end{theorem}
 
 \begin{table}[ht]
 \centering
 \input{table.tex} 
 
-\caption{}
+\caption{Bounding boxes mentioned in Theorem \ref{thm:boxes} for sizes $85$, $84$ and $83$. All bounding boxes are listed in the Appendix. }
 \label{tbl:boundingboxes}
 \end{table}
 
 We will consider a class of graphs that are obtained from Morpion 5T positions by forgetting about 
-  the order in which the moves were played.
-(...) See Figure~\ref{fig:small} (right) to see a diagram of an unordered 5D graph. (... also define the size of such a graph ... )
+  the order in which the moves were played. \todo{Definition of an unordered Morpion 5D graph}
+Figure~\ref{fig:small} (right) contains an example of an unordered 5D graph. \todo{Define the size of such a graph - number of vertices - $36$}.
 We will call every such graph an \emph{unordered Morpion 5T graph}. See section~\ref{sec:linear} for a formal definition.
 
 \begin{figure}[h]
@@ -54,7 +75,9 @@ We will call every such graph an \emph{unordered Morpion 5T graph}. See section~
     \includegraphics[width=0.4645\textwidth]{figures/94.pdf}
     \caption{\label{fig:85}
       An unordered Morpion 5D graph of size $85$ on the left side
-        and unmarked unordered Morpion 5D graph of size $94$ on the right side
+        and unmarked unordered Morpion 5D graph of size $94$ on the right side. The graph on the left is not a Morpion 5D position, 
+because every Morpion 5D position admits the last move, characterized by the fact that the last vertex is of degree $1$ or $2$ and if it is
+of degree $2$, then the neighbours must be located on a straight line. There is no such vertex in the graph on the left.
     }
 \end{figure}
 
@@ -64,24 +87,29 @@ We will call every such graph an \emph{unordered Morpion 5T graph}. See section~
   \caption{
     Unmarked unordered Morpion 5D graph may have arbitrarily large bounding box.
   }
+  \label{fig:uncon}
 \end{figure}
 
 There are Morpion 5D graphs that do not correspond to Morpion 5D positions.
-Figure~\ref{fig:85} shows such an example.
+Figure~\ref{fig:85} shows such an example. \todo{Inline comments from Figure}
 We will prove using linear programming that that the maximum size of  an unordered Morpion 5D graph with 
   a bounding box equal to one of the bounding boxes listed in Table~\ref{tbl:boundingboxes}
-  is $85$.
+  is $85$. \todo{This looks like a comment which should immediatelly after formulation of the theorem: it says, that we are not dealing
+with all morpion 5d graphs, but only with graphs generated by Morpion 5D positions - it is enough for the corollary that 85 is an upper bound -
+later there will be one more corollary improving on this bound to 84}
 There are four bounding boxes with maximal graphs of size $85$. 
 For these we formulate mixed integer problems with additional constraints that force the graph to
   be a Morpion 5D position.
 These problems are much harder to solve, but with correct choice of solver optimization parameters we are able to show
   that there are no solutions of these problems of size $85$.
-This gives us an upper bound of $84$.
+This gives us an upper bound of $84$. \todo{formulate as a corollary}
 
-In~\cite{} we computed a bound for a different class of graphs that contains all Morpion 5T positions.
+\begin{remark}
+In~\cite{ijcai} we computed a bound for a different class of graphs that contains all Morpion 5T positions.
 These are graphs that can be covered by four-segment lines that are segment-disjoint and such that $4\cdot \# V - \# E = 144$.
 We call such graphs \emph{unmarked unordered Morpion graphs} (see section~\ref{sec:linear} for a formal definition).
-Considering this class for Morpion 5D  does not give useful bounds. 
-Figure~\ref{fig:} shows an example of an unmarked unordered Morpion 5D graph of size $94$.
-Moreover, these graphs need not to be connected and therefore the bounding box of such a graph
-  can be arbitrarily large.
+Considering this class for Morpion 5D  does not give useful bounds. There are two reasons why this method does not work:
+a) these graphs need not to be connected and therefore the bounding box of such a graph
+  can be arbitrarily large, see Figure \ref{fig:uncon}, b) even if we insist on connectedness, there are examples of unmarked unordered Morpion 5D graphs of size exceeding sizes in 
+table \ref{tbl:boundingboxes}, see Figure~\ref{fig:85}. In this specific example, the graph has $94$ vertices.
+\end{remark}
