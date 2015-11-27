@@ -6,6 +6,7 @@
 import re
 import dot
 import segment
+import copy
 
 import argparse
 parser = argparse.ArgumentParser()
@@ -14,6 +15,8 @@ parser.add_argument("--scale")
 parser.add_argument("--nonumbers",action='store_true')
 parser.add_argument("--dotsize")
 parser.add_argument("--graph",action="store_true")
+parser.add_argument("--unordered", action="store_true")
+
 args = parser.parse_args()
 
 if args.scale is not None:
@@ -75,6 +78,8 @@ dots.append([dot.Dot(-3,9), 0])
 dots.append([dot.Dot(-1,9), 0])
 dots.append([dot.Dot(1,9), 0])
 
+cross = copy.copy(dots)
+
 # read move list and create dot and segment list
 
 movepattern = re.compile("\(([0-9]+),([0-9]+)\) (.) ([-+]?\d+)")
@@ -82,6 +87,23 @@ movepattern = re.compile("\(([0-9]+),([0-9]+)\) (.) ([-+]?\d+)")
 max_x = max_y = 11
 min_x = min_y = -9
 
+def add_dot(d):
+    global max_x, max_y, min_x, min_y
+
+    if [d[0],0] in cross:
+        return
+
+    if d[0].x + 2 > max_x:
+        max_x = d[0].x + 2
+    if d[0].y + 2 > max_y:
+        max_y = d[0].y + 2
+    if d[0].x < min_x:
+        min_x = d[0].x 
+    if d[0].y < min_y:
+        min_y = d[0].y
+
+    dots.append(d)
+    
 cnt = 1
 for mvstring in psol:
     mvparsed = re.search(movepattern, mvstring)
@@ -122,7 +144,14 @@ for mvstring in psol:
     s1 = segment.Segment(dot.Dot(x,y), dot.Dot(x,y) + 0.2 * dir)
     s2 = segment.Segment(dot.Dot(x,y), dot.Dot(x,y) - 0.2 * dir)
     
-    dots.append([dot.Dot(x, y), cnt, s1, s2])
+    add_dot([dot.Dot(x, y), cnt, s1, s2])
+    
+    if (args.unordered):
+        add_dot([dot.Dot(x,y) + dir, cnt])
+        add_dot([dot.Dot(x,y) + 2*dir, cnt])
+        add_dot([dot.Dot(x,y) - dir, cnt])
+        add_dot([dot.Dot(x,y) - 2*dir, cnt])
+
     cnt = cnt + 1
 
 

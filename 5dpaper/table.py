@@ -50,7 +50,7 @@ for row in rows:
     
     print str(no) + "&" + bbox(row[4]) + "& " + str(row[7]) + "\\\\"
     no = no + 1
-    if no == 19:
+    if no == 17:
         end_table()
         print "\\hspace*{5mm}"
         start_table()
