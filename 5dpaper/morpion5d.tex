@@ -83,7 +83,7 @@ There are two main variants of the game: 5T and 5D.
 They have different restrictions on how the moves may be placed.
 In the 5T variant of the game, no segment may be drawn twice, i.e. the moves have to be segment-disjoint. 
 In the 5D variant of the game, any two moves in the same direction have to be dot-disjoint.
-The difference is demonstrated in Figure~\ref{fig:rules}.
+The difference is demonstrated in Figure~\ref{fig:small}.
 The 5D variant is more restrictive. In Morpion 5D there has to be a gap between moves
   placed on a same line.
 
@@ -117,15 +117,51 @@ The first rigorously proved bound of $705$ in Morpion 5T was published by Demain
 The best known bound of $485$ in Morpion 5T was proved in~\cite{}.
 In this paper we prove an upper bound of $84$ on the length of Morpion 5D sequence, improving upon earlier bound of $121$ by A.~Kawamura~\cite{}.
 
-Proofs of upper bound discussed above exploit geometry of the graphs that are obtained as Morpion Solitaire positions. We'll discuss in detail the bound of $705$ proved in~\cite{brass}.
-
-(TODO: Brass = isoperimetric inequality, relationship between number of vertices and edges in 5T graphs)
+Proofs of upper bounds discussed above exploit geometric and combinatorial properties of graphs that are obtained as Morpion Solitaire positions. 
+To set the mood we'll discuss the bound of $705$ moves for Morpion 5T as it was proved in~\cite{demaine}.
+A position of a Morpion Solitaire playout (Figure~\ref{fig:small}) has a graph structure.
+Its vertices are placed in the $\mathbb{Z}^2$ grid.
+Let $n$ denote the number of vertices, 
+  corresponding both to the dots placed by moves and to the dots from the starting cross.
+The edges correspond to the segments placed on the grid by moves.
+Every move adds a single vertex and four edges to the graph.
+Therefore a Morpion position graph has the following two properties: 1) its edges have unit length in $\ell_\infty$ metric; 2) $4n - e = 4 \cdot 36 = 144$.
+In~\cite{brass} P. Brass proved that if a planar graph $G$ has $n$ vertices, 
+  then the maximum number of edges in $G$ that have unit length in $\ell_\infty$ metric is equal to
+  $
+    s(n) = \lfloor 4n - \sqrt{28n - 12} \rfloor.
+  $
+Hence
+$
+  4n - 144 = e \leq s(n) = \lfloor 4n - \sqrt{28n - 12} \rfloor.
+$
+The maximal $n$ that satisfies this inequality is $n = 741$. 
+Considering the initial $36$ dots this gives an upper bound of $705$ on the number of moves 
+  in Morpion Solitaire~\cite{demaine}.
+  
+Observe that the Morpion position graph has additional geometrical property.
+The set of its edges may be covered by a set of segment-disjoint \emph{moves} consisting of four consecutive, parallel, distinct unit length segments. 
+We call such graphs \emph{unmarked unordered Morpion graphs} (see Section~\ref{sec:linear} for formal definitions).
+In~\cite{} we used linear programming to show a bound of $485$ on the number of vertices
+  in such a graph, under additional constraints about the size of its bounding box 
+   that follow from rules of Morpion 5T and from a variant of an isoperimetric inequality.
+  
+In the present paper we shall use additional combinatorial property of Morpion graphs,
+  which states that to each move we may assign one of its dots and this assignment may be one-to-one.
+We call such graphs \emph{unordered Morpion graphs} (Figure~\ref{fig:85}).
+We prove that the
+  size of graphs with these combinatorial and geometrical properties does not exceed $85$.
+We will also use additional constraint about a size of the bounding box of the graph that follows from
+  calculations combined with the rules of the game.
+We then use additional argument to show that the graphs of size $85$ do not correspond to Morpion positions.
 
 In~\cite{} we used isoperimetric inequality combined with mixed integer programming to obtain an upper bound of $485$ for Morpion 5T. 
 The method employed in~\cite{} does not give useful upper bound for the 5D variant.
 In the present paper we use a new technique of gemmating to limit the size of a bounding box of a Morpion 5D graph combined with a new reduction of Morpion Solitaire to a mixed integer programming to obtain a bound of $84$ for Morpion 5D. 
   
-\section{Geometry of Morpion position graphs}
+\section{Geometry of Morpion Solitaire positions}
+
+
 Consider a Morpion 5D position shown on the left in Figure~\ref{fig:small}. 
 The diagram shows a position of a Morpion 5D playout.
 We observe that such a diagram allows us to decode the move sequence,
@@ -135,6 +171,76 @@ However, the last move (in the given ordering) is unique.
 The rest of the moves can be decoded recursively, descending from the last moves in the sequence.
 Observe that some of the moves in the sequence may be interchangeable.
 However, the set of the played moves is unique with respect to the positions of the moves.
+
+\begin{figure}
+    \includegraphics[width=0.49\textwidth]{figures/small1.pdf}
+    \includegraphics[width=0.49\textwidth]{figures/small2.pdf}
+    \caption{\label{fig:small}
+      A Morpion 5D position (left) and a corresponding unordered Morpion 5D graph (right)
+    }
+\end{figure}
+
+A bounding box of a Morpion 5D position is the smallest rectangular part of the grid that contains it 
+  (with edges parallel to the coordinate axes).
+Every Morpion 5D graph contains the starting cross and the smallest bounding box has dimensions $9 \times 9$.
+The graph depicted in Figure~\ref{fig:85} has a bounding box with dimensions $14 \times 13$.
+However, the dimensions of the bounding box do not give information about the position of the starting cross inside, which is important.
+We will employ the following convention.
+We will describe a bounding box by distances of its edges from the edges of the cross.
+For graph depicted in Figure~\ref{fig:85} the distance from top edge of the cross to the top side of the bounding box is equal to $3$. For right side it is $4$, bottom $1$ and left $1$. 
+We write that graph from Figure~\ref{fig:85} has a bounding box $(3,4,1,1)$.
+  
+There is an $8$-element group of isometries of the $\mathbb{Z}^2$ grid that leave the starting cross in place.
+Up to these symmetries every Morpion 5D position is contained in a bounding box $(a,b,c,d)$ such that
+  $a \leq b,c,d$ and $b \leq d$.
+
+In the sequel we show that every Morpion 5D graph that corresponds to a Morpion 5D position
+    must be contained (up to symmetry) in one of the bounding boxes listed in table~\ref{tbl:boundingboxes}.
+
+\begin{table}[ht]
+\centering
+\input{table.tex} 
+
+\caption{}
+\label{tbl:boundingboxes}
+\end{table}
+
+We will consider a class of graphs that are obtained from Morpion 5T positions by forgetting about 
+  the order in which the moves were played.
+(...) See Figure~\ref{fig:small} (right) to see a diagram of an unordered 5D graph. (... also define the size of such a graph ... )
+We will call every such graph an \emph{unordered Morpion 5T graph}. See section~\ref{sec:linear} for a formal definition.
+
+\begin{figure}[h]
+    \includegraphics[width=0.49\textwidth]{figures/85.pdf}
+    \includegraphics[width=0.49\textwidth]{figures/94.pdf}
+    \caption{\label{fig:85}
+      An unordered Morpion 5D graph of size $85$ on the left side
+        and unmarked unordered Morpion 5D graph of size $94$ on the right side
+    }
+\end{figure}
+
+There are Morpion 5D graphs that do not correspond to Morpion 5D positions.
+Figure~\ref{fig:85} shows such an example.
+We will prove using linear programming that that the maximum size of  an unordered Morpion 5D graph with 
+  a bounding box equal to one of the bounding boxes listed in Table~\ref{tbl:boundingboxes}
+  is $85$.
+There are four bounding boxes with maximal graphs of size $85$. 
+For these we formulate mixed integer problems with additional constraints that force the graph to
+  be a Morpion 5D position.
+These problems are much harder to solve, but with correct choice of solver optimization parameters we are able to show
+  that there are no solutions of these problems of size $85$.
+This gives us an upper bound of $84$.
+
+In~\cite{} we computed a bound for a different class of graphs that contains all Morpion 5T positions.
+These are graphs that can be covered by four-segment lines that are segment-disjoint and such that $4\cdot \# V - \# E = 144$.
+We call such graphs \emph{unmarked unordered Morpion graphs} (see section~\ref{sec:linear} for a formal definition).
+Considering this class for Morpion 5D  does not give useful bounds. 
+Figure~\ref{fig:} shows an example of an unmarked unordered Morpion 5D graph of size $94$.
+Moreover, these graphs need not to be connected and therefore the bounding box of such a graph
+  can be arbitrarily large.
+  
+\section{Morpion Solitaire via Linear Programming}
+\label{sec:linear}
 
 \begin{definition}
   Let $G = (V, E)$ be a graph. 
@@ -169,89 +275,46 @@ However, the set of the played moves is unique with respect to the positions of 
   \end{enumerate}
 \end{definition}
 
-\begin{figure}
-    \includegraphics[width=0.49\textwidth]{figures/small1.pdf}
-    \includegraphics[width=0.49\textwidth]{figures/small2.pdf}
-    \caption{\label{fig:small}
-      A Morpion 5D position (left) and a corresponding unordered Morpion 5D graph (right)
-    }
-  \end{figure}
- 
 \begin{definition}
   A lattice graph $G$ is an \emph{unordered Morpion 5D graph} if the set $\mathcal{M}(G)$ of moves of $G$ allows a marking such that it is 5D-disjoint.
 \end{definition}
 
-See Figure~\ref{fig:small} (right) to see a diagram of an unordered 5D graph.
-There is an unordered Morpion 5D graph correcponding to every Morpion 5D position, obtained 
-  by forgetting the order of the moves.
-There are Morpion 5D graphs that do not correspond to Morpion 5D positions.
-Figure~\ref{fig:85} shows such an example.
-  
-    \begin{figure}[h]\label{fig:85}
-    \includegraphics[width=0.8\textwidth]{figures/85.pdf}
-    \caption{
-      An unordered Morpion 5D graph of size $85$
-    }
-  \end{figure}
+(formulation of linear problem, with boundary conditions)
 
-A bounding box of a Morpion 5D graph is a smallest rectangular grid that contains it.
-Every Morpion 5D graph contains the starting cross and the smallest bounding box has dimensions $9 \times 9$. 
-A bounding box may be described by distances of its edges from the edges of the cross.
-For graph depicted on Figure~\ref{fig:85} the distance from top edge of the cross to the top side of the bounding box is equal to $3$. For right side it is $4$, bottom $1$ and left $1$. We write that the bounding box of graph from Figure~\ref{fig:85} has bounding box $(3,4,1,1)$.
-  
-  There is an $8$-element group of isometries of the $\mathbb{Z}^2$ grid that leave the starting cross in place.
-  Up to these symmetries every Morpion 5D graph is contained in a bounding box $(a,b,c,d)$ such that
-  $a \leq b,c,d$ and $b \leq d$.
+\begin{theorem}
+  graph gives variable valuation
+\end{theorem}
 
-  In the sequel we show that every Morpion 5D graph that corresponds to a Morpion 5D position
-    must be contained (up to symmetry) in one of the bounding boxes listed in table~\ref{tbl:boundingboxes}.
-  
-\input{table.tex} 
-  
-  The largest bounding box (in terms of area) has dimensions $ \times $ and contains $..$ dots.
+\begin{theorem}
+  variable valuation gives graph
+\end{theorem}
 
-  For each bounding box listed in table~\ref{tbl:} we solve a mixed integer programming problem to
-    find the maximal size of a Morpion 5D graph with such a bounding box.
-    
-  In four cases we obtain the size of $85$.
-  
-  In the sequel we define and solve mixed integer programming problems to compute the maximum 
-    number of moves 
-    
+(additional variables and constraints that force move order)
 
-
-  Observe that every Morpion 5D position gives a graph with the above properties.
-  
-  class of graphs
-  (picture: white larger filled circle, black smaller filled circle,
-    line 
-  
-  board
-  boundary conditions
-  formulation of LP/MIP
-  interesting solutions (cyclic)
-  condition for acyclic solutions
-
-\section{Morpion Solitaire via Linear Programming}
-
+(additional constraints that force center symmetry)
 
 \section{Gemmating process}
-  gemmating
-  symmetries
-  stopping conditions
 
-\section{Upper bound for Morpion 5D}
-  table of results
+  infeasible models, 
+  algorithm pseudo-code (python ?),
+  discussion of results
+
+\section{Upper bounds}
+
+  discussion of results
+  
+\subsection{An upper bound of \therecord for Morpion 5D}
+
   4 boards with result of 85
   solutions of acyclic problem with cutoff=84.9
 
-\section{A solution of Morpion 5Ds}
-  table of results
-  grid with upper bounds
+\subsection{A solution of Morpion 5D with center symmetry}
+
+  grid with upper bounds (todo: picture)
   
-\section{Upper bound for Morpion 5Ts}
-  table of results
-  grid with upper bounds
+\subsection{An upper bound of $222$ for Morpion 5T with center symmetry}
+
+  grid with upper bounds (todo: picture)
 
 \section{Final remarks}
   nrpa on small boards?

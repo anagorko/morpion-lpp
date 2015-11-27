@@ -24,7 +24,6 @@ def bbox(r):
 
 def start_table():
     print """%
-    \\renewcommand{\\arraystretch}{0.8}
     \\begin{tabular}{|l|l|l|l|}
     \\hline
     No &  Bounding box &  Max size  \\\\
@@ -53,6 +52,7 @@ for row in rows:
     no = no + 1
     if no == 19:
         end_table()
+        print "\\hspace*{5mm}"
         start_table()
             
 end_table()
