@@ -1,0 +1,86 @@
+\section{Introduction}
+The Morpion Solitaire is a paper-and-pencil single-player game played on a square grid with 
+  the initial configuration of 36 dots depicted in Figure~\ref{fig:initial}. 
+In each move the player puts a dot on an unused grid position and draws a line that 
+  consists of four consecutive segments passing through the dot. 
+The line must be horizontal, vertical or diagonal. 
+The goal is to find the longest possible sequence of moves.
+There are two main variants of the game: 5T and 5D. 
+They have different restrictions on how the moves may be placed.
+In the 5T variant of the game, no segment may be drawn twice, i.e. the moves have to be segment-disjoint. 
+In the 5D variant of the game, any two moves in the same direction have to be dot-disjoint.
+The difference is demonstrated in Figure~\ref{fig:small}.
+The 5D variant is more restrictive. In Morpion 5D there has to be a gap between moves
+  placed on a same line.
+
+
+  \begin{figure}
+    \centering
+      \includegraphics[width=0.49\textwidth]{figures/empty.pdf}
+      \includegraphics[width=0.49\textwidth]{figures/empty.pdf}
+      \caption{\label{fig:initial}
+	test
+      }
+\end{figure}
+
+The problem is notoriously hard for computers. 
+For $34$ years the longest known sequence in the Morpion 5T game
+  was one of 170 moves discovered by C.-H. Bruneau in $1976$. 
+Despite considerable computational effort, until $2010$ the computer generated
+  sequences were much shorter.
+In $2010$, a Nested Rollout Policy Adapation algorithm (a Monte Carlo variant) 
+  was developed by Christopher D. Rosin~\cite{rosin} (best paper award at IJCAI11).
+Using NRPA, Rosin obtained the current world record of $178$ moves in Morpion 5T 
+  and of $82$ moves in Morpion 5D.
+The webpage~\cite{} maintained by Christian Boyer, contains an extensive and up-to-date information about records in all Morpion Solitaire variants.
+
+As the rules of Morpion Solitaire do not limit the size of the grid on which the game is played, a priori
+  it is not clear if the sequences have to be bounded.
+A popular magazine \emph{Science \& Vie} published in $1970$'s different bounds submitted by its readers 
+  for the maximal length of a sequence in Morpion 5T
+  (the bounds ranged from $540$ to $20736$), but without detailed and/or valid proofs.
+The first rigorously proved bound of $705$ in Morpion 5T was published by Demaine et al in $2006$~\cite{demaine}.
+The best known bound of $485$ in Morpion 5T was proved in~\cite{}.
+In this paper we prove an upper bound of $84$ on the length of Morpion 5D sequence, improving upon earlier bound of $121$ by A.~Kawamura~\cite{japonczycy}.
+
+Proofs of upper bounds discussed above exploit geometric and combinatorial properties of graphs that are obtained as Morpion Solitaire positions. 
+To set the mood we'll discuss the bound of $705$ moves for Morpion 5T as it was proved in~\cite{demaine}.
+A position of a Morpion Solitaire playout (Figure~\ref{fig:small}) has a graph structure.
+Its vertices are placed in the $\mathbb{Z}^2$ grid.
+Let $n$ denote the number of vertices, 
+  corresponding both to the dots placed by moves and to the dots from the starting cross.
+The edges correspond to the segments placed on the grid by moves.
+Every move adds a single vertex and four edges to the graph.
+Therefore a Morpion position graph has the following two properties: 1) its edges have unit length in $\ell_\infty$ metric; 2) $4n - e = 4 \cdot 36 = 144$.
+In~\cite{brass} P. Brass proved that if a planar graph $G$ has $n$ vertices, 
+  then the maximum number of edges in $G$ that have unit length in $\ell_\infty$ metric is equal to
+  $
+    s(n) = \lfloor 4n - \sqrt{28n - 12} \rfloor.
+  $
+Hence
+$
+  4n - 144 = e \leq s(n) = \lfloor 4n - \sqrt{28n - 12} \rfloor.
+$
+The maximal $n$ that satisfies this inequality is $n = 741$. 
+Considering the initial $36$ dots this gives an upper bound of $705$ on the number of moves 
+  in Morpion Solitaire~\cite{demaine}.
+  
+Observe that the Morpion position graph has additional geometrical property.
+The set of its edges may be covered by a set of segment-disjoint \emph{moves} consisting of four consecutive, parallel, distinct unit length segments. 
+We call such graphs \emph{unmarked unordered Morpion graphs} (see Section~\ref{sec:linear} for formal definitions).
+In~\cite{} we used linear programming to show a bound of $485$ on the number of vertices
+  in such a graph, under additional constraints about the size of its bounding box 
+   that follow from rules of Morpion 5T and from a variant of an isoperimetric inequality.
+  
+In the present paper we shall use additional combinatorial property of Morpion graphs,
+  which states that to each move we may assign one of its dots and this assignment may be one-to-one.
+We call such graphs \emph{unordered Morpion graphs} (Figure~\ref{fig:85}).
+We prove that the
+  size of graphs with these combinatorial and geometrical properties does not exceed $85$.
+We will also use additional constraint about a size of the bounding box of the graph that follows from
+  calculations combined with the rules of the game.
+We then use additional argument to show that the graphs of size $85$ do not correspond to Morpion positions.
+
+In~\cite{} we used isoperimetric inequality combined with mixed integer programming to obtain an upper bound of $485$ for Morpion 5T. 
+The method employed in~\cite{} does not give useful upper bound for the 5D variant.
+In the present paper we use a new technique of gemmating to limit the size of a bounding box of a Morpion 5D graph combined with a new reduction of Morpion Solitaire to a mixed integer programming to obtain a bound of $84$ for Morpion 5D. 

@@ -1,0 +1,53 @@
+\section{Morpion Solitaire via Linear Programming}
+\label{sec:linear}
+
+\begin{definition}
+  Let $G = (V, E)$ be a graph. 
+  Let $C \subset \mathbb{Z}^2$ be a set of $36$ dots that form an initial cross of Morpion Solitaire.
+  We shall use the following notions.
+  \begin{enumerate}
+    \item A \emph{unit segment} is a segment with endpoints in the square grid $\mathbb{Z}^2$ and length 
+    	equal to $1$ in the $\ell_\infty$ metric.
+    \item A graph $G$ is a \emph{lattice graph} if $V \subset \mathbb{Z}^2$
+      and each edge of $G$ is a unit segment.
+    \item Let 
+    \[
+      \mathcal{M} = \{ \{ (s_1, s_2), (s_2, s_3), (s_3, s_4), (s_4, s_5) \} \colon s_i \in \mathbb{Z}^2, s_{i+1} - s_i = s_i - s_{i-1} \}
+    \]
+    Elements of $\mathcal{M}$ are called \emph{moves}. 
+    Every move consists of four consecutive, distinct, parallel unit segments that intersect at endpoints.
+    We let
+    \[
+      \mathcal{M}(G) = \{ m \in \mathcal{M} \colon m \subset E \}
+    \]
+    It is the set of all moves that cover edges of $G$. We call $\mathcal{M}(G)$ the set of \emph{moves in $G$}.
+    \item A \emph{marked move} is a move $m$ with a selected vertex $d(m)$ that is one of the endpoints
+      of its segments, i.e
+      \[
+      	d(m) \in (s_i, s_{i+1}) \in m.
+      \]
+    \item We say that a set $\mathcal{M}(G)$ of moves in $G$ with a marking $d \colon \mathcal{M}(G) \to V$ is \emph{5D-disjoint} if
+      \begin{enumerate}
+        \item If $m_1, m_2 \in \mathcal{M}(G)$ are parallel, then $m_1$, $m_2$ are vertex disjoint.
+        \item The set of unmarked vertices $V \setminus d(\mathcal{M}(G))$ forms the initial cross $C$ of Morpion Solitaire.
+      \end{enumerate}
+  \end{enumerate}
+\end{definition}
+
+\begin{definition}
+  A lattice graph $G$ is an \emph{unordered Morpion 5D graph} if the set $\mathcal{M}(G)$ of moves of $G$ allows a marking such that it is 5D-disjoint.
+\end{definition}
+
+(formulation of linear problem, with boundary conditions)
+
+\begin{theorem}
+  graph gives variable valuation
+\end{theorem}
+
+\begin{theorem}
+  variable valuation gives graph
+\end{theorem}
+
+(additional variables and constraints that force move order)
+
+(additional constraints that force center symmetry)
