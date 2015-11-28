@@ -30,20 +30,22 @@ For $34$ years the longest known sequence in the Morpion 5T game
 Despite considerable computational effort, until $2010$ the computer generated
   sequences were much shorter.
 In $2010$, a Nested Rollout Policy Adapation algorithm (a Monte Carlo variant) 
-  was developed by Christopher D. Rosin~\cite{rosin} (best paper award at IJCAI11).
+  was developed by Christopher D. Rosin~\cite{rosin} recognized as a best paper of the IJCAI conference in 2011.
 Using NRPA, Rosin obtained the current world record of $178$ moves in Morpion 5T 
   and of $82$ moves in Morpion 5D.
-The webpage~\cite{} maintained by Christian Boyer, contains an extensive and up-to-date information about records in all Morpion Solitaire variants.
+The webpage~\cite{boyer} maintained by Christian Boyer, contains an extensive and up-to-date information about records in all Morpion Solitaire variants.
 
 As the rules of Morpion Solitaire do not limit the size of the grid on which the game is played, a priori
   it is not clear if the sequences have to be bounded.
 A popular magazine \emph{Science \& Vie} published in $1970$'s different bounds submitted by its readers 
   for the maximal length of a sequence in Morpion 5T
   (the bounds ranged from $540$ to $20736$), but without detailed and/or valid proofs.
-The first rigorously proved bound of $705$ in Morpion 5T was published by Demaine et al in $2006$~\cite{demaine}.
-The best known bound of $485$ in Morpion 5T was proved in~\cite{}.
-In this paper we prove an upper bound of $84$ on the length of Morpion 5D sequence, improving upon earlier bound of $121$ by A.~Kawamura~\cite{japonczycy}.
+The first rigorously proved bound of $705$ in Morpion 5T was published in $2006$ \cite[Demaine et al.]{demaine}.
+The best known bound of $485$ in Morpion 5T was proved in~\cite{ijcai}.
+In this paper we prove an upper bound of $84$ on the length of Morpion 5D sequence, 
+improving upon a bound of $121$ found earlier by \cite[Kawamura et al.]{japonczycy}.
 
+\todo{Insert why the game is epxressible via a linear program}
 Proofs of upper bounds discussed above exploit geometric and combinatorial properties of graphs that are obtained as Morpion Solitaire positions. 
 To set the mood we'll discuss the bound of $705$ moves for Morpion 5T as it was proved in~\cite{demaine}.
 A position of a Morpion Solitaire playout (Figure~\ref{fig:small}) has a graph structure.
@@ -52,7 +54,7 @@ Let $n$ denote the number of vertices,
   corresponding both to the dots placed by moves and to the dots from the starting cross.
 The edges correspond to the segments placed on the grid by moves.
 Every move adds a single vertex and four edges to the graph.
-Therefore a Morpion position graph has the following two properties: 1) its edges have unit length in $\ell_\infty$ metric; 2) $4n - e = 4 \cdot 36 = 144$. \todo{Notation: $l_\infty$, $n$, $e$}
+Therefore a Morpion position graph has the following two properties: 1) its edges have unit length in $\ell_\infty$ metric; 2) $4n - e = 4 \cdot 36 = 144$. \todo{Notation: $l_\infty$, $n$, $e$} \todo{I do not like the idea of putting here $n$, $e$, $l_\infty$}
 In~\cite{brass} P. Brass proved that if a planar graph $G$ has $n$ vertices, 
   then the maximum number of edges in $G$ that have unit length in $\ell_\infty$ metric is equal to
   $
