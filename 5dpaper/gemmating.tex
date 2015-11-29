@@ -1,5 +1,47 @@
 \section{Gemmating process}
 
+\begin{lstlisting}
+def symmetryClass(b):
+    if b[0] == b[1] and b[1] == b[2] and b[2] == b[3]:
+        return b
+    
+    while b[0] < b[1] or b[0] < b[2] or b[0] < b[3]:
+        b = b[1:] + b[:1]
+    
+    if (b[1] < b[3]):
+        b[1], b[3] = b[3], b[1]
+
+    if (b[1] < b[0] and b[2] < b[0] and b[3] < b[0]):
+        return b
+        
+    if b[0] == b[3] or b[0] == b[1]:
+        while not b[1] == b[0]:
+            b = b[1:] + b[:1]
+        if (b[2] < b[3]):
+            b[2], b[3] = b[3], b[2]
+    return b
+\end{lstlisting}
+
+\begin{lstlisting}
+while unsolved:
+    box = unsolved.pop()
+    result = solve(box)
+    solved.append(box)
+
+    if result.bound > bound:
+        bound = result.bound
+        
+    if result.type == "FEASIBLE":
+        [ a, b, c, d ] = box
+
+        gemmate = [ [ a+1, b, c, d], [a, b+1, c, d], [a, b, c+1, d], [a, b, c, d+1],
+                    [ a+1,b+1, c,d], [a, b+1,c+1,d], [a,b, c+1,d+1], [a+1,b,c, d+1] ]
+                    
+        for g in gemmate:
+            if symmetryClass(g) not in solved + unsolved:
+                unsolved.append(symmetryClass(g))
+\end{lstlisting}
+
   infeasible models, 
   algorithm pseudo-code (python ?),
   discussion of results
