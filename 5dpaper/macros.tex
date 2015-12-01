@@ -6,6 +6,7 @@
 \usepackage{tikz}
 \usepackage{xspace}
 \usepackage{float}
+\usepackage{comment}
 
 %%%% Packages needed by Matteo
 \usepackage[all]{xy}
@@ -300,5 +301,17 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%    
 
 \newcommand*\samethanks[1][\value{footnote}]{\footnotemark[#1]}
+
+
+\lstdefinestyle{myCustomPythonStyle}{
+  language=Python,
+  numbers=left,
+  stepnumber=1,
+  numbersep=10pt,
+  tabsize=4,
+  showspaces=false,
+  showstringspaces=false,
+  basicstyle=\ttfamily\small
+}
 
 

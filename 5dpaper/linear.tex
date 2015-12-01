@@ -23,12 +23,10 @@ We call moves \[ \{ \{s_1, s_2\}, \{s_2, s_3\}, \{s_3, s_4\}, \{s_4, s_5\} \}, \
 parallel if $s_1-s_2 = \pm (t_1-t_2)$.  
 \end{definition}
 
-Notice, that moves consists of four consecutive, distinct, parallel unit segments that intersect at endpoints.
-
+Notice, that moves consists of four consecutive, distinct, parallel unit segments that intersect at endpoints. In the following 
+definitions  $G = (V, E)$ is a fixed graph.
 \begin{definition} 
-  Let $G = (V, E)$ be a graph. 
-\begin{enumerate}
-    \item We call $G$  a \emph{lattice graph} if $V \subset \mathbb{Z}^2$
+We call $G$  a \emph{lattice graph} if $V \subset \mathbb{Z}^2$
       and each edge of $G$ is a unit segment.
     We let
     \[
@@ -40,19 +38,68 @@ Notice, that moves consists of four consecutive, distinct, parallel unit segment
       	d(m) \in \{s_i, s_{i+1}\} \in m
       \]
     for some $i\in \{1,2,3,4\}$.
+\end{definition}
+
+\begin{definition}
+\label{def:disjoint}
    %  A \emph{marked move} $m\in \mathcal{M}(G)$ is the pair $(m,d(m))$.%  with a selected vertex $d(m)$ that is one of the endpoints of its segments, i.e
-    \item We say that a set $\mathcal{M}(G)$ of moves in $G$ with a marking $d \colon \mathcal{M}(G) \to V$ is \emph{5D-disjoint} if
+    We say that the set $\mathcal{M}(G)$ of moves in $G$ with a marking $d \colon \mathcal{M}(G) \to V$ is \emph{5D-disjoint} if
       \begin{enumerate}
         \item $\bigcup \mathcal{M}(G) = E$,
         \item for every $m_1, m_2 \in \mathcal{M}(G)$ parallel, the moves $m_1$, $m_2$ are vertex disjoint.
-        \item $V \setminus d(\mathcal{M}(G)) = \Cross$, that is the set of unmarked vertices $V \setminus d(\mathcal{M}(G))$ forms the initial cross of Morpion Solitaire.
+        \item $V \setminus d(\mathcal{M}(G)) = \Cross$, that is the set of unmarked vertices $V \setminus d(\mathcal{M}(G))$ forms the initial cross of Morpion Solitaire. \label{markings}
       \end{enumerate}
-  \end{enumerate}
 \end{definition}
 
 \begin{definition}
   A lattice graph $G$ is an \emph{unordered Morpion 5D graph} if there exists a 5D-disjoint marking of $\mathcal{M}(G)$. 
 \end{definition}
+
+Figure~\ref{fig:small} (right) contains an example of an unordered Morpion 5D graph. %(see Section~\ref{sec:linear} for definitions an  unordered Morpion 5D graph and unmarked unordered Morpion 5D graph).
+ The size of such a graph  is defined as the number of vertices minus $36$, that is minus the number of vertices in the \Cross. %\todo{Define the size of such a graph - number of vertices - $36$}.
+%We will call every such graph an \emph{unordered Morpion 5T graph}. See section~\ref{sec:linear} for a formal definition.
+
+\begin{figure}[h]
+    \includegraphics[width=0.531\textwidth]{figures/85.pdf}
+    \includegraphics[width=0.4645\textwidth]{figures/94.pdf}
+    \caption{\label{fig:85}
+      An unordered Morpion 5D graph of size $85$ on the left side
+        and unmarked unordered Morpion 5D graph of size $94$ on the right side. 
+    }
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.687\textwidth]{figures/uncon.pdf}
+  \caption{
+    Unmarked unordered Morpion 5D graph may have arbitrarily large bounding box.
+  }
+  \label{fig:uncon}
+\end{figure}
+
+\begin{remark}
+a) There are Morpion 5D graphs that do not correspond to Morpion 5D positions. %\todo{Unmarked defined?}
+Figure~\ref{fig:85} shows such an example. The graph on the left is not a Morpion 5D position, 
+because every Morpion 5D position admits the last move, characterized by the fact that the last vertex is of degree $1$ or $2$ and if it is
+of degree $2$, then the neighbours must be located on a straight line. There is no such vertex in the graph on the left.
+%\todo{Inline comments from Figure}
+%\end{remark}
+%
+%\begin{remark}
+
+\noindent
+b) If one drops the condition \ref{markings} from Definition \ref{def:disjoint} then we would obtain a concept of a umarked unordered Morpion 5D graph.\todo{Is that correct?} A Morpion 5T equivalent
+of this definition was used in~\cite{ijcai} to compute a bound for Morpion 5T.
+% These are graphs that can be covered by four-segment lines that are segment-disjoint and such that $4\cdot \# V - \# E = 144$.
+%We call such graphs \emph{unmarked unordered Morpion graphs} (see section~\ref{sec:linear} for a formal definition).
+Considering this class for Morpion 5D  does not give useful bounds. There are two reasons why this method does not work:
+\begin{itemize}
+\item these graphs need not to be connected and therefore the bounding box of such a graph
+  can be arbitrarily large, see Figure \ref{fig:uncon}, 
+\item even if we insist on connectedness, there are examples of unmarked unordered Morpion 5D graphs of size exceeding sizes in 
+table \ref{tbl:boundingboxes}, see Figure~\ref{fig:85}. In this specific example, the graph has $94$ vertices.
+\end{itemize}
+\end{remark}
 
 (formulation of linear problem, with boundary conditions)
 

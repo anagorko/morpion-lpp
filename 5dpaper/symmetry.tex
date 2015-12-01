@@ -1,0 +1,24 @@
+\section{Symmetry}
+
+\begin{lstlisting}[language = Python,
+  basicstyle=\ttfamily\scriptsize,keywordstyle=\color{red},backgroundcolor=\color{white}]
+def symmetryClass(b):
+    if b[0] == b[1] and b[1] == b[2] and b[2] == b[3]:
+        return b
+    
+    while b[0] < b[1] or b[0] < b[2] or b[0] < b[3]:
+        b = b[1:] + b[:1]
+    
+    if (b[1] < b[3]):
+        b[1], b[3] = b[3], b[1]
+
+    if (b[1] < b[0] and b[2] < b[0] and b[3] < b[0]):
+        return b
+        
+    if b[0] == b[3] or b[0] == b[1]:
+        while not b[1] == b[0]:
+            b = b[1:] + b[:1]
+        if (b[2] < b[3]):
+            b[2], b[3] = b[3], b[2]
+    return b
+\end{lstlisting}
