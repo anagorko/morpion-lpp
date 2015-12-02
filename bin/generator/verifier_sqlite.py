@@ -23,7 +23,8 @@ import sqlite3
 echo = True
 best_known_bound = 82
 
-conn = sqlite3.connect('data2.db')
+conn = sqlite3.connect('data1.db')
+conn.isolation_level = None
 cur = conn.cursor()
 
 def query():
@@ -65,7 +66,7 @@ while True:
   row_name = row_name.replace(", ","_")
 
   def update(colname, value, echo = False):
-    query = "UPDATE cases SET " + colname + "=" + str(value) + " WHERE problem_id = " + str(row[0])
+    query = "UPDATE cases SET " + colname + "=" + str(value) + " WHERE problem_id = '"+str(row[0] + "'")
     if echo:
       print query
     cur.execute(query)
