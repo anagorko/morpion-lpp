@@ -1,4 +1,4 @@
-all: small1.pdf small2.pdf empty.pdf 85.pdf 94.pdf uncon.pdf uncon_small.pdf uncon_big.pdf
+all: small1.pdf small2.pdf empty.pdf 85.pdf 94.pdf uncon.pdf uncon_small.pdf uncon_big.pdf uncon_corrected.pdf
 	# Done
 %.pdf: %.tex
 	pdflatex $<
@@ -30,3 +30,5 @@ uncon_big.psol: uncon_big.sol ../sol2psol_unmarked.py
 	../sol2psol_unmarked.py uncon_big.sol > uncon_big.psol
 uncon_big.tex: uncon_big.psol ../psol2tikz.py
 	../psol2tikz.py --nonumbers --unordered uncon_big.psol > uncon_big.tex
+uncon_corrected.tex: uncon_corrected.psol ../psol2tikz.py
+	../psol2tikz.py --nonumbers --unordered uncon_corrected.psol > uncon_corrected.tex
