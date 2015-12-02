@@ -23,11 +23,11 @@ import sqlite3
 echo = True
 best_known_bound = 82
 
-conn = sqlite3.connect('data1.db')
+conn = sqlite3.connect('data2.db')
 cur = conn.cursor()
 
 def query():
-   cur.execute("select rowid, * from cases where (not r_solved or r_solved is null) and (not r_locked or r_locked is null)")
+   cur.execute("select * from cases where (not r_solved or r_solved is null) and (not r_locked or r_locked is null)")
 
 # def lock():
 #  print "lock\n"
@@ -59,7 +59,7 @@ while True:
     # unlock()
     break
   row = rows[0]
-  row_name = str(row[2])
+  row_name = str(row[1])
   row_name = row_name.replace("[","")
   row_name = row_name.replace("]","")
   row_name = row_name.replace(", ","_")
@@ -75,8 +75,8 @@ while True:
 
   start_time = time.time() * 1000.0
   
-  print "./generator -o " + row_name + ".lp " + str(row[3])
-  os.system("./generator -o " + row_name + ".lp " + str(row[3]))
+  print "./generator -o " + row_name + ".lp " + str(row[2])
+  os.system("./generator -o " + row_name + ".lp " + str(row[2]))
 
   callback_interrupt = False
   model = read(row_name + ".lp")
