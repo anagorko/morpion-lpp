@@ -9,9 +9,8 @@ There are two main variants of the game: 5T and 5D.
 They have different restrictions on how the moves may be placed.
 In the 5T variant of the game, no segment may be drawn twice, i.e. the moves have to be segment-disjoint. 
 In the 5D variant of the game, any two moves in the same direction have to be dot-disjoint.
-The difference is demonstrated in Figure~\ref{fig:small}.
+The difference is demonstrated in Figure~\ref{fig:initial}.\todo{Complete the figure}
 % The 5D variant is more restrictive. In Morpion 5D there has to be a gap between moves placed on a same line.
-
 
   \begin{figure}
     \centering
@@ -27,21 +26,19 @@ The problem is notoriously hard for computers.
 For $34$ years the longest known sequence in the Morpion 5T game
   was one of 170 moves discovered by C.-H. Bruneau in $1976$. 
 Despite considerable computational effort, until $2010$ the computer generated
-  sequences were much shorter.
-In $2010$, a Nested Rollout Policy Adapation algorithm (a Monte Carlo variant) 
-  was developed by Christopher D. Rosin~\cite{rosin} recognized as a best paper of the IJCAI conference in 2011.
-Using NRPA, Rosin obtained the current world record of $178$ moves in Morpion 5T 
-  and of $82$ moves in Morpion 5D.
-The webpage~\cite{boyer} maintained by Christian Boyer, contains an extensive and up-to-date information about records in all Morpion Solitaire variants.
+  sequences were much shorter. 
+In $2010$ Rosin \cite{rosin} obtained the current world records of $178$ moves in Morpion 5T 
+  and of $82$ moves in Morpion 5D using a specialized Monte Carlo algorithm. This work  was
+   recognized as a best paper of the IJCAI conference in 2011. The webpage~\cite{boyer} maintained by Christian Boyer, contains an extensive and up-to-date information about records in all Morpion Solitaire variants.
 
-As the rules of Morpion Solitaire do not limit the size of the grid on which the game is played, a priori
+\subsection{Morpion Solitaire and linear programming}
+The rules of Morpion Solitaire do not limit the size of the grid on which the game is played, hence a priori
   it is not clear if the sequences have to be bounded.
 %A popular magazine \emph{Science \& Vie} published in $1970$'s different bounds submitted by its readers for the maximal length of a sequence in Morpion 5T  (the bounds ranged from $540$ to $20736$), but without detailed and/or valid proofs.
 %The first rigorously proved bound of $705$ in Morpion 5T was published in $2006$ \cite[Demaine et al.]{demaine}.
 %The best known bound of $485$ in Morpion 5T was proved in~\cite{ijcai}.
 %In this paper we prove an upper bound of $84$ on the length of Morpion 5D sequence, 
 %improving upon a bound of $121$ found earlier by \cite[Kawamura et al.]{japonczycy}.
-
 %\begin{comment}
 %Proofs of upper bounds discussed above exploit geometric and combinatorial properties of graphs that are obtained as Morpion Solitaire positions. 
 %To set the mood we'll discuss the bound of $705$ moves for Morpion 5T as it was proved in~\cite{demaine}.
@@ -70,23 +67,23 @@ As the rules of Morpion Solitaire do not limit the size of the grid on which the
 %We call such graphs \emph{unmarked unordered Morpion graphs} (see Section~\ref{sec:linear} for formal definitions).
 % In~\cite{ijcai} we used linear programming to show a bound of $485$ on the number of vertices in such a graph, under additional constraints about the size of its bounding box  that follow from rules of %%Morpion 5T and from a variant of an isoperimetric inequality. %\todo{The same stuff as one paragraph below}
 %\end{comment}
-  
  %\todo{Insert why the game is epxressible via a linear program}
-As a single player game, Morpion Solitaire can be  encoded in a natural way as a linear optimization problem with the optimization target being the length of the sequence. The encoding is not very helpful, because the problem is too large to be practically solvable. However, this inspires a natural approach towards construction of upper bounds. Instead of solving the Morpion Solitaire we solve
+However, as a single player game, Morpion Solitaire can be  encoded in a natural way as a linear optimization problem with the optimization target being the length of the sequence. The encoding is not very helpful, because the problem is too large to be practically solvable. However, this inspires a natural approach towards construction of upper bounds. Instead of solving the Morpion Solitaire, we solve
 a more general game such that
 \begin{itemize}
 \item every gameplay of ordinary  Morpion Solitaire is a gameplay of the generalization,
 \item the generalization is practically solvable and
 \item an upper bound proved for this more general game is still interesting for the Morpion Solitaire. 
 \end{itemize}
-We do not expect that the more general game wil be playable by humans. 
+We do not expect that the more general game will be playable by humans. Here is a summary of results we managed to obtain using this approach:
 \begin{itemize}
 \item the %first rigorously proved 
-bound of $705$ in Morpion 5T was published in $2006$ \cite[Demaine et al.]{demaine}. The best known bound of $485$ in Morpion 5T was proved in~\cite{ijcai} using an appropriate generalization of Morpion 5T (in fact, the bound of $586$ can be obtained via the relaxation of the original linear program);
-\item using another generalization in this paper we prove an upper bound of $84$ on the length of Morpion 5D sequence, improving upon a bound of $121$ found earlier by \cite[Kawamura et al.]{japonczycy}. 
- will significantly improve on the above geometric bounds \cite[Kawamura et al.]{japonczycy}; the method used in  \cite{ijcai} 
+bound of $705$ in Morpion 5T was proved in $2006$ in \cite[Demaine et al.]{demaine} using a careful geometric analysis of moves in Morpion 5T. The current best bound of $485$ in Morpion 5T was obtained in~\cite{ijcai} using an appropriate generalization of Morpion 5T. In particular in \cite{ijcai} it was shown that the bound of $586$ can be obtained via the relaxation of the linear program encoding the rules of  Morpion 5T;
+\item a geometric analysis of Morpion 5D led in \cite[Kawamura et al.]{japonczycy} to an upper bound of $121$; using a generalization of Morpion 5D, in this paper we prove an upper bound of $84$ on the length of Morpion 5D sequences;
+%, improving upon a bound of $121$ found earlier by  using a geometrical analysis of moves in Morpion 5D. 
+% will significantly improve on the above geometric bounds \cite[Kawamura et al.]{japonczycy};  
 %A certain generlization of Morpion Solitaire 5T we analyzed in \cite{ijcai}, however this method 
-does not seem very helpful in Morpion 5D --- later in this paper we discuss how these generalizations differ one with another. 
+the method used in  \cite{ijcai} does not seem very helpful in Morpion 5D --- later in this paper we discuss differences between these two generalizations. 
 \end{itemize}
 
 %\begin{comment}  
@@ -98,8 +95,17 @@ does not seem very helpful in Morpion 5D --- later in this paper we discuss how 
 %\end{comment} 
 
 %\todo{The following paragraph should be written in a different way --- emphasize Theorem, maybe Lemmas, the table} 
-The plan of the proof is the following. In Theorem \ref{thm:boxes} we show that every Morpion 5D gameplay must be contained in a relatively small box around the starting cross in Figure \ref{fig:initial}.
-This already proves the bound of $85$ in Morpion 5D. In Corollary \ref{cor:84} we improve this bound to 84 through an analysis of $4$ special cases. 
+\subsection{Organization of the paper}
+In Section \ref{sec:geometry} we formulate the main results:
+\begin{itemize}
+\item in Theorem \ref{thm:boxes} we show that every Morpion 5D gameplay must be contained in a relatively small rectangular box around the starting cross in Figure \ref{fig:initial}; this already proves the bound of $85$ in Morpion 5D,
+\item in Corollary \ref{cor:84} we improve this bound to 84 through an analysis of $4$ special cases.
+\end{itemize}
+The proof of these results is divded between next three sections. In Section \ref{sec:linear} we define a useful generalization of Morpion 5D 
+and encode it as a linear program. In Section \ref{sec:gemmating} we generate a list of rectangular boards (``boxes'') such that any position of morpion 5D is contained in one of the boxes --- this is achieved using an auxilliary linear program. In Section \ref{sec:upper} we solve 
+the generalization of Morpion 5D on all boards found in Section \ref{sec:gemmating} and conclude the proof of Theorem \ref{thm:boxes} along with Corollary \ref{cor:84}. Moreover, we apply the same approach to symmetric variants of Morpion 5T and Morpion 5D and solve completely these
+two games.
+
 %We prove that the
 %  size of graphs with these combinatorial and geometrical properties does not exceed $85$.
 %We will also use additional constraint about a size of the bounding box of the graph that follows from

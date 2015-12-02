@@ -13,32 +13,43 @@ A \emph{unit segment} is a pair of points $\{s_1,s_2\}\in \mathbb{Z}^2$ in dista
 \end{definition}
 
 
-\begin{definition} Let 
-    \[
-      \mathcal{M} = \{ \{ \{s_1, s_2\}, \{s_2, s_3\}, \{s_3, s_4\}, \{s_4, s_5\} \} \colon s_i \in \mathbb{Z}^2, s_{i+1} - s_i = s_i - s_{i-1} \}
-    \]
-    Elements of $\mathcal{M}$ are called \emph{moves}. Up to a sign, a given move has one of four directions $(1,0)$, $(0,1)$, $(1,1)$, $(1,-1)$ determined by
-the difference $s_{2} - s_1 = s_3 - s_2 = s_4 - s_3 = s_5 - s_4$. 
-We call moves \[ \{ \{s_1, s_2\}, \{s_2, s_3\}, \{s_3, s_4\}, \{s_4, s_5\} \}, \{ \{t_1, t_2\}, \{t_2, t_3\}, \{t_3, t_4\}, \{t_4, t_5\} \}\in \mathcal{M}\]
-parallel if $s_1-s_2 = \pm (t_1-t_2)$.  
-\end{definition}
+%\begin{definition} 
+\subsection{Definition of moves}
+Let 
+    $
+      \mathcal{M} = \{ \{ \{s_1, s_2\}, \{s_2, s_3\}, \{s_3, s_4\}, \{s_4, s_5\} \} \colon s_i \in \mathbb{Z}^2, s_{i+1} - s_i = s_i - s_{i-1} \}.
+    $
+    Elements of $\mathcal{M}$ are called \emph{moves}. 
+Notice, that moves consists of four consecutive, distinct, parallel unit segments that intersect at endpoints. 
 
-Notice, that moves consists of four consecutive, distinct, parallel unit segments that intersect at endpoints. In the following 
-definitions  $G = (V, E)$ is a fixed graph.
+Up to a sign, a given move has one of four directions $(1,0)$, $(0,1)$, $(1,1)$, $(1,-1)$ determined by
+the difference $s_{2} - s_1 = s_3 - s_2 = s_4 - s_3 = s_5 - s_4$. 
+We call two moves $\{ \{s_1, s_2\}, \{s_2, s_3\}, \{s_3, s_4\}, \{s_4, s_5\} \}$ and $\{ \{t_1, t_2\}, \{t_2, t_3\}, \{t_3, t_4\}, \{t_4, t_5\} \}$ 
+in $\mathcal{M}$ {\em parallel} if $s_1-s_2 = \pm (t_1-t_2)$.  
+% \end{definition}
+
+\subsection{Definition of Morpion 5D graphs}
+In the following 
+three definitions  $G = (V, E)$ is a fixed graph. 
 \begin{definition} 
-We call $G$  a \emph{lattice graph} if $V \subset \mathbb{Z}^2$
+\begin{itemize}
+\item We call $G$  a \emph{lattice graph} if $V \subset \mathbb{Z}^2$
       and each edge of $G$ is a unit segment.
     We let
-    \[
+    $
       \mathcal{M}(G) = \{ m \in \mathcal{M} \colon m \subset E \}
-    \]
+    $
     It is the set of all moves that are contained in the edges of $G$. We call $\mathcal{M}(G)$ the set of \emph{moves in $G$}.
-    \item Let $d \colon \mathcal{M}(G) \to V$ be an arbitrary mapping. We call $d$ a marking if for every $m\in \mathcal{M}(G)$ holds
-      \[
+\item Let $d \colon \mathcal{M}(G) \to V$ be an arbitrary mapping. We call $d$ a marking if for every $m\in \mathcal{M}(G)$ holds
+      $
       	d(m) \in \{s_i, s_{i+1}\} \in m
-      \]
+      $
     for some $i\in \{1,2,3,4\}$.
+\end{itemize}
 \end{definition}
+
+Below we define a concept of a Morpion 5D graph, which is a lattice graph with a special marking of vertices. Every Morpion 5D position is
+a Morpion 5D graph, but as we discuss below, there are Morpion 5D graphs not related to any Morpion 5D position.
 
 \begin{definition}
 \label{def:disjoint}
@@ -55,7 +66,7 @@ We call $G$  a \emph{lattice graph} if $V \subset \mathbb{Z}^2$
   A lattice graph $G$ is an \emph{unordered Morpion 5D graph} if there exists a 5D-disjoint marking of $\mathcal{M}(G)$. 
 \end{definition}
 
-Figure~\ref{fig:small} (right) contains an example of an unordered Morpion 5D graph. %(see Section~\ref{sec:linear} for definitions an  unordered Morpion 5D graph and unmarked unordered Morpion 5D graph).
+Figure~\ref{fig:small} (right) contains an example of an unordered Morpion 5D graph. \todo{We have to decide either for ``unordered Morpion 5D graph'' or ``Morpion 5D graph'' --- currently we have both} %(see Section~\ref{sec:linear} for definitions an  unordered Morpion 5D graph and unmarked unordered Morpion 5D graph).
  The size of such a graph  is defined as the number of vertices minus $36$, that is minus the number of vertices in the \Cross. %\todo{Define the size of such a graph - number of vertices - $36$}.
 %We will call every such graph an \emph{unordered Morpion 5T graph}. See section~\ref{sec:linear} for a formal definition.
 
