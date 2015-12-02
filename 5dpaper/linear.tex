@@ -33,7 +33,7 @@ We let $E(m)$ denote the set $\{ \{ v + n \cdot d, v + (n+1) \cdot d \} \colon n
     We let
     $
       \mathcal{M}(G) = \{ m \in \mathcal{M} \colon E(m) \subset E \}
-    $
+    $.
      We call $\mathcal{M}(G)$ the set of \emph{moves in $G$}.
 
 %Let 
@@ -51,8 +51,7 @@ We let $E(m)$ denote the set $\{ \{ v + n \cdot d, v + (n+1) \cdot d \} \colon n
 
 \subsection{Definition of Morpion 5D graphs}
 
-Below we define a concept of a marked Morpion 5D graph, which is a lattice graph with a special marking of vertices. Every Morpion 5D position is
-a Morpion 5D graph, but as we discuss below, there are Morpion 5D graphs not related to any Morpion 5D position.
+Below we define a concept of a marked Morpion 5D graph, which is a lattice graph with a special marking of vertices. Every Morpion 5D position is a marked Morpion 5D graph, but as we discuss below, there are marked Morpion 5D graphs not related to any Morpion 5D position.
 
 In the following 
 three definitions  $G = (V, E)$ is a fixed graph. 
@@ -72,8 +71,7 @@ if for every parallel moves $m_1, m_2 \in \mathcal{M}(G)$ the intersection of $m
     the set $\mathcal{M}(G)$ of moves of $G$ is 5D-disjoint.
   If $d$ is a selected Morpion marking of $G$, then we say that $G$ togther with $d$ is 
     a \emph{marked Morpion 5D graph}.
-    
-  The size of Morpion 5D graph  is defined as the number of vertices minus $36$, that is minus the number of vertices in the \Cross.
+  The \emph{size} of Morpion 5D graph  is defined as the number of vertices minus $36$, that is minus the number of vertices in the \Cross.
  \end{definition}
 
 
@@ -87,7 +85,7 @@ if for every parallel moves $m_1, m_2 \in \mathcal{M}(G)$ the intersection of $m
     \label{fig:85}
 \end{figure}
 
-Figure~\ref{fig:85} contains an example of a marked Morpion 5D graph. 
+Figure~\ref{fig:85} contains an example of a marked Morpion 5D graph $G_{85}$. 
 Every vertex of $G_{85}$ that is not in $\Cross$ is labelled with one of the four directions. 
 For every move $m$ from $\mathcal{M}(G_{85})$ there exists exactly one vertex in $m$ 
   labelled with the direction of $m$.
@@ -108,10 +106,15 @@ There is no such vertex in $G_{85}$
   \label{fig:uncon}
 \end{figure}
 
-Figure~\ref{fig:uncon} (left) contains an example of a Morpion 5D graph.
-It follows from Theorem~\ref{thm:boxes} that the maximal size of a marked Morpion 5D graph with the 
-  bounding box $(5,2,0,1)$ is less than $83$ (in fact it is equal to $80$).
+Figure~\ref{fig:uncon} contains a examples of Morpion 5D graphs.
+Neither of these graphs admits a marking.
+The graph on the left has a bounding box $(5,2,0,1)$.
+It follows from Theorem~\ref{thm:boxes} that the maximal size of a marked Morpion 5D graph with this 
+  bounding box is at most $82$ (a calculation not listed in statement of Theorem~\ref{thm:boxes} shows that it is equal to $80$).
 The size of this graph is $94$, hence it does not admit a marking.
+The graph on the right has a connected component with five dots.
+A marking would have to be a bijection that assigns all of these dots to a single move.
+Therefore no marking exists for this graph.
  %\todo{We have to decide either for ``unordered Morpion 5D graph'' or ``Morpion 5D graph'' --- currently we have both} %(see Section~\ref{sec:linear} for definitions an  unordered Morpion 5D graph and unmarked unordered Morpion 5D graph).
  %\todo{Define the size of such a graph - number of vertices - $36$}.
 %We will call every such graph an \emph{unordered Morpion 5T graph}. See section~\ref{sec:linear} for a formal definition.
@@ -125,17 +128,17 @@ The size of this graph is $94$, hence it does not admit a marking.
 %\begin{remark}
 %\noindent
 %b) 
-A Morpion 5T equivalent of the definition of an unmarked Morpion 5D graph was 
+A Morpion 5T equivalent of the definition of an (unmarked) Morpion 5D graph was 
   used in~\cite{ijcai} to compute a bound for Morpion 5T.
 % These are graphs that can be covered by four-segment lines that are segment-disjoint and such that $4\cdot \# V - \# E = 144$.
 %We call such graphs \emph{unmarked unordered Morpion graphs} (see section~\ref{sec:linear} for a formal definition).
-Considering this class for Morpion 5D  does not give useful bounds. There are two reasons why this method does not work:
-\begin{itemize}
-\item these graphs need not to be connected and therefore the bounding box of such a graph
-  can be arbitrarily large, see Figure \ref{fig:uncon}, 
-\item even if we insist on connectedness, there are examples of unmarked unordered Morpion 5D graphs of size exceeding sizes in 
-table \ref{tbl:boundingboxes}, see Figure~\ref{fig:85}. In this specific example, the graph has $94$ vertices.
-\end{itemize}
+Considering this class for Morpion 5D  does not give useful bounds. There are two reasons why this method does not work.
+\begin{enumerate}
+\item These graphs need not to be connected and therefore the bounding box of such a graph
+  can be arbitrarily large, see Figure \ref{fig:uncon} (right), 
+\item Even if we insist on connectedness, there are examples of unmarked unordered Morpion 5D graphs of size exceeding sizes in 
+table \ref{tbl:boundingboxes}, see Figure~\ref{fig:uncon} (left). In this specific example, the graph has $94$ vertices.
+\end{enumerate}
 \end{remark}
 
 \subsection{Definition of mixed integer programming problem}
@@ -148,31 +151,101 @@ We define a mixed integer programming problem whose solutions correspond to all 
 \renewcommand{\dt}{\operatorname{dt}}
 
 \begin{definition}  
-  Let $B = (V_B, E_B)$ be a lattice graph with vertex set $V_B = \mathcal{B}$ and a maximal edge set $E_B$
-    of all unit edges with vertices contained in $V_B$.
+  Let $B = (V_B, E_B)$ be a lattice graph with vertex set $V_B = \mathcal{B}$ and an edge set $E_B$
+    of all unit edges with vertices contained in $V_B$ (this is a maximal edge set for a lattice graph with set of vertices $\mathcal{B}$).
   We define the following set of structural binary variables, that is variables assuming values $0, 1$:
   \[
-  \{ \dt_v \colon v \in B \} \cup \{ \mv_{m, d(m)} \colon m \in \mathcal{M}(B), d(m) \in m \}
+  \{ \dt_v \colon v \in V_B \} \cup \{ \mv_{m, d(m)} \colon m \in \mathcal{M}(B), d(m) \in m \}
   \]
   
   We put the following linear constraints.
+  
   \begin{enumerate}
-  \item For each $v \in Cross$, $\dt_v = 1$.
-  \item For each $v \in V_B \setminus \Cross$, $\dt_v = \sum_{m \in \mathcal{M}(B), v \in m} \mv_{m, v}$.
-  \item For each $v \in V_B$
-  $
-  	\dt_v \geq \sum_{m \in \mathcal{M}(B), w \in m, w \neq v} \mv_{m, w}.
-  $
-  \item $\sum_{v \in V_B} \dt_v - \sum_{m \in \mathcal{M}(B), v \in m} \mv_{m, v} \leq 36$.
-  \item For each $v \in V_B \setminus \Cross$, $\dt_v - $
+  \item  For each $v \in Cross$,
+  \[
+    \dt_v = 1.
+  \]
+  \item For each $v \in V_B \setminus \Cross$, 
+  \[ 
+    \dt_v = \sum_{m \in \mathcal{M}(B) \colon v \in m} \mv_{m, v}.
+  \]
+  \item For each $v \in V_B$ and every direction $d \in \D$,
+  \[
+  	\dt_v \geq \sum_{m \in \mathcal{M}(B) \colon m || d, v \in m} \sum_{w \in m} \mv_{m, w}.
+  \]
+%  \item 
+%  \[
+%    \sum_{v \in V_B} \dt_v - \sum_{m \in \mathcal{M}(B)} \sum_{v \in m} \mv_{m, v} = 36.
+%  \]
+  \item For each side $S$ of $\mathcal{B}$,\todo{define sides}
+  \[
+  \sum_{v \in S} \dt_v \geq 1.
+  \]
   \end{enumerate}
+  \label{def:mip}
 \end{definition}
 
-(formulation of linear problem, with boundary conditions)
-
 \begin{lemma}
-  graph gives variable valuation
+  Let 
+$
+  \{ \dt_v \colon v \in V_B \} \cup \{ \mv_{m, d(m)} \colon m \in \mathcal{M}(B), d(m) \in m \}
+$
+  be a set of binary variables satisfying conditions 1-4 of Definition~\ref{def:mip}.
+If
+ \[
+    V = \{ v \in V_B \colon \dt_v = 1 \}
+\text{ and }
+    E = \{ e \in V_B \colon \exists_{m \in \mathcal{M}(B), v \in m} \mv_{m, v} = 1 \wedge e  \in E(m) \},
+  \]
+then $G = (V, E)$ is a Morpion 5D graph with a bounding box $\mathcal{B}$.
+Moreover, there exists a bijection $d \colon \mathcal{M}(G) \to V$ such that for each $m \in \mathcal{M}(G)$,
+$ \mv_{m, d(m)} = 1$.
+Therefore $G$ is a marked 5D graph.
 \end{lemma}
+\begin{proof}
+  We will show that
+  \begin{quote}
+  (*) if $e \in E$, then there exists a unique $m \in \mathcal{M}(B)$ and $v \in m$ such that $e \in m$ and
+    $\mv_{m, v} = 1$. 
+  \end{quote}
+  This concludes proof of (*).
+  
+  Let $e \in E$ and assume that $e \in E(m)$, $\mv_{m, v} = 1$.
+  It follows $G$ is well defined: $V \subset \bigcup E$, $V \subset \mathbb{Z}^2$
+  
+  
+  2. $\mathcal{G}$ covers $E$.
+  By the definition of $E$, if $e \in E$, then there exists a move $m \in \mathcal{M}(G)$ and vertex $v \in m$ such
+  that $\mv_{m,v} = 1$. It follows that $E(m) \subset E$, so $m \in \mathcal{M}(G)$.
+  Therefore moves of $G$ cover its edges.
+  
+  3. parallel moves in $G$ are vertex disjoint. 
+  
+  By 3, for every $m \in \mathcal{G}$, $1 \geq \sum_{w \in m} \mv_{m, w}$.
+  Therefore if $e_1, e_2 \in E$ are parallel and $v \in e_1 \cap e_2$, 
+    then there exists $m \in \mathcal{B}$ and $w \in m$ such that $\mv_{m,w} = 1$
+      and $e_1, e_2 \in E(m)$.
+   Therefore if two moves $m_1, m_2 \in \mathcal{G}$ are parallel and have non-empty intersection, then
+     $E(m_1) = E(m_2)$ so $m_1 = m_2$.
+   This shows that parallel moves in $G$ are vertex disjoint.
+  
+  4.   By 3, for every $m \in \mathcal{G}$, $1 \geq \sum_{w \in m} \mv_{m, w}$.
+    For $m \in \mathcal{G}$ let 
+      By 5D-disjointness and by the definition of $E$, 
+        if $m \in \mathcal{M}(G)$, then there exists $v \in m$ such that $\mv_{m, v} = 1$.
+
+   Let $m \in \mathcal{M}(G)$. Since $G$ is 5D-disjoint, there exists 
+  
+  It follows from 1,2, 4 that 
+  \[
+    \sum_{m \in \mathcal{B}, v \in m} \mv_{m, v} = -36  + \sum_{v \in V_B} \dt_v = -36 + \sum_{v \in \Cross} \dt_v + \sum_{v \in V_B \setminus \Cross} \dt_v =
+    \]
+    \[
+      = \sum_{v \in V_B \setminus \Cross} \sum_{m \in \mathcal{M}(B) \colon v \in m} \mv_{m, v}.
+  \]
+  Hence $\mv_{m,v} = 0$ for $v \in \Cross$.
+  
+\end{proof}
 
 \begin{lemma}
   variable valuation gives graph
