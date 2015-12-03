@@ -214,7 +214,7 @@ then $G = (V, E)$ is a Morpion 5D graph with a bounding box $\mathcal{B}$ and $G
   \end{quote}
   By the defnition of $E$, if $e \in E$, then there exists $m \in \mathcal{M}(B)$ and $v \in m$ such that
     $e \in E(m)$ and $\mv_{m, v} = 1$. If there is another pair $m' \in \mathcal{M}(B)$ and $v' \in m'$ such 
-    that $e \in E(m')$ and $\mv_{m', v'} = 1$, then $m || e || m'$ and for $w \in e$ we have
+    that $e \in E(m')$ and $\mv_{m', v'} = 1$, then $m || e || m'$ and by L4 we for $w \in e$ we have
     $1 \geq \dt_w \geq \mv_{m, v} + \mv_{m', v'} = 2$. A contradiction that shows that $m$ and $v$ are unique.
   By the definition of $E$, if $m \in \mathcal{M}(B)$ and  $\mv_{m, v} = 1$, then $E(m) \subset E$ and
     $m \in \mathcal{M}(G)$.
@@ -241,9 +241,32 @@ Assume that $d(m_1) = d(m_2) = v$. If $m_1 \neq m_2$, then by L3, $1 \geq \dt_v 
 \end{proof}
 
 \begin{lemma}
-  variable valuation gives graph
+  Let $G = (V, E)$ be a Morpion 5D graph with marking $d \colon \mathcal{M} \to V \setminus \Cross$.
+  Let
+  \[
+    \dt_v = \begin{array}{ll}
+      1 & \text{ if } v \in V \\
+      0 & \text{ otherwise }
+    \end{array}
+  \]
+  and 
+  \[
+    \mv_{m, v} = \begin{array}{ll}
+      1 & \text{ if } m \in \mathcal{M}(G) \text{ and } v = d(m) \\
+      0 & \text{ otherwise }
+    \end{array}
+  \]
+  Then the set of variables $\dt_v$, $\mv_{m, v}$ satisfies conditions of Definition~\ref{def:mip}.
 \end{lemma}
+\begin{proof}
+\end{proof}
 
+\begin{definition}
 (additional variables and constraints that force move order)
 
 (additional constraints that force center symmetry)
+\end{definition}
+
+\begin{lemma}
+  
+\end{lemma}
