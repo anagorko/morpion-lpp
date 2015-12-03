@@ -90,6 +90,7 @@ We say that the set $\mathcal{M}(G)$ of moves in $G$ \emph{covers} $E$ if
     \label{fig:85}
 \end{figure}
 
+\paragraph{Comments on the definition of Morpion 5D graphs.} 
 Figure~\ref{fig:85} contains an example of a marked Morpion 5D graph $G_{85}$. 
 Every vertex of $G_{85}$ that is not in $\Cross$ is labelled with one of the four directions. 
 For every move $m$ from $\mathcal{M}(G_{85})$ there exists exactly one vertex in $m$ 
@@ -157,20 +158,14 @@ We define a mixed integer programming problem whose solutions correspond to all 
 
 \begin{definition}  
   Let $B = (V_B, E_B)$ be a lattice graph with vertex set $V_B = \mathcal{B}$ and an edge set $E_B$
-    of all unit edges with vertices contained in $V_B$ (this is a maximal edge set for a lattice graph with set of vertices $\mathcal{B}$).
-  We define the following set of structural binary variables, that is variables assuming values $0, 1$:
-  \[
-  \{ \dt_v \colon v \in V_B \} \cup \{ \mv_{m, v} \colon m \in \mathcal{M}(B), v \in m \}
-  \]
-  
-  We put the following linear constraints.
-  
+    of all unit edges with vertices contained in $V_B$ (this is a maximal edge set for a lattice graph with set of vertices $\mathcal{B}$). Lemma \ref{lem:solutions} motivates the constraints in the following linear program. 
+ Let $ \{ \dt_v \colon v \in V_B \} \cup \{ \mv_{m, v} \colon m \in \mathcal{M}(B), v \in m \}$ be the set of structural binary variables (i.e. variables assuming values $0, 1$) with the following linear constraints.
   \begin{enumerate}
   \item  For each $v \in Cross$,
   \[
     \dt_v = 1.
   \]
-  \item For each $m \in \mathcal{M}(G)$ and each $v \in m$ such that $v \in \Cross$,
+  \item For each $m \in \mathcal{M}(B)$ and each $v \in m$ such that $v \in \Cross$,
   \[
     \mv_{m, v} = 0.
   \]
@@ -195,6 +190,7 @@ We define a mixed integer programming problem whose solutions correspond to all 
 \end{definition}
 
 \begin{lemma}
+\label{lem:solutions}
   Let $\dt_v$ and $\mv_{m, v}$ be a set of binary variables satisfying 
     conditions of Definition~\ref{def:mip}.
   If
@@ -207,7 +203,7 @@ We define a mixed integer programming problem whose solutions correspond to all 
   \]
 then $G = (V, E)$ is a Morpion 5D graph with a bounding box $\mathcal{B}$ and $G$ admits a Morpion marking.
 \end{lemma}
-\begin{proof}
+\begin{proof}  
   We will show that
   \begin{quote}
   (*) if $e \in E$, then there exists a unique $m_e \in \mathcal{M}(G)$ and $v_e \in m_e$ such that $e \in E(m_e)$ and $\mv_{m_e, v_e} = 1$. 
@@ -221,6 +217,7 @@ then $G = (V, E)$ is a Morpion 5D graph with a bounding box $\mathcal{B}$ and $G
   This concludes proof of (*).
   
   By the definition, $V \subset \mathbb{Z}^2$ and every element of $E$ is a unit edge.
+  By L1, $\Cross \subset V$.
   Let $e \in E$. By (*) there exists $m_e$ and $v_e$ such that $\mv_{m_e, v_e} = 1$ and $e \in E(m_e)$.
   If $v \in e$, then $v \in m_e$ and by L4, we have $\dt_v \geq \mv_{m_e, v_e} = 1$ and hence $v \in V$.
   Therefore $\bigcup E \subset V$ and $G = (V, E)$ is a well defined lattice graph.
@@ -244,21 +241,44 @@ Assume that $d(m_1) = d(m_2) = v$. If $m_1 \neq m_2$, then by L3, $1 \geq \dt_v 
   Let $G = (V, E)$ be a Morpion 5D graph with marking $d \colon \mathcal{M} \to V \setminus \Cross$.
   Let
   \[
-    \dt_v = \begin{array}{ll}
+    \dt_v = 
+    \left\{
+    \begin{array}{ll}
       1 & \text{ if } v \in V \\
       0 & \text{ otherwise }
     \end{array}
+    \right.
   \]
   and 
   \[
-    \mv_{m, v} = \begin{array}{ll}
+    \mv_{m, v} = 
+    \left\{
+    \begin{array}{ll}
       1 & \text{ if } m \in \mathcal{M}(G) \text{ and } v = d(m) \\
       0 & \text{ otherwise }
     \end{array}
+    \right.
   \]
   Then the set of variables $\dt_v$, $\mv_{m, v}$ satisfies conditions of Definition~\ref{def:mip}.
 \end{lemma}
 \begin{proof}
+  We verify that conditions of Definition~\ref{def:mip} are satisfied.
+  \begin{enumerate}
+  \item By the definition of a Morpion 5D graph, $\Cross \subset C$, hence $\dt_v = 1$ for $v \in \Cross$.
+  
+  \item Since $d$ is into $V \setminus \Cross$ and $\mv_{m, v} = 1$ implies $v = d(m)$, we have
+    $\mv_{m, v} = 0$ for $v \in \Cross$.
+    
+   \item If $v \in V_G \setminus \Cross$, then there exists exactly one $m \in \mathcal{M}(G)$ such that $d(m) = v$
+     as $d$ is a bijection onto $V_B \setminus \Cross$.
+   Hence  there exists exacly one move $m \in \mathcal{M}(B)$ that contains $v$,
+     such that $\mv_{m, v} = 1$ as $\mv_{m,v} = 1$ iff $m \in \mathcal{M}(G)$ and $v = d(m)$.
+   Therefore $\dt_v = 1 = \sum_{m \in \mathcal{M}(B) \colon v \in m} \mv_{m,v}$.
+  If $v \in V_B \setminus V_G$, then $\dt_v$ and and all $\mv_{m, v}$ are equal to $0$.
+  
+  \item If $v \in V_B$ and $d \in \D$, then by 5D-disjointness of $G$ there exists at most one move 
+    $m \in \mathcal{M}(G)$ such that $m || d$ and $v \in m$. For $w \in m$ we have $\mv_{m, w} = 1$ iff $w = d(m)$.
+  \end{enumerate}
 \end{proof}
 
 \begin{definition}
