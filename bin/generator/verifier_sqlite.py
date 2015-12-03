@@ -100,14 +100,14 @@ while True:
     update("r_feasible", 1)
     update("r_bound", model.ObjBound)
     update("r_time", elapsed_time)  
-    update("r_solved", True)
+    update("r_solved", 1)
     
     model.write(row_name + ".sol")
   else:
     update("r_feasible", 0)
     update("r_bound", -1.0)
     update("r_time", elapsed_time)
-    update("r_solved", True)
+    update("r_solved", 1)
 
   update("locked", 0)
   # unlock()
