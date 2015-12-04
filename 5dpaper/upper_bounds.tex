@@ -6,15 +6,26 @@
 \subsection{An upper bound of \therecord for Morpion 5D}
 \label{subsec:84}
 
-We summarize arguments which amounts to the proof of main Theorem \ref{thm:boxes}
-\begin{proof}
-We use Lemma about resizing and then Lemma about coding as linear programs. 
-\end{proof}
+% We summarize arguments which amounts to the proof of main Theorem \ref{thm:boxes}
+% \begin{proof}
+% We use Lemma about resizing and then Lemma about coding as linear programs. 
+% \end{proof}
+In order to prove Theorem \ref{thm:boxes} we apply the process described in Section \ref{sec:gemmating} to produce all bounding boxes relavent 
+to Morpion 5D game. We solve the linear problem \L{1}-L{5} specified in Definition \ref{def:mip} in all these boxes. Thanks to 
+Lemmas \ref{lem:solutions} and \ref{lem:graphs}, the solutions of linear programs are in one-to-one corespondences with existence of
+Moprion 5D graphs. This concludes the proof of Theorem \ref{thm:boxes}.
 
-In order to improve the result from $85$ to $84$ we have to consider three cases of bounding boxes which allow marked Morpion 5D graphs of size $85$. These
+
+Theorem \ref{thm:boxes} implies the upper bound of $85$ which follows from solving the optimization
+problem \L{1}-L{5} on all boxes generated in Section \ref{sec:gemmating}. 
+In order to improve the result to $84$ we have to consider three bounding boxes which admit marked Morpion 5D graphs of size $85$. These
 are specifically boxes $(4,3,1,1)$, $(4,3,1,2)$, $(4,3,1,3)$.
-On these three boards we solve a more difficult problem with the cutoff condition set to $84.9$ --- not only we require that a given solution is a 
-Morpion 5D graph, but additionally we also require that the graph is {\em acyclic}. \todo{Explain what is acyclity - covered in a Lemma}
+On these three boards %we solve a more difficult problem with the cutoff condition set to $84.9$ --- 
+not only we require that a given solution is a 
+Morpion 5D graph (conditions \L{1}-L{5}) of Definition \ref{def:mip}), but additionally we also require that the graph conforms to condition \L{7} of Definition \ref{def:mip}. 
+By Lemmas \ref{lem:solutions} and \ref{lem:graphs} this means that we try to solve the full Morpion 5D game on the bounding boxes  $(4,3,1,1)$, $(4,3,1,2)$, $(4,3,1,3)$.
+In general it does not seem to be a feasible task, but we succeeded to complete the computations with the cutoff condition of $84.9$.
+%\todo{Explain what is acyclity - covered in a Lemma}
 
 \subsection{A solution of Morpion 5D with center symmetry}
 We consider Morpion 5D positions which are invariant with respect to $8$ symmetries 
@@ -30,7 +41,7 @@ its size does not exceed the maximal size indicated in the table.
 \label{thm:sym_boxes}
 \end{theorem}
 
-The proof is analogous to the proof of Theorem \ref{thm:boxes}. 
+The proof is analogous to the proof of Theorem \ref{thm:boxes}. In the proof we additionally use the condition \L{6} of Definition \ref{def:mip}.
 
 \begin{table}[ht]
 \centering
@@ -45,9 +56,13 @@ The proof is analogous to the proof of Theorem \ref{thm:boxes}.
 The longest sequence of moves leading to a symmetric Morpion 5D position is equal to $68$.
 \end{corollary}
 \begin{proof} 
+The upper bound follows from Theorem \ref{thm:sym_boxes}.
 A record consisting of $68$ moves was found by M.~Quist and is presented in \cite{boyer}. \todo{It may be worthwhile to reproduce it and comment can it be found by a computer}
 \end{proof}
 
+We are not aware of any previous upper bounds for symmetric Morpion 5D or Morpion 5T.
+
+\ignore{
 \subsection{An upper bound of $222$ for Morpion 5T with center symmetry}
 
 In order to improve the result from $85$ to $8$ we have to consider three cases of bounding boxes which allow marked Morpion 5D graphs of size $85$. These
@@ -90,3 +105,4 @@ The longest sequence of moves leading to a symmetric Morpion 5D position does no
 \begin{remark}
 A record of 136 moves in symmetric Morpion 5T was found by M.~Quist and is presented in \cite{boyer}. We are not aware of any previous upper bounds for symmetric Morpion 5D or Morpion 5T.
 \end{remark}
+}

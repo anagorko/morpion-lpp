@@ -23,20 +23,12 @@ import sqlite3
 echo = True
 best_known_bound = 82
 
-conn = sqlite3.connect('data1.db')
+conn = sqlite3.connect('data2.db')
 conn.isolation_level = None
 cur = conn.cursor()
 
 def query():
    cur.execute("select * from cases where (not r_solved or r_solved is null) and (not r_locked or r_locked is null)")
-
-# def lock():
-#  print "lock\n"
-#  cur.execute("lock tables cases write")
-
-# def unlock():
-#  print "unlock\n"
-#  cur.execute("unlock tables")
 
 callback_interrupt = False
 
@@ -53,11 +45,9 @@ def gurobi_callback(model, where):
         model.terminate()
 
 while True:
-  # lock()
   query()
   rows = cur.fetchall()
   if not rows:
-    # unlock()
     break
   row = rows[0]
   row_name = str(row[1])
@@ -72,7 +62,6 @@ while True:
     cur.execute(query)
 
   update("r_locked", 1)
-  # unlock()
 
   start_time = time.time() * 1000.0
   
@@ -90,11 +79,9 @@ while True:
   if model.Status != GRB.OPTIMAL and model.Status != GRB.INFEASIBLE and \
           model.Status != GRB.INF_OR_UNBD and not callback_interrupt and\
           not (model.Status == GRB.CUTOFF and problem['cutoff']):
-      update("locked", 0)
+      update("r_locked", 0)
       print "Computation interrupted, terminating."
       break
-
-  # lock()
 
   if model.SolCount > 0:
     update("r_feasible", 1)
@@ -109,7 +96,4 @@ while True:
     update("r_time", elapsed_time)
     update("r_solved", 1)
 
-  update("locked", 0)
-  # unlock()
-
-db.commit()
+  update("r_locked", 0)
