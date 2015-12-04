@@ -144,15 +144,18 @@ There is no such vertex in $G_{85}$.
   \label{fig:uncon}
 \end{figure}
 
+\begin{example}
 Figure~\ref{fig:uncon} contains examples of Morpion 5D graphs.
 Neither of these graphs admit a marking.
 The graph on the left has a bounding box $(5,2,0,1)$.
 It follows from Theorem~\ref{thm:boxes} that the maximal size of a marked Morpion 5D graph with this 
-  bounding box is at most $82$\footnote{A calculation not listed in statement of Theorem~\ref{thm:boxes} shows that it is equal to $80$.}.
+  bounding box is at most $82$\footnote{A calculation not listed in statement of Theorem~\ref{thm:boxes} shows that the maximal size of a marked Morpion 5D graph
+with the bounding box $(5,2,0,1)$ is equal to $80$.}.
 The size of this graph is $94$, hence it does not admit a marking.
 The graph on the right has a connected component with five dots.
 A marking would have to be a map that assigns all of these dots to a single move.
 Therefore no marking exists for this graph.
+\end{example}
  %\todo{We have to decide either for ``unordered Morpion 5D graph'' or ``Morpion 5D graph'' --- currently we have both} %(see Section~\ref{sec:linear} for definitions an  unordered Morpion 5D graph and unmarked unordered Morpion 5D graph).
  %\todo{Define the size of such a graph - number of vertices - $36$}.
 %We will call every such graph an \emph{unordered Morpion 5T graph}. See section~\ref{sec:linear} for a formal definition.
@@ -181,9 +184,9 @@ table \ref{tbl:boundingboxes}, see Figure~\ref{fig:uncon} (left). In this specif
 
 \subsection{Definition of mixed integer programming problem}
 
-Let $\mathcal{B}$ be a box that contains $\Cross$. 
-We define a mixed integer programming problem whose solutions correspond to all Morpion 5D graphs with a bounding 
-   box $\mathcal{B}$.
+Let $\mathcal{B}$ be a box that contains the $\Cross$. 
+We define a mixed integer programming problem whose solutions correspond to all marked Morpion 5D graphs with a bounding 
+   box $\mathcal{B}$. The correspondence is formalized in Lemmas \ref{lem:solutions} and \ref{lem:graphs}.
   
 \begin{definition}  
   \label{def:mip}
@@ -191,8 +194,8 @@ We define a mixed integer programming problem whose solutions correspond to all 
  Let $ \{ \dt_v \colon v \in V_B \} \cup \{ \mv_{m, v} \colon m \in \mathcal{M}(B), v \in m \}$ be a set  binary variables (i.e. variables assuming values $0, 1$).
 \end{definition}
  
-Below we define linear constraints \L{1} - \L{7}. Every constraint is accompanied by an explanation that refers to Lemma \ref{lem:solutions}
-and a Morpion 5D graph $G$ with marking $d$ constructed in this lemma.
+Below we define linear constraints \L{1} - \L{7}. Every constraint is accompanied by an explanation that refers to 
+ a Morpion 5D graph $G$ with marking $d$ constructed in Lemma \ref{lem:solutions}.
 \paragraph*{Constraints characterizing marked Morpion 5D graphs} 
   \begin{enumerate}[label=\L{\arabic*}.]
   \item  For each $v \in \Cross$,
@@ -271,7 +274,7 @@ In this constraint we consider  continuous variables $\{ \ord_v \colon v \in V_B
  \begin{itemize}
 \item $G$ is a Morpion 5D graph with a bounding box $\mathcal{B}$ and $G$ admits a Morpion marking $d$.
 \item If additionally the variables satisfy condition \L{6}, then $G$ is center-symmetric. 
-\item If additionally the variables satisfy condition \L{7}, then $G$ is a Morpion 5D position, i.e. there is actual Morpion 5D gameplay such that $G$ is a Morpion 5D graph corresponding to this gameplay.
+\item If additionally the variables satisfy condition \L{7}, then $G$ is a Morpion 5D position, i.e. there exists an actual Morpion 5D gameplay such that $G$ is a Morpion 5D graph corresponding to this gameplay.
 \end{itemize}
 \end{lemma}
 \begin{proof}  
@@ -281,7 +284,7 @@ In this constraint we consider  continuous variables $\{ \ord_v \colon v \in V_B
   (*) if $e \in E$, then there exists a unique pair $m_e \in \mathcal{M}(G)$ and $v_e \in m_e$ such that $e \in E(m_e)$ and $\mv_{m_e, v_e} = 1$. 
   \end{quote}
   By the definition of $E$, if $e \in E$, then there exists $m \in \mathcal{M}(B)$ and $v \in m$ such that
-    $e \in E(m)$ and $\mv_{m, v} = 1$. If there is another pair $m' \in \mathcal{M}(B)$ and $v' \in m'$ such 
+    $e \in E(m)$ and $\mv_{m, v} = 1$. If there exists an another pair $m' \in \mathcal{M}(B)$ and $v' \in m'$ such 
     that $e \in E(m')$ and $\mv_{m', v'} = 1$, then $m \parallel e \parallel m'$ and by \L{4} for $w \in e$ we have
     $1 \geq \dt_w \geq \mv_{m, v} + \mv_{m', v'} = 2$. A contradiction that shows that $m$ and $v$ are unique.
   By the definition of $E$, if $m \in \mathcal{M}(B)$ and  $\mv_{m, v} = 1$, then $E(m) \subset E$. Hence
@@ -328,7 +331,7 @@ By (*), $\mv_{m_e, v_e} = 1$ and by \L{2} if $v_e \in \Cross$, then $\mv_{m_e, v
 We will show that $d$ is one-to-one. Assume that $d(m_1) = d(m_2) = v$. If $m_1 \neq m_2$, then by \L{3}, $1 \geq \dt_v \geq \mv_{m_1, v} + \mv_{m_2, v} = 2$. Hence $m_1 = m_2$ and this 
 concludes the proof that $d$ is one-to-one. % Therefore $d \colon \mathcal{M}(G) \to V_B$
 By \L{3}, the cardinality of $V_B \setminus \Cross$ is equal to the number of pairs $m, v$ such that $\mv_{m,v} = 1$, which by (*) is the number of moves in $\mathcal{M}(G)$.
-  Therefore $d$ the domain and range of $d$ are of equal cardinality, so $d$ must be a bijection. This shows that $G$ is a marked 5D graph. 
+  Therefore the domain and range of $d$ are of equal cardinality, so $d$ must be a bijection. This shows that $G$ is a marked 5D graph. 
   
 In order to check that $\mathcal{B}$ is the bounding box of $G$ we should verify that on every side of $\mathcal{B}$ there exists
 a vertex of $V$. This is guaranteed by the condition \L{5}. % there is a vertex of $G$ on each side of $\mathcal{B}$, therefore $\mathcal{B}$ is the bounding box of $G$.
@@ -359,7 +362,7 @@ and let $m=d^{-1}(v)$. Fix $w \in m, v \neq w$. We have to check that $w$ was pl
  % If $\mv_{m, v} = 0$, then condition \L{7} is essentially void (\L{7} is triggered by $\mv_{m,v} = 1$).
 By the definition of $d$ we have $\mv_{m, v} = 1$. %, then $v = d(m)$ and
 The condition \L{7} enforces that $\ord_{v} \geq \ord_w+1$. %, where $w$ is  any vertex in $m$ that is different from $d(m)$.
-  Therefore the algorithm placed $w$ earlier in the gameplay. Hence the required dot $w$ is available. % \L{7} implies that we can place moves in $G$ in order such that a vertex $d(m)$ marked by $m$ 
+  Therefore the algorithm placed $w$ earlier in the gameplay. %, so the required dot $w$ is available. % \L{7} implies that we can place moves in $G$ in order such that a vertex $d(m)$ marked by $m$ 
   %  is placed together with move $m$ in graph after all other vertices of $m$ were placed in $G$.
  % This allows us to recover a gameplay that lead to Morpion 5D graph $G$.
 \end{proof}
@@ -393,7 +396,7 @@ The condition \L{7} enforces that $\ord_{v} \geq \ord_w+1$. %, where $w$ is  any
 we define $\ord_v$ as the number of move when $v$ was placed and \L{7} is satisfied.   
 \end{lemma}
 \begin{proof}
-  We verify conditions \L{1} - \L{5} of Definition~\ref{def:mip} one by one.
+  We verify conditions \L{1} - \L{7} of Definition~\ref{def:mip}.
     
   \begin{enumerate}[label=\L{\arabic*}.]
    \item  By the definition of a Morpion 5D graph, $\Cross \subset V$, hence $\dt_v = 1$ for $v \in \Cross$.
@@ -404,14 +407,14 @@ we define $\ord_v$ as the number of move when $v$ was placed and \L{7} is satisf
    Hence  there exists exactly one move $m \in \mathcal{M}(B)$ that contains $v$,
      such that $\mv_{m, v} = 1$ as $\mv_{m,v} = 1$ iff $m \in \mathcal{M}(G)$ and $v = d(m)$.
    Therefore $\dt_v = 1 = \sum_{m \in \mathcal{M}(B) \colon v \in m} \mv_{m,v}$.
-  If $v \in V_B \setminus V_G$, then $\dt_v$ and and all $\mv_{m, v}$ are equal to $0$. 
+  If $v \in V_B \setminus V_G$, then $\dt_v$ and all $\mv_{m, v}$ are equal to $0$. 
   \item Let $v \in V_B$. If $v \not\in V$, then there is no $m \in \mathcal{M}(G)$ such that
      $d(m) = v$, hence $\dt_v$ and all $\mv_{m,v} = 0$.
      If $v \in V$ and $d \in \D$, then $\dt_v = 1$ and by 5D-disjointness of $G$ there exists
     at most one move 
     $m \in \mathcal{M}(G)$ such that $m \parallel d$ and $v \in m$. 
     For $w \in m$ we have $\mv_{m, w} = 1$ iff $w = d(m)$.
-    So the sum on the right hand side of inequality in L4 contains at most one non-zero element.
+    So the sum on the right hand side of inequality in \L{4} contains at most one non-zero element.
   \item Since $\mathcal{B}$ is the bounding box of $G$, for each side $S$ of $\mathcal{B}$ there
     exists a vertex $v \in V \cap S$. Then $\dt_v = 1$ and $\sum_{v \in S} \dt_v \geq 1$.  
   \item Let $m$ be an arbitrary $m\in \mathcal{M}(G)$ and $v=d(m)$. Then from the assumption that $G$ and $d$ are symmetric follows
