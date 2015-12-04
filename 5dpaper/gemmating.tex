@@ -129,10 +129,7 @@ The computed bound is an upper bound for Morpion 5D.
 \end{lemma}
 
 \begin{proof}
-\todo{Lemma 16 and 17 looks a bit suspicious as a pair}
-In this Lemma we specifically use information about the structure of a move in Morpion 5D. Namely, in the linear program mentioned in the procedure we require that there 
-exists a legal move of Morpion 5D crossing the boundary of the box. If it is the case, then we add $8$ new bounding boxes to the stack of unprocessed boxes. Since every
-Morpion 5D position results from extending a given position by a legal move, this guarantees that we can fit such position in one of the generated boxes. 
+  The proof follows from Lemma~\ref{lem:resizing}.
 \end{proof} 
 %  infeasible models, 
 %  algorithm pseudo-code (python ?),
