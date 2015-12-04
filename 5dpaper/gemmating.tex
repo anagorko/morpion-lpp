@@ -4,13 +4,17 @@
 \label{sec:gemmating}
 
 In this section we describe an algorithm that uses mixed integer programming problems defined
-  in Section~\ref{sec:linear} to prove an upper bound for Morpion 5D.
-The algorithm computes a set of boxes that contain all Morpion 5D \emph{positions}. 
-Then, for each box $\mathcal{B}$ from this set it computes the maximal size of a Morpion 5D \emph{graph}
-   that has bounding box $\mathcal{B}$.
-The maximal computed size is $85$, which is an upper bound for Morpion 5D.
-In the next section we describe an additional argument that allows us to lower
-  this bound to $84$.
+  in Section~\ref{sec:linear} to % prove an upper bound for Morpion 5D.
+%The algorithm computes a set of
+find a family boxes that contain all Morpion 5D \emph{positions}. In particular, as announced in Theorem \ref{thm:boxes}.\ref{thm:boxes:list},
+this algorithm shows that up to a symmetry every Morpion 5D {\em position} is contained in one of the following boxes:
+$(4, 3, 3, 3)$, $(4, 4, 3, 2)$, $(5, 3, 2, 3)$, $(4, 3, 4, 2)$, $(5, 3, 3, 2)$, $(5, 4, 2, 1)$, 
+$(6, 2, 2, 1)$, $(5, 4, 0, 2)$, $(5, 1, 4, 0)$. 
+%Then, for each box $\mathcal{B}$ from this set it computes the maximal size of a Morpion 5D \emph{graph}
+%   that has bounding box $\mathcal{B}$.
+%The maximal computed size is $85$, which is an upper bound for Morpion 5D.
+%In the next section we describe an additional argument that allows us to lower
+%  this bound to $84$.
 
 \subsection{Symmetries}
 \label{subsec:symmetries}
@@ -81,17 +85,17 @@ Even though the Lemma is obvious, its distinguishing property is that
 \begin{proof}
 Let $G$ be a Morpion 5D position and let $G_k$ be a Morpion 5D position
   obtained after first $k$ moves of the game.
-Let $B_k$ be a bounding box of $G_k$.
-Observe that $G_{k+1}$ contains one more vertex that $G_{k}$ and this vertex is at unit distance
+Let $\mathcal{B}_k$ be a bounding box of $G_k$.
+Observe that $G_{k+1}$ contains one more vertex that $G_{k}$ and this vertex is at the unit distance
   from $G_{k}$.
-Therefore either $B_{k+1}$ is equal to $B_k$ or it is resized from $B_k$.
+Therefore either $\mathcal{B}_{k+1}$ is equal to $\mathcal{B}_k$ or it is resized from $\mathcal{B}_k$.
 Take a subsequence of $B_n$ with removed duplicates as sequence $\mathcal{B}_0, \mathcal{B}_1, \ldots, \mathcal{B}_n$.
 \end{proof}
 
 \subsection{Algorithm for resizing of boxes}
 Starting from the smallest box containing the $\Cross$, we recursively generate a list of of all boxes 
   that can be resized from feasible boxes.
-By lemma~\ref{lem:resizing} this list contains all boxes that contain Morpion 5D positions.
+By Lemma~\ref{lem:resizing} this list contains all boxes that contain Morpion 5D positions.
 The recursive step is summarized in the following code.
 \begin{lstlisting}[language = Python,
   basicstyle=\ttfamily\scriptsize,keywordstyle=\color{red},backgroundcolor=\color{white}]
@@ -125,8 +129,8 @@ The computed bound is an upper bound for Morpion 5D.
 \end{lemma}
 
 \begin{proof}
-
-However, in this Lemma we specifically use information about the structure of a move in Morpion 5D. Namely, in the linear program mentioned in the procedure we specifically require that there 
+\todo{Lemma 16 and 17 looks a bit suspicious as a pair}
+In this Lemma we specifically use information about the structure of a move in Morpion 5D. Namely, in the linear program mentioned in the procedure we require that there 
 exists a legal move of Morpion 5D crossing the boundary of the box. If it is the case, then we add $8$ new bounding boxes to the stack of unprocessed boxes. Since every
 Morpion 5D position results from extending a given position by a legal move, this guarantees that we can fit such position in one of the generated boxes. 
 \end{proof} 
