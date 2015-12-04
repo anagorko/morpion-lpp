@@ -88,7 +88,7 @@ Therefore either $B_{k+1}$ is equal to $B_k$ or it is resized from $B_k$.
 Take a subsequence of $B_n$ with removed duplicates as sequence $\mathcal{B}_0, \mathcal{B}_1, \ldots, \mathcal{B}_n$.
 \end{proof}
 
-\subsection{Algorithm of resizing of boxes}
+\subsection{Algorithm for resizing of boxes}
 Starting from the smallest box containing the $\Cross$, we recursively generate a list of of all boxes 
   that can be resized from feasible boxes.
 By lemma~\ref{lem:resizing} this list contains all boxes that contain Morpion 5D positions.
@@ -129,7 +129,6 @@ The computed bound is an upper bound for Morpion 5D.
 However, in this Lemma we specifically use information about the structure of a move in Morpion 5D. Namely, in the linear program mentioned in the procedure we specifically require that there 
 exists a legal move of Morpion 5D crossing the boundary of the box. If it is the case, then we add $8$ new bounding boxes to the stack of unprocessed boxes. Since every
 Morpion 5D position results from extending a given position by a legal move, this guarantees that we can fit such position in one of the generated boxes. 
-\todo{Andrzej, please have a look at this "proof"}
 \end{proof} 
 %  infeasible models, 
 %  algorithm pseudo-code (python ?),
