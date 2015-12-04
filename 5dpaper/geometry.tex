@@ -2,7 +2,7 @@
 \label{sec:geometry}
 
 %\todo{An introductory sentence}
-In this section we collect a number of observations regarding geometric properties of Morpion Solitaire positions. 
+In this section we collect a number of observations regarding geometric properties of Morpion Solitaire positions and formulate the basic definitions as well as the main result of this paper. 
 In order to make linear computations feasible, we will limit the size of boards to rectangular ``boxes''.  In Section \ref{sec:gemmating} we explain why this is enough to solve the general problem of bounding the sequences in Morpion 5D. 
 \begin{definition}
 A box is a rectangular subset of ${\mathbb Z}^2$ bounded by $4$ edges parallel to the coordinate axes. A bounding box of a Morpion 5D position is the smallest box
@@ -29,7 +29,7 @@ Below we formulate the key theorem in this paper: %  \todo{Theorem, proved in Se
 \begin{theorem}
 \begin{enumerate}
 \item Up to symmetry every Morpion 5D graph that corresponds to a Morpion 5D position
-    is contained in one of the bounding boxes listed in table~\ref{tbl:boundingboxes}\todo{The actual table is slightly longer, there are some errors 83 -> 82}.
+    is contained in one of the bounding boxes listed in Table~\ref{tbl:boundingboxes}\todo{The actual table is slightly longer, there are some errors 83 -> 82}.
 \item For every row in the table $(a,b,c,d)$ and for every Morpion 5D graph contained in the bounding box  $(a,b,c,d)$,
 its size does not exceed the maximal size indicated in the table.
 \end{enumerate} 
@@ -64,37 +64,8 @@ In table \ref{tbl:boundingboxes} there are four bounding boxes with maximal grap
 For these we formulate mixed integer problems with additional constraints that force the graph to
   be a Morpion 5D position.
 These problems are much harder to solve, but with correct choice of solver optimization parameters we are able to show
-  that there are no solutions of these problems of size $85$. Equipped with additional defintions and lemmas in Subsection \ref{subsec:84} we add few technical 
-comments to this proof. 
+  that there are no solutions of these problems of size $85$. Equipped with additional defintions and lemmas formulated later in this paper, in Subsection \ref{subsec:84} we add some technical 
+information to this proof. 
 \end{proof}
-
-
-
-\begin{example}
-%Let us finish with a remark how . We include this example in order to 
-This example is meant to emphasize the difference between 
-actual Morpion 5D positions for which it is possible to identify all moves in a given gameplay and marked Morpion 5D graphs.
-Consider a Morpion 5D position shown on the left in Figure~\ref{fig:small}. %\todo{This servers solely the purpose of illustratiing the difference between graphs and positions, right? If so, then it is too long.}
-The diagram shows a position of a Morpion 5D gameplay.
-We observe that %such a diagram allows us to decode the move sequence 
-  \begin{itemize}
-    \item   % in the example in Figure~\ref{fig:small} 
-            there are three diffrent lines passing through dot with number $1$ and it might be not clear which line corresponds to the first move\todo{Correct the figure - it is about number 5 not number 1}, however
-    \item   the last move in this gameplay is unique; in Figure~\ref{fig:small} this is move $19$ and we can identify the whole move thanks to the fact  that dot $19$ was not used in previous moves; the rest of the moves can be decoded recursively, descending from the last move in the sequence. \footnote{This simple observation was generalized to a non-trivial algorithm which not only recovers the sequence of moves starting from the last one, but also recovers a correct numbering of moves, in particular identifies the last move \cite{demaine}.} %\todo{Maybe a footnote about Demain's generalization}
-  \end{itemize}
-For a marked Morpion 5D graphs which are not related to any Morpion 5D position, such as one in Figure \ref{fig:85}, there is no easy way to establish order of moves.
-\end{example}
-
-%Observe that some of the moves in the sequence may be interchangeable.
-%However, the set of the played moves is unique with respect to the positions of the moves.
-
-\begin{figure}
-    \includegraphics[width=0.49\textwidth]{figures/small1.pdf}
-    \includegraphics[width=0.49\textwidth]{figures/small2.pdf}
-    \caption{\label{fig:small}
-      A Morpion 5D position (left) and a corresponding unordered Morpion 5D graph (right)
-    }
-\end{figure}
-% This gives us an upper bound of $84$. \todo{formulate as a corollary}
 
 

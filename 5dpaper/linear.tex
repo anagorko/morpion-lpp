@@ -31,9 +31,8 @@ A move $m$ with a starting vertex $v \in \mathbb{Z}^2$ and direction $d \in \D$ 
 $
    m = \{ v + n \cdot d \colon n \in \{ 0, 1, 2, 3, 4 \} \}.
 $
-The set of all moves is denoted by $\mathcal{M}$.
-We say that moves are \emph{parallel} if they have the same direction.
-We let $E(m)$ denote the set $\{ \{ v + n \cdot d, v + (n+1) \cdot d \} \colon n \in \{0, 1, 2, 3 \} \}$
+The set of all moves is denoted by $\mathcal{M}$. We let $E(m)$ denote the set $\{ \{ v + n \cdot d, v + (n+1) \cdot d \} \colon n \in \{0, 1, 2, 3 \} \}$.
+We say that moves $m_1,m_2$ are \emph{parallel} if they have the same direction $d$. We use the notation $m_1 \parallel m_2$, $m_i \parallel d$.  
     We let
     $
       \mathcal{M}(G) = \{ m \in \mathcal{M} \colon E(m) \subset E \}
@@ -56,7 +55,6 @@ We let $E(m)$ denote the set $\{ \{ v + n \cdot d, v + (n+1) \cdot d \} \colon n
 \subsection{Definition of Morpion 5D graphs}
 
 Below we define a concept of a marked Morpion 5D graph, which is a lattice graph with a special marking of vertices. Every Morpion 5D position is a marked Morpion 5D graph, but as we discuss below, there are marked Morpion 5D graphs not related to any Morpion 5D position.
-
 In the following 
 four definitions  $G = (V, E)$ is a fixed graph. 
 
@@ -94,7 +92,37 @@ We say that the set $\mathcal{M}(G)$ of moves in $G$ \emph{covers} $E$ if
     \label{fig:85}
 \end{figure}
 
-\paragraph*{Comments on the definition of Morpion 5D graphs.} 
+\paragraph*{Comments on the definition of Morpion 5D graphs}
+
+
+\begin{example}
+%Let us finish with a remark how . We include this example in order to 
+This example is meant to emphasize the difference between 
+actual Morpion 5D positions for which it is possible to identify all moves in a given gameplay and marked Morpion 5D graphs.
+Consider a Morpion 5D position shown on the left in Figure~\ref{fig:small}. %\todo{This servers solely the purpose of illustratiing the difference between graphs and positions, right? If so, then it is too long.}
+The diagram shows a position of a Morpion 5D gameplay.
+We observe that %such a diagram allows us to decode the move sequence 
+  \begin{itemize}
+    \item   % in the example in Figure~\ref{fig:small} 
+            there are three diffrent lines passing through dot with number $1$ and it might be not clear which line corresponds to the first move\todo{Correct the figure - it is about number 5 not number 1}, however
+    \item   the last move in this gameplay is unique; in Figure~\ref{fig:small} this is move $19$ and we can identify the whole move thanks to the fact  that dot $19$ was not used in previous moves; the rest of the moves can be decoded recursively, descending from the last move in the sequence. \footnote{This simple observation was generalized to a non-trivial algorithm which not only recovers the sequence of moves starting from the last one, but also recovers a correct numbering of moves, in particular identifies the last move \cite{demaine}.} %\todo{Maybe a footnote about Demain's generalization}
+  \end{itemize}
+For a marked Morpion 5D graphs which are not related to any Morpion 5D position, such as one in Figure \ref{fig:85}, there is no easy way to establish order of moves.
+\end{example}
+
+%Observe that some of the moves in the sequence may be interchangeable.
+%However, the set of the played moves is unique with respect to the positions of the moves.
+
+\begin{figure}
+    \includegraphics[width=0.49\textwidth]{figures/small1.pdf}
+    \includegraphics[width=0.49\textwidth]{figures/small2.pdf}
+    \caption{\label{fig:small}
+      A Morpion 5D position (left) and a corresponding unordered Morpion 5D graph (right)
+    }
+\end{figure}
+% This gives us an upper bound of $84$. \todo{formulate as a corollary}
+ 
+\begin{example}
 Figure~\ref{fig:85} contains an example of a marked Morpion 5D graph $G_{85}$. 
 Every vertex of $G_{85}$ that is not in $\Cross$ is labelled with one of the four directions. 
 For every move $m$ from $\mathcal{M}(G_{85})$ there exists exactly one vertex in $m$ 
@@ -102,7 +130,8 @@ For every move $m$ from $\mathcal{M}(G_{85})$ there exists exactly one vertex in
 This allows us to decode the selected marking of $G_{85}$.
 The graph $G_{85}$ is not a Morpion 5D position,  because every Morpion 5D position admits the last move, characterized by the fact that the last vertex is of degree $1$ or $2$ and if it is
 of degree $2$, then the neighbours must be located on a straight line. 
-There is no such vertex in $G_{85}$
+There is no such vertex in $G_{85}$.
+\end{example}
 
 \begin{figure}
   \centering
@@ -120,7 +149,7 @@ Figure~\ref{fig:uncon} contains examples of Morpion 5D graphs.
 Neither of these graphs admit a marking.
 The graph on the left has a bounding box $(5,2,0,1)$.
 It follows from Theorem~\ref{thm:boxes} that the maximal size of a marked Morpion 5D graph with this 
-  bounding box is at most $82$ (a calculation not listed in statement of Theorem~\ref{thm:boxes} shows that it is equal to $80$).
+  bounding box is at most $82$\footnote{A calculation not listed in statement of Theorem~\ref{thm:boxes} shows that it is equal to $80$.}.
 The size of this graph is $94$, hence it does not admit a marking.
 The graph on the right has a connected component with five dots.
 A marking would have to be a map that assigns all of these dots to a single move.
@@ -158,81 +187,79 @@ We define a mixed integer programming problem whose solutions correspond to all 
    box $\mathcal{B}$.
   
 \begin{definition}  
-  Let $B = (V_B, E_B)$ be a lattice graph with a vertex set $V_B = \mathcal{B}$ and an edge set $E_B$
-    of all unit edges with vertices contained in $V_B$ (this is a maximal edge set for a lattice graph with set of vertices $\mathcal{B}$).  
- Let $ \{ \dt_v \colon v \in V_B \} \cup \{ \mv_{m, v} \colon m \in \mathcal{M}(B), v \in m \}$ be a set of structural binary variables (i.e. variables assuming values $0, 1$).
+  \label{def:mip}
+  Let $B = (V_B, E_B)$ be a lattice graph with a vertex set $V_B = \mathcal{B}$ and $E_B$ the set of all unit edges between vertices in ${\mathcal B}$. %an edge set $E_B$  of all unit edges with vertices contained in $V_B$ (this is a maximal edge set for a lattice graph with set of vertices $\mathcal{B}$).  
+ Let $ \{ \dt_v \colon v \in V_B \} \cup \{ \mv_{m, v} \colon m \in \mathcal{M}(B), v \in m \}$ be a set  binary variables (i.e. variables assuming values $0, 1$).
+\end{definition}
  
-Below we define linear constraints \L{1} - \L{7}. Every constraint is accompanied by an explanation that refers to 
-  the graph $G$ with marking $d$ constructed in Lemma \ref{lem:solutions}.
-
+Below we define linear constraints \L{1} - \L{7}. Every constraint is accompanied by an explanation that refers to Lemma \ref{lem:solutions}
+and a Morpion 5D graph $G$ with marking $d$ constructed in this lemma.
+\paragraph*{Constraints characterizing marked Morpion 5D graphs} 
   \begin{enumerate}[label=\L{\arabic*}.]
-  \item  For each $v \in Cross$,
+  \item  For each $v \in \Cross$,
   \[
     \dt_v = 1.
   \]
-\noindent{\small Constraint \L{1} enforces that vertices of $\Cross$ are vertices of $G$ (see Lemma~\ref{lem:solutions}). }
+\noindent\texttt{\small Constraint \L{1} enforces that vertices of the $\Cross$ are vertices of $G$.} % (see Lemma~\ref{lem:solutions}). }
 \vspace{1mm}
   
   \item For each $m \in \mathcal{M}(B)$ and each $v \in m$ such that $v \in \Cross$,
   \[
     \mv_{m, v} = 0.
   \]
-\noindent{\small Constraint \L{2} enforces that no vertices of $\Cross$ are marked by $d$. }
+\noindent\texttt{\small Constraint \L{2} enforces that no vertices of the $\Cross$ are marked by $d$. }
 \vspace{1mm}
 
   \item For each $v \in V_B \setminus \Cross$, 
   \[ 
     \dt_v = \sum_{m \in \mathcal{M}(B) \colon v \in m} \mv_{m, v}.
   \]
-\noindent{\small Constraint \L{3} enforces that vertices of $G$ that are not in $\Cross$ are 
-  marked by exactly one move and there are no unmarked veritces outside of the $\Cross$. }
+\noindent\texttt{\small Constraint \L{3} enforces that 1) vertices of $G$ that are not in the $\Cross$ are 
+  marked by exactly one move and 2) there are no unmarked vertices outside of the $\Cross$. }
 \vspace{1mm}
 
   \item For each $v \in V_B$ and each direction $d \in \D$,
   \[
-  	\dt_v \geq \sum_{m \in \mathcal{M}(B) \colon m || d, v \in m} \sum_{w \in m} \mv_{m, w}.
+  	\dt_v \geq \sum_{m \in \mathcal{M}(B) \colon m \parallel d, v \in m} \sum_{w \in m} \mv_{m, w}.
   \]
-\noindent{\small Constraint \L{4} enforces that parallel moves are vertex disjoint
+\noindent\texttt{\small Constraint \L{4} enforces that parallel moves are vertex disjoint
   and that  every move in $G$ is placed on vertices of the graph. }
 \vspace{1mm}
 
-  \item A \emph{side} of a box $\mathcal{B}$ is one of four sets of vertices of $\mathcal{B}$ with maximal/minimal $x$/$y$ coordinates. For each side $S$ of $\mathcal{B}$,
+  \item Each box $\mathcal{B}$ has four sides: the top, right, bottom and left edges. Each side we consider as a set of vertices and for each side $S$ of $\mathcal{B}$ we require % A \emph{side} of a box $\mathcal{B}$ is one of four sets of vertices of $\mathcal{B}$ with maximal/minimal $x$/$y$ coordinates. For each side $S$ of $\mathcal{B}$,
   \[
   \sum_{v \in S} \dt_v \geq 1.
   \]
-  \noindent{\small Constraint \L{5} enforces that $\mathcal{B}$ is the bounding box of $G$. }
-\vspace{1mm}
-
-\item For each $m \in \mathcal{M}(B)$ and every $v \in m$,
-\[
-	\mv_{m,v} = \mv_{s(m), s(v)},
-\]
-where $s(v)$, $s(m)$ denotes a vertex/move symmetric to $v$, $m$ with respect to the center of $\Cross$.
-
-\vspace{1mm}
-\noindent{\small Constraint \L{6} enforces center symmetry of $G$. }
-\vspace{1mm}
-
-  \end{enumerate}
-
-\noindent  Let $\{ \ord_v \colon v \in V_B \}$ be a set of structural continuous variables.
-
-\begin{enumerate}[label=\L{\arabic*}.]\addtocounter{enumi}{6}
-\item For every $m \in \mathcal{M}(G)$, every $w, v \in m$, $w \neq v$,
-\[
-	\ord_v \geq \ord_w + 1 - 85 (1 - \mv_{m, v}).
-\]
-\noindent{\small Constraint \L{7} enforces that moves are placed in order. }
-\vspace{1mm}
+  \noindent\texttt{\small Constraint \L{5} enforces that $\mathcal{B}$ is the bounding box of $G$. }
+%\vspace{1mm}
 \end{enumerate}
 
-  \label{def:mip}
-\end{definition}
+\paragraph*{Additional constraint for the symmetric games} 
+\begin{enumerate}[label=\L{\arabic*}.]\addtocounter{enumi}{5}
+\item For each $m \in \mathcal{M}(B)$ and every $v \in m$, if $m_s$, $v_s$ are the vertex and move symmetric to $m$, $v$ with respect to the center of the $\Cross$, then
+\[
+	\mv_{m,v} = \mv_{m_s, v_s}.
+\]
+\noindent\texttt{\small Constraint \L{6} enforces center symmetry of $G$. }
+% \vspace{1mm}
+\end{enumerate}
+
+\paragraph*{Additional constraint enforcing that $G$ is a Morpion 5D position} 
+In this constaint we consider  continuous variables $\{ \ord_v \colon v \in V_B \}$:
+\begin{enumerate}[label=\L{\arabic*}.]\addtocounter{enumi}{6}
+\item For every $m \in \mathcal{M}(B)$, every $w, v \in m$, $w \neq v$,
+\[
+	\ord_v \geq \ord_w + 1 - 121 (1 - \mv_{m, v}).
+\]
+\noindent\texttt{\small Constraint \L{7} enforces an order on the moves. }
+% \vspace{1mm}
+\end{enumerate}
+
+% \end{definition}
 
 \begin{lemma}
 \label{lem:solutions}
-  Let $\dt_v$ and $\mv_{m, v}$ be a set of binary variables defined for a box $\mathcal{B}$.
-  Assume that the variables satisfy conditions \L{1} - \L{5} of Definition~\ref{def:mip}.
+  Let ${\mathcal B}$ be a box and let $\dt_v$ and $\mv_{m, v}$ be a set of binary variables defined for~$\mathcal{B}$. Assume that the variables satisfy conditions \L{1} - \L{5} of Definition~\ref{def:mip}.
   Let
  \[
     V = \{ v \in V_B \colon \dt_v = 1 \}
@@ -241,58 +268,101 @@ where $s(v)$, $s(m)$ denotes a vertex/move symmetric to $v$, $m$ with respect to
  \[
     E = \{ e \in E_B \colon \exists_{m \in \mathcal{M}(B)} \exists_{v \in m} \mv_{m, v} = 1 \wedge e  \in E(m) \},
   \]
-  and $G = (V, E)$.
- Then $G$ is a Morpion 5D graph with a bounding box $\mathcal{B}$ and $G$ admits a Morpion marking $d$.
-
- If additionally the variables satisfy additionally condition \L{7}, then $G$ is a Morpion 5D position, i.e. there is actual Morpion 5D gameplay such that $G$ is a Morpion 5D graph corresponding to this gameplay.
-
- If additionally the variables satisfy condition \L{6}, then $G$ is center-symmetric. 
+  and $G = (V, E)$. Then
+ \begin{itemize}
+\item $G$ is a Morpion 5D graph with a bounding box $\mathcal{B}$ and $G$ admits a Morpion marking $d$.
+\item If additionally the variables satisfy condition \L{6}, then $G$ is center-symmetric. 
+\item If additionally the variables satisfy condition \L{7}, then $G$ is a Morpion 5D position, i.e. there is actual Morpion 5D gameplay such that $G$ is a Morpion 5D graph corresponding to this gameplay.
+\end{itemize}
 \end{lemma}
 \begin{proof}  
+ Assume that the variables satisfy conditions \L{1} - \L{5}.
   We will show that
   \begin{quote}
-  (*) if $e \in E$, then there exists a unique $m_e \in \mathcal{M}(G)$ and $v_e \in m_e$ such that $e \in E(m_e)$ and $\mv_{m_e, v_e} = 1$. 
+  (*) if $e \in E$, then there exists a unique pair $m_e \in \mathcal{M}(G)$ and $v_e \in m_e$ such that $e \in E(m_e)$ and $\mv_{m_e, v_e} = 1$. 
   \end{quote}
   By the defnition of $E$, if $e \in E$, then there exists $m \in \mathcal{M}(B)$ and $v \in m$ such that
     $e \in E(m)$ and $\mv_{m, v} = 1$. If there is another pair $m' \in \mathcal{M}(B)$ and $v' \in m'$ such 
-    that $e \in E(m')$ and $\mv_{m', v'} = 1$, then $m || e || m'$ and by \L{4} for $w \in e$ we have
+    that $e \in E(m')$ and $\mv_{m', v'} = 1$, then $m \parallel e \parallel m'$ and by \L{4} for $w \in e$ we have
     $1 \geq \dt_w \geq \mv_{m, v} + \mv_{m', v'} = 2$. A contradiction that shows that $m$ and $v$ are unique.
-  By the definition of $E$, if $m \in \mathcal{M}(B)$ and  $\mv_{m, v} = 1$, then $E(m) \subset E$ and
+  By the definition of $E$, if $m \in \mathcal{M}(B)$ and  $\mv_{m, v} = 1$, then $E(m) \subset E$. Hence
     $m \in \mathcal{M}(G)$.
-  This concludes proof of (*).
-  
-  By the definition, $V \subset \mathbb{Z}^2$ and every element of $E$ is a unit edge.
-  By \L{1}, $\Cross \subset V$.
+  This concludes the proof of (*).
+
+  We need to check $G = (V, E)$ is a lattice graph.
+  By the definition of $V$ and $E$, we have $V \subset \mathbb{Z}^2$ and every element of $E$ is a unit edge, hence it remains 
+to check that for every edge its ends are vertices in $V$.
   Let $e \in E$. By (*) there exists $m_e$ and $v_e$ such that $\mv_{m_e, v_e} = 1$ and $e \in E(m_e)$.
-  If $v \in e$, then $v \in m_e$ and by \L{4}, we have $\dt_v \geq \mv_{m_e, v_e} = 1$ and hence $v \in V$.
-  Therefore $\bigcup E \subset V$ and $G = (V, E)$ is a well defined lattice graph.
+  If $v \in e$, then $v \in m_e$ and by \L{4}, we have $\dt_v \geq \mv_{m_e, v_e} = 1$. Hence from the definition of $V$ we have
+$v \in V$. This concludes the proof that 
+%  Therefore $\bigcup E \subset V$ and 
+$G = (V, E)$ is a well defined lattice graph.
   
-  From (*) for every $e \in E$, $e \in E(m_e)$. Hence the set of moves in $G$ covers the set of edges $E$.
-  Assume that $e_1, e_2 \in E$ are parallel and $v \in e_1 \cap e_2$.
-  By \L{4}, if $m_{e_1} \neq m_{e_2}$, then $1 \geq \dt_v \geq \mv_{m_{e_1}, v_{e_1}} 
-  	+ \mv_{m_{e_2}, v_{e_2}} = 2$.
-  Therefore $m_{e_1} = m_{e_2} = m$ and $e_1, e_2 \in E(m)$.
-   Therefore if two moves $m_1, m_2 \in \mathcal{G}$ are parallel and have non-empty intersection, then
-     $E(m_1) = E(m_2)$ so $m_1 = m_2$.
-   This shows that parallel moves in $G$ are vertex disjoint. Hence $G$ is 5D-disjoint.
+In order to check that $G$ is a Morpion 5D graph we have to verify that $\Cross \subset V$, ${\mathcal M}(G)$ covers E
+and ${\mathcal M}(G)$ is 5D-disjoint.
+
+Let us notice, that by \L{1}, $\Cross \subset V$. Moreover, from (*) for every $e \in E$ it holds that $e \in E(m_e)$. 
+Hence the set of moves in $G$ covers the set of edges $E$.
+
+It remains to check that ${\mathcal M}(G)$ is 5D-disjoint. 
+  Assume that $e_1, e_2 \in E$ are parallel and $v \in e_1 \cap e_2$. We claim that $m_{e_1} = m_{e_2}$.
+  By \L{4} and (*), if $m_{e_1} \neq m_{e_2}$, then $1 \geq \dt_v \geq \mv_{m_{e_1}, v_{e_1}} 
+  	+ \mv_{m_{e_2}, v_{e_2}} = 2$, a contradiction. 
+%  Therefore $m_{e_1} = m_{e_2} = m$ and $e_1, e_2 \in E(m)$.
+Assume that two moves $m_1, m_2 \in \mathcal{G}$ are parallel, have non-empty intersection and $m_1 \neq m_2$. Then 
+  $E(m_1) \cup E(m_2)$ contains at least five distinct edges $e_1, e_2, \ldots e_5$ such that $e_{i}$ intersects $e_{i+1}$.
+Then for each $i$, $m_{e_i} = m_{e_{i+1}}$. Let $m = m_{e_i}$. We have $e_i \in E(m_{e_i}) = E(m)$, which contradicts
+  the fact that $E(m)$ has four edges. Therefore parallel moves in $\mathcal{M}(G)$ are either equal or have empty intersection.
+%there are two parallel edges $e_1\in E(m_1)$ and $ e_2 \in E(m_2)$ and a 
+%common vertex $v \in e_1 \cap e_2$. From (*) we conclude that $m_i = m_{e_i}$ for $i=1,2$ and from the above reasoning $m_1 = m_{e_1} = m_{e_2} = m_2$.  
+%     $E(m_1) = E(m_2)$ so $m_1 = m_2$.
+%This shows that parallel moves in $G$ are vertex disjoint. 
+Hence $\mathcal{M}(G)$ is 5D-disjoint. This concludes the proof that $G$ is a Morpion 5D graph.
   
-  By 5D-disjointness, if $e \in m \in \mathcal{M}(G)$, then $m = m_e$. Let $d \colon \mathcal{M}(G) \to V_B$ be a map defined by the formula $d(m) = v_e$. By (*), $\mv_{m_e, v_e} = 1$ and by \L{2} if $v_e \in \Cross$, then $\mv_{m_e, v_e} = 0$, hence $v_e  \in V_B \setminus \Cross$ and $d$ is into $V_B \setminus \Cross$.
-Assume that $d(m_1) = d(m_2) = v$. If $m_1 \neq m_2$, then by \L{3}, $1 \geq \dt_v \geq \mv_{m_1, v} + \mv_{m_2, v} = 2$. It follows that $m_1 = m_2$. Therefore $d \colon \mathcal{M}(G) \to V_B$ is one-to-one.
-  By \L{3}, the cardinality of $V_B \setminus \Cross$ is equal to the number of pairs $m, v$ such that $\mv_{m,v} = 1$, which by (*) is the number of moves in $\mathcal{M}(G)$.
-  Therefore $d$ is a bijection and $G$ is a marked 5D graph. 
+
+Now we will prove that $G$ is a marked Morpion 5D graph.
+  By 5D-disjointness, if $m \in \mathcal{M}(G)$ and $e$ is an arbitrary edge in $E(m)$, then $m = m_e$, that is the choice of $m_e$ and $v_e$ in (*) does not depend on $e$. 
+Let $d \colon \mathcal{M}(G) \to V_B$ be a map defined by the formula $d(m) = v_e$. 
+
+By (*), $\mv_{m_e, v_e} = 1$ and by \L{2} if $v_e \in \Cross$, then $\mv_{m_e, v_e} = 0$, hence $v_e  \in V_B \setminus \Cross$. This proves that $d$ is into $V_B \setminus \Cross$.
+
+We will show that $d$ is one-to-one. Assume that $d(m_1) = d(m_2) = v$. If $m_1 \neq m_2$, then by \L{3}, $1 \geq \dt_v \geq \mv_{m_1, v} + \mv_{m_2, v} = 2$. Hence $m_1 = m_2$ and this 
+concludes the proof that $d$ is one-to-one. % Therefore $d \colon \mathcal{M}(G) \to V_B$
+By \L{3}, the cardinality of $V_B \setminus \Cross$ is equal to the number of pairs $m, v$ such that $\mv_{m,v} = 1$, which by (*) is the number of moves in $\mathcal{M}(G)$.
+  Therefore $d$ the domain and range of $d$ are of equal cardinality, so $d$ must be a bijection. This shows that $G$ is a marked 5D graph. 
   
-  By \L{5}, there is a vertex of $G$ on each side of $\mathcal{B}$, therefore $\mathcal{B}$ is the bounding box of $G$.
+In order to check that $\mathcal{B}$ is the bounding box of $G$ we should verify that on every side of $\mathcal{B}$ there exists
+a vertex of $V$. This is guaranteed by the condition \L{5}. % there is a vertex of $G$ on each side of $\mathcal{B}$, therefore $\mathcal{B}$ is the bounding box of $G$.
   
   If values of variables $\mv$ are symmetric, then graph $G$ is symmetric, hence \L{6} enforces a center symmetry of $G$.
   
-  If we assume \L{7}, then each vertex $v \in V_G \setminus \Cross$ has assigned order variable $\ord_v$.
-  Let $m \in \mathcal{M}(G)$ and let $v, w \in m, v \neq w$.
-  If $\mv_{m, v} = 0$, then condition \L{7} is essentially void (\L{7} is triggered by $\mv_{m,v} = 1$).
-  If $\mv_{m, v} = 1$, then $v = d(m)$ and \L{7} enforces that $\ord_{d(m)} \geq \ord_w$, where $w$ is 
-    any vertex in $m$ that is different from $d(m)$.
-  Therefore \L{7} implies that we can place moves in $G$ in order such that a vertex $d(m)$ marked by $m$ 
-    is placed together with move $m$ in graph after all other vertices of $m$ were placed in $G$.
-  This allows us to recover a gameplay that lead to Morpion 5D graph $G$.
+  If we assume \L{7}, then each vertex $v \in V_G \setminus \Cross$ has assigned order variable $\ord_v$. We will show 
+a Morpion 5D gameplay which leads to the graph $G$. 
+\begin{lstlisting}[escapeinside={(*}{*)},language = Python,
+  basicstyle=\ttfamily\small,keywordstyle=\color{red},backgroundcolor=\color{white}]
+(*$S$*) :=  (*$V_G \setminus \Cross$*)
+while (*$S\neq\emptyset$*)
+   select (*$v\in S$*) with the minimal (*$\ord_v$*)
+   place (*$v$*)  
+   draw the move (*$d^{-1}(v)$*)
+   (*$S$*) := (*$S\setminus \{v\}$*) 
+\end{lstlisting}
+We have to verify the following four properties of this gameplay. 
+\begin{enumerate}[label=(\arabic*)]
+\item Every dot is placed on a place which is not occupied by another dot.  
+\item Parallel moves are disjoint. 
+\item The resulting Morpion 5D position is equal to $G$. 
+\item Every move is placed only when required dots are available. 
+\end{enumerate}
+Conditions (1)-(3) follows from the previous reasoning. Let us verify the last condition. Let $v\in V_G \setminus \Cross$
+and let $m=d^{-1}(v)$. Fix $w \in m, v \neq w$. We have to check that $w$ was placed before $v$.
+ % Let $m \in \mathcal{M}(G)$  
+ % If $\mv_{m, v} = 0$, then condition \L{7} is essentially void (\L{7} is triggered by $\mv_{m,v} = 1$).
+By the definition of $d$ we have $\mv_{m, v} = 1$. %, then $v = d(m)$ and
+The condition \L{7} enforces that $\ord_{v} \geq \ord_w+1$. %, where $w$ is  any vertex in $m$ that is different from $d(m)$.
+  Therefore the algorithm placed $w$ earlier in the gameplay. Hence the required dot $w$ is available. % \L{7} implies that we can place moves in $G$ in order such that a vertex $d(m)$ marked by $m$ 
+  %  is placed together with move $m$ in graph after all other vertices of $m$ were placed in $G$.
+ % This allows us to recover a gameplay that lead to Morpion 5D graph $G$.
 \end{proof}
 
 \begin{lemma}
@@ -319,6 +389,8 @@ Assume that $d(m_1) = d(m_2) = v$. If $m_1 \neq m_2$, then by \L{3}, $1 \geq \dt
     \right.
   \]
   Then the set of variables $\dt_v$, $\mv_{m, v}$ satisfies conditions \L{1} - \L{5} of Definition~\ref{def:mip}.
+  Moreover, if $G$ with a marking $d$ is symmetric, then the condition \L{6} is satisfied. If $G$ is a Morpion 5D position, then
+we define $\ord_v$ as the number of move when $v$ was placed and \L{7} is satisfied.   
 \end{lemma}
 \begin{proof}
   We verify conditions \L{1} - \L{5} of Definition~\ref{def:mip} one by one.
@@ -327,23 +399,26 @@ Assume that $d(m_1) = d(m_2) = v$. If $m_1 \neq m_2$, then by \L{3}, $1 \geq \dt
    \item  By the definition of a Morpion 5D graph, $\Cross \subset V$, hence $\dt_v = 1$ for $v \in \Cross$.
   \item Since $d$ is into $V \setminus \Cross$ and $\mv_{m, v} = 1$ implies $v = d(m)$, we have
     $\mv_{m, v} = 0$ for $v \in \Cross$.
-    
-   \item If $v \in V \setminus \Cross$, then there exists exactly one $m \in \mathcal{M}(G)$ such that $d(m) = v$
+  \item If $v \in V \setminus \Cross$, then there exists exactly one $m \in \mathcal{M}(G)$ such that $d(m) = v$
      as $d$ is a bijection onto $V \setminus \Cross$.
    Hence  there exists exacly one move $m \in \mathcal{M}(B)$ that contains $v$,
      such that $\mv_{m, v} = 1$ as $\mv_{m,v} = 1$ iff $m \in \mathcal{M}(G)$ and $v = d(m)$.
    Therefore $\dt_v = 1 = \sum_{m \in \mathcal{M}(B) \colon v \in m} \mv_{m,v}$.
-  If $v \in V_B \setminus V_G$, then $\dt_v$ and and all $\mv_{m, v}$ are equal to $0$.
-  
+  If $v \in V_B \setminus V_G$, then $\dt_v$ and and all $\mv_{m, v}$ are equal to $0$. 
   \item Let $v \in V_B$. If $v \not\in V$, then there is no $m \in \mathcal{M}(G)$ such that
      $d(m) = v$, hence $\dt_v$ and all $\mv_{m,v} = 0$.
      If $v \in V$ and $d \in \D$, then $\dt_v = 1$ and by 5D-disjointness of $G$ there exists
     at most one move 
-    $m \in \mathcal{M}(G)$ such that $m || d$ and $v \in m$. 
+    $m \in \mathcal{M}(G)$ such that $m \parallel d$ and $v \in m$. 
     For $w \in m$ we have $\mv_{m, w} = 1$ iff $w = d(m)$.
     So the sum on the right hand side of inequality in L4 contains at most one non-zero element.
-    
   \item Since $\mathcal{B}$ is the bounding box of $G$, for each side $S$ of $\mathcal{B}$ there
-    exists a vertex $v \in V \cap S$. Then $\dt_v = 1$ and $\sum_{v \in S} \dt_v \geq 1$.
+    exists a vertex $v \in V \cap S$. Then $\dt_v = 1$ and $\sum_{v \in S} \dt_v \geq 1$.  
+  \item Let $m$ be an arbitrary $m\in \mathcal{M}(G)$ and $v=d(m)$. Then from the assumption that $G$ and $d$ are symmetric follows
+that $v_s=d(m_s)$.
+  \item  By \cite{japonczycy} the longest sequence in Morpion 5D does
+not exceed 121, so the numbers in $\ord_v$ are from $0$ to at most $120$. If $\mv_{m, v} = 0$, then condition \L{7} is essentially void (\L{7} is triggered by $\mv_{m,v} = 1$).
+ If $\mv_{m, v} = 1$ then in the gameplay there was a move $m$ which placed the dot $v$. This implies that for every $w\in m$, $w\neq v$, $w$ was placed before $v$. Hence
+$\ord_v \geq \ord_w+1$ and \L{7} is satisfied. 
   \end{enumerate}
 \end{proof}
