@@ -1,7 +1,9 @@
-all: small1.pdf small2.pdf empty.pdf 85.pdf 94.pdf uncon.pdf uncon_small.pdf uncon_big.pdf uncon_corrected.pdf
+all: small1.pdf small2.pdf empty.pdf 85.pdf 94.pdf uncon.pdf uncon_small.pdf uncon_big.pdf uncon_corrected.pdf rules.pdf
 	# Done
 %.pdf: %.tex
 	pdflatex $<
+rules.tex: rules.psol ../psol2tikz.py
+	../psol2tikz.py rules.psol > rules.tex
 small1.tex: small.psol ../psol2tikz.py
 	../psol2tikz.py small.psol > small1.tex
 small2.tex: small.psol ../psol2tikz.py
