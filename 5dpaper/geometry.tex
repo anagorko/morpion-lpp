@@ -1,3 +1,5 @@
+% !TEX root = morpion5d.tex
+
 \section{Geometry of Morpion Solitaire positions}
 \label{sec:geometry}
 
@@ -24,27 +26,32 @@ For graph depicted in Figure~\ref{fig:85} the distance from top edge of the cros
 The bounding box of the position in Figure~\ref{fig:85} is described as $(3,4,1,1)$.
 \end{notation*}
   
-  
+\begin{table}[ht]
+\centering
+\input{table.tex} 
+
+\caption{Bounding boxes mentioned in Theorem \ref{thm:boxes} that bound Morpion 5D graphs of sizes $85$, $84$ and $83$. }
+\label{tbl:boundingboxes}
+\end{table}
+
 Below we formulate the key theorem in this paper: %  \todo{Theorem, proved in Section 4, why is it important}
 \begin{theorem}
 \begin{enumerate}
-\item Up to symmetry every Morpion 5D graph that corresponds to a Morpion 5D position
-    is contained in one of the bounding boxes listed in Table~\ref{tbl:boundingboxes}\todo{The actual table is slightly longer, there are some errors 83 -> 82}.
-\item For every row in the table $(a,b,c,d)$ and for every Morpion 5D graph contained in the bounding box  $(a,b,c,d)$,
-its size does not exceed the maximal size indicated in the table.
+\item Up to symmetry every Morpion 5D {\bf position} is contained in one of the following boxes:
+$(4, 3, 3, 3)$, $(4, 4, 3, 2)$, $(5, 3, 2, 3)$, $(4, 3, 4, 2)$, $(5, 3, 3, 2)$, $(5, 4, 2, 1)$, 
+$(6, 2, 2, 1)$, $(5, 4, 0, 2)$, $(5, 1, 4, 0)$.
+\item Every box contained in one of the boxes listed in 1, with the exception of boxes $(6, 2, 2, 0)$ 
+  and $(6, 0, 2, 0)$, is a bounding box of a Morpion 5D {\bf graph}.
+\item For each box $\mathcal{B}$ described in 2, the size of a maximal Morpion 5D graph with bounding box $\mathcal{B}$ does not exceed $85$.
+  Bounding boxes that admit Morpion 5D graphs of sizes greater than $82$ are listed 
+    in Table~\ref{tbl:boundingboxes}. 
+% All other boxes described in 2 are bounding boxes of graphs with size at most $82$.
 \end{enumerate} 
 \label{thm:boxes}
 \end{theorem}
 We will present a proof of this theorem in the next three sections. 
 In Section \ref{sec:linear} we precisely define the notion of a Morpion 5D graph. Intuitively, Morpion 5D graphs are obtained from Morpion 5D positions by forgetting about the order in which the moves were played.
 
-\begin{table}[ht]
-\centering
-\input{table.tex} 
-
-\caption{Bounding boxes mentioned in Theorem \ref{thm:boxes} for sizes $85$, $84$ and $83$. }
-\label{tbl:boundingboxes}
-\end{table}
 
 %We will consider a class of graphs that are obtained from Morpion 5D positions by forgetting about 
 %  the order in which the moves were played. %\todo{Definition of an unordered Morpion 5D graph}
