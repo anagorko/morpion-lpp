@@ -39,12 +39,12 @@ In analogy to Theorem \ref{thm:boxes} we can formulate
 $(4, 2, 4, 2)$ or box $(3, 3, 3, 3)$.
 \item Every box contained in one of the boxes $(4, 2, 4, 2)$, $(3, 3, 3, 3)$ is a bounding box of a symmetric Morpion 5D {\em graph}.
 \item For each box described in $2$, the size of a maximal Morpion 5D graph is $76$ for boxes $(2, 1, 2, 1), (2, 2, 2, 2)$; $74$ for boxes $(4,2,4,2)$, $(4,1,4,1)$, $(3,2,3,2)$, $(3,1,3,1)$; $72$ for boxes $(1,1,1,1)$, $(1,0,1,0)$.
-\item For each box described in $3$, the size of a maximal Morpion 5D position is $68$.
+\item For each box described in $3$, the size of a maximal Morpion 5D position is $68$. \label{thm:sym_boxes:four}
 \end{enumerate} 
 \label{thm:sym_boxes}
 \end{theorem}
 
-The proof is analogous to the proof of Theorem \ref{thm:boxes}. In the proof we additionally use the condition \L{6} of Definition \ref{def:mip}. To prove 4, we use the condition \L{7}.
+The proof is analogous to the proof of Theorem \ref{thm:boxes}. In the proof we additionally use the condition \L{6} of Definition \ref{def:mip}. To prove Theorem \ref{thm:sym_boxes}.\ref{thm:sym_boxes:four}, we use the condition \L{7}. In order to speed up computations we used an additional optimization: instead of solving the game on boxes, we solve it on slightly smaller octagons. This generates more cases, because we resize octagons in $8$ and not $4$ directions. However, the size of octagons is growing slower, hence the problems are easier to solve.  
 
 \begin{corollary}
 \label{cor:68}
