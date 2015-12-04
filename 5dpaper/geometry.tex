@@ -30,26 +30,26 @@ The bounding box of the position in Figure~\ref{fig:85} is described as $(3,4,1,
 \centering
 \input{table.tex} 
 
-\caption{Bounding boxes mentioned in Theorem \ref{thm:boxes} that bound Morpion 5D graphs of sizes $85$, $84$ and $83$. }
+\caption{Bounding boxes mentioned in Theorem \ref{thm:boxes}.\ref{thm:boxes:list} that admit Morpion 5D graphs of sizes $85$, $84$ and $83$. }
 \label{tbl:boundingboxes}
 \end{table}
 
 Below we formulate the key theorem in this paper: %  \todo{Theorem, proved in Section 4, why is it important}
 \begin{theorem}
 \begin{enumerate}
-\item Up to symmetry every Morpion 5D {\bf position} is contained in one of the following boxes:
+\item Up to symmetry every Morpion 5D {\em position} is contained in one of the following boxes:
 $(4, 3, 3, 3)$, $(4, 4, 3, 2)$, $(5, 3, 2, 3)$, $(4, 3, 4, 2)$, $(5, 3, 3, 2)$, $(5, 4, 2, 1)$, 
-$(6, 2, 2, 1)$, $(5, 4, 0, 2)$, $(5, 1, 4, 0)$.
-\item Every box contained in one of the boxes listed in 1, with the exception of boxes $(6, 2, 2, 0)$ 
-  and $(6, 0, 2, 0)$, is a bounding box of a Morpion 5D {\bf graph}.
-\item For each box $\mathcal{B}$ described in 2, the size of a maximal Morpion 5D graph with bounding box $\mathcal{B}$ does not exceed $85$.
+$(6, 2, 2, 1)$, $(5, 4, 0, 2)$, $(5, 1, 4, 0)$. \label{thm:boxes:list}
+\item Every box contained in one of the nine boxes listed in 1, with the exception of boxes $(6, 2, 2, 0)$ 
+  and $(6, 0, 2, 0)$, is a bounding box of a Morpion 5D {\em graph}.
+\item For each box $\mathcal{B}$ described in 2, the size of a maximal Morpion 5D graph with the bounding box $\mathcal{B}$ does not exceed $85$.
   Bounding boxes that admit Morpion 5D graphs of sizes greater than $82$ are listed 
     in Table~\ref{tbl:boundingboxes}. 
 % All other boxes described in 2 are bounding boxes of graphs with size at most $82$.
 \end{enumerate} 
 \label{thm:boxes}
 \end{theorem}
-We will present a proof of this theorem in the next three sections. 
+We will present a proof of this theorem in the next three sections with a summary of the argument in Subsection \ref{subsec:84}. 
 In Section \ref{sec:linear} we precisely define the notion of a Morpion 5D graph. Intuitively, Morpion 5D graphs are obtained from Morpion 5D positions by forgetting about the order in which the moves were played.
 
 
@@ -67,12 +67,10 @@ In Section \ref{sec:linear} we precisely define the notion of a Morpion 5D graph
 The longest sequence of moves in Morpion 5D does not exceed $84$.
 \end{corollary}
 \begin{proof} 
-In table \ref{tbl:boundingboxes} there are four bounding boxes with maximal graphs of size $85$. 
+In Table \ref{tbl:boundingboxes} there are four bounding boxes with maximal graphs of size $85$. 
 For these we formulate mixed integer problems with additional constraints that force the graph to
   be a Morpion 5D position.
 These problems are much harder to solve, but with correct choice of solver optimization parameters we are able to show
   that there are no solutions of these problems of size $85$. Equipped with additional definitions and lemmas formulated later in this paper, in Subsection \ref{subsec:84} we add some technical 
 information to this proof. 
 \end{proof}
-
-
