@@ -76,7 +76,7 @@ We say that the set $\mathcal{M}(G)$ of moves in $G$ \emph{covers} $E$ if
 \begin{definition}
   A lattice graph $G$ is a \emph{Morpion 5D graph} if $\Cross \subset V$,
     $\mathcal{M}(G)$ covers $E$ and $\mathcal{M}(G)$ is 5D-disjoint.
-  If $d$ is a selected Morpion marking of $G$, then we say that $G$ togther with $d$ is 
+  If $d$ is a selected Morpion marking of $G$, then we say that $G$ together with $d$ is 
     a \emph{marked Morpion 5D graph}.
   The \emph{size} of Morpion 5D graph  is defined as the number of vertices minus $36$, that is minus the number of vertices in the \Cross.
  \end{definition}
@@ -103,7 +103,7 @@ Consider a Morpion 5D position shown on the left in Figure~\ref{fig:small}. %\to
 The diagram shows a position of a Morpion 5D gameplay.
 We observe that %such a diagram allows us to decode the move sequence 
   \begin{itemize}
-    \item   there are three diffrent lines passing through dot with number $1$ and it might be not clear which line corresponds to the first move, however
+    \item   there are three different lines passing through dot with number $1$ and it might be not clear which line corresponds to the first move, however
     \item   the last move in this gameplay is unique; in Figure~\ref{fig:small} this is move $19$ and we can identify the whole move thanks to the fact  that dot $19$ was not used in previous moves; the rest of the moves can be decoded recursively, descending from the last move in the sequence. \footnote{This simple observation was generalized to a non-trivial algorithm which not only recovers the sequence of moves starting from the last one, but also recovers a correct numbering of moves, in particular identifies the last move \cite{demaine}.} %\todo{Maybe a footnote about Demain's generalization}
   \end{itemize}
 For a marked Morpion 5D graphs which are not related to any Morpion 5D position, such as one in Figure \ref{fig:85}, there is no easy way to establish order of moves.
@@ -244,7 +244,7 @@ and a Morpion 5D graph $G$ with marking $d$ constructed in this lemma.
 \end{enumerate}
 
 \paragraph*{Additional constraint enforcing that $G$ is a Morpion 5D position} 
-In this constaint we consider  continuous variables $\{ \ord_v \colon v \in V_B \}$:
+In this constraint we consider  continuous variables $\{ \ord_v \colon v \in V_B \}$:
 \begin{enumerate}[label=\L{\arabic*}.]\addtocounter{enumi}{6}
 \item For every $m \in \mathcal{M}(B)$, every $w, v \in m$, $w \neq v$,
 \[
@@ -280,7 +280,7 @@ In this constaint we consider  continuous variables $\{ \ord_v \colon v \in V_B 
   \begin{quote}
   (*) if $e \in E$, then there exists a unique pair $m_e \in \mathcal{M}(G)$ and $v_e \in m_e$ such that $e \in E(m_e)$ and $\mv_{m_e, v_e} = 1$. 
   \end{quote}
-  By the defnition of $E$, if $e \in E$, then there exists $m \in \mathcal{M}(B)$ and $v \in m$ such that
+  By the definition of $E$, if $e \in E$, then there exists $m \in \mathcal{M}(B)$ and $v \in m$ such that
     $e \in E(m)$ and $\mv_{m, v} = 1$. If there is another pair $m' \in \mathcal{M}(B)$ and $v' \in m'$ such 
     that $e \in E(m')$ and $\mv_{m', v'} = 1$, then $m \parallel e \parallel m'$ and by \L{4} for $w \in e$ we have
     $1 \geq \dt_w \geq \mv_{m, v} + \mv_{m', v'} = 2$. A contradiction that shows that $m$ and $v$ are unique.
@@ -401,7 +401,7 @@ we define $\ord_v$ as the number of move when $v$ was placed and \L{7} is satisf
     $\mv_{m, v} = 0$ for $v \in \Cross$.
   \item If $v \in V \setminus \Cross$, then there exists exactly one $m \in \mathcal{M}(G)$ such that $d(m) = v$
      as $d$ is a bijection onto $V \setminus \Cross$.
-   Hence  there exists exacly one move $m \in \mathcal{M}(B)$ that contains $v$,
+   Hence  there exists exactly one move $m \in \mathcal{M}(B)$ that contains $v$,
      such that $\mv_{m, v} = 1$ as $\mv_{m,v} = 1$ iff $m \in \mathcal{M}(G)$ and $v = d(m)$.
    Therefore $\dt_v = 1 = \sum_{m \in \mathcal{M}(B) \colon v \in m} \mv_{m,v}$.
   If $v \in V_B \setminus V_G$, then $\dt_v$ and and all $\mv_{m, v}$ are equal to $0$. 
