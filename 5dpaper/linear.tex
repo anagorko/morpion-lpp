@@ -87,7 +87,7 @@ We say that the set $\mathcal{M}(G)$ of moves in $G$ \emph{covers} $E$ if
     \centering
     \includegraphics[width=0.592\textwidth]{figures/85_box.pdf}
      \caption{
-     A marked Morpion 5D graph $G_{85}$ of size $85$ with its bounding box.
+     A marked Morpion 5D graph $G_{85}$ of size $85$ with its bounding box $(3,4,1,1)$.
 	}
     \label{fig:85}
 \end{figure}
@@ -149,8 +149,8 @@ Figure~\ref{fig:uncon} contains examples of Morpion 5D graphs.
 Neither of these graphs admit a marking.
 The graph on the left has a bounding box $(5,2,0,1)$.
 It follows from Theorem~\ref{thm:boxes} that the maximal size of a marked Morpion 5D graph with this 
-  bounding box is at most $82$\footnote{A calculation not listed in statement of Theorem~\ref{thm:boxes} shows that the maximal size of a marked Morpion 5D graph
-with the bounding box $(5,2,0,1)$ is equal to $80$.}.
+  bounding box is\footnote{A calculation not listed in statement of Theorem~\ref{thm:boxes} shows that the maximal size of a marked Morpion 5D graph
+with the bounding box $(5,2,0,1)$ is equal to $80$.} at most $82$.
 The size of this graph is $94$, hence it does not admit a marking.
 The graph on the right has a connected component with five dots.
 A marking would have to be a map that assigns all of these dots to a single move.
@@ -369,7 +369,7 @@ The condition \L{7} enforces that $\ord_{v} \geq \ord_w+1$. %, where $w$ is  any
 
 \begin{lemma}
   \label{lem:graphs}
-  Let $G = (V, E)$ be a Morpion 5D graph with marking $d \colon \mathcal{M} \to V \setminus \Cross$
+  Let $G = (V, E)$ be a Morpion 5D graph with marking $d \colon \mathcal{M}(G) \to V \setminus \Cross$
   and a bounding box $\mathcal{B}$.
   Let
   \[

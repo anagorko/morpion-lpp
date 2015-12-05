@@ -51,7 +51,7 @@ By Lemma~\ref{lem:solutions}, solutions of mixed integer programming problem
   box $\mathcal{B}$.
 Let
   \[
-    \operatorname{Obj} = \sum_{m \in \mathcal{B}} \sum_{v \in m} \mv_{m, v}
+    \operatorname{Obj} = \sum_{m \in \mathcal{M}(\mathcal{B})} \sum_{v \in m} \mv_{m, v}
   \]
 be an objective function for this problem. The value of $\operatorname{Obj}$ is equal to the number
  of moves in the   Morpion 5D graph corresponding to the solution, i.e. it is equal to the size of this graph.
@@ -76,7 +76,7 @@ If $\mathcal{B}$ is a bounding box of a Morpion 5D position, then there exists a
   feasible
   boxes $\mathcal{B}_0, \mathcal{B}_1, \ldots, \mathcal{B}_n$ such that
   $\mathcal{B}_0 = (0,0,0,0)$, $\mathcal{B}_n = \mathcal{B}$ and 
-  $\mathcal{B}_{i+1}$ is resized from $\mathcal{B}_{i}$.
+  $\mathcal{B}_{k+1}$ is resized from $\mathcal{B}_{k}$.
 \end{lemma}
 
 Even though the Lemma is obvious, its distinguishing property is that
@@ -85,11 +85,11 @@ Even though the Lemma is obvious, its distinguishing property is that
 \begin{proof}
 Let $G$ be a Morpion 5D position and let $G_k$ be a Morpion 5D position
   obtained after first $k$ moves of the game.
-Let $\mathcal{B}_k$ be a bounding box of $G_k$.
-Observe that $G_{k+1}$ contains one more vertex that $G_{k}$ and this vertex is at the unit distance
+Let $\widetilde{\mathcal{B}}_k$ be a bounding box of $G_k$.
+Observe that $G_{k+1}$ contains one more vertex than $G_{k}$ and this vertex is at the unit distance
   from $G_{k}$.
-Therefore either $\mathcal{B}_{k+1}$ is equal to $\mathcal{B}_k$ or it is resized from $\mathcal{B}_k$.
-Take a subsequence of $B_n$ with removed duplicates as sequence $\mathcal{B}_0, \mathcal{B}_1, \ldots, \mathcal{B}_n$.
+Therefore either $\widetilde{\mathcal{B}}_{k+1}$ is equal to $\widetilde{\mathcal{B}}_k$ or it is resized from $\widetilde{\mathcal{B}}_k$.
+Take a subsequence of $\widetilde{\mathcal{B}}_n$ with removed duplicates as the sequence $\mathcal{B}_0, \mathcal{B}_1, \ldots, \mathcal{B}_n$.
 \end{proof}
 
 \subsection{Algorithm for resizing of boxes}
