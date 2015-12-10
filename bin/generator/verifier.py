@@ -25,15 +25,19 @@ def gurobi_callback(model, where):
 # a typical larger instance 
 # os.system("./generator -o 5_4_2_4.lp  -p --exact -w 40 -h 40 --halfplanes 38 0 34 0 26 0 34 0 -v 5D --rhull --potential")
 # a fast instance
-os.system("./generator -o 4_2_0_2.lp  -p --exact -w 40 -h 40 --halfplanes 26 0 34 0 26 0 18 0 -v 5D --rhull --potential")
+# os.system("./generator -o 4_2_0_2.lp  -p --exact -w 40 -h 40 --halfplanes 26 0 34 0 26 0 18 0 -v 5D --rhull --potential")
+# a big instance
+os.system("./generator -o 4_4_4_2.lp  -p --exact -w 40 -h 40 --halfplanes 34 0 34 0 26 0 34 0 -v 5D --rhull --potential")
 
 
 callback_interrupt = False
 # a typical larger instance 
 # model = read("5_4_2_4.lp")
 # a fast instance
-model = read("4_2_0_2.lp")
+# model = read("4_2_0_2.lp")
+# a big instance
+model = read("4_4_4_2.lp")
 
-model.params.threads = 1
+model.params.threads = 4
 model.params.MIPfocus = 3
 model.optimize(gurobi_callback)
