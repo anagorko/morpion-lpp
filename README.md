@@ -1,4 +1,9 @@
-The code and this README applies to two papers: [An upper bound of 84 for Morpion Solitaire 5D ](http://duch.mimuw.edu.pl/~henrykm/lib/exe/fetch.php?media=morpion5d.pdf) and ["485 - a new upper bound for Morpion Solitaire"](http://www.mimuw.edu.pl/~henrykm/lib/exe/fetch.php?media=upper-bound-morpion.pdf) by Henryk Michalewski, Andrzej Nagórko and Jakub Pawlewicz.
+# Papers
+
+The code and this README applies to two papers  by Henryk Michalewski, Andrzej Nagórko and Jakub Pawlewicz:
+
+1. [An upper bound of 84 for Morpion Solitaire 5D ](http://duch.mimuw.edu.pl/~henrykm/lib/exe/fetch.php?media=morpion5d.pdf) and 
+2. [485 - a new upper bound for Morpion Solitaire](http://www.mimuw.edu.pl/~henrykm/lib/exe/fetch.php?media=upper-bound-morpion.pdf)
 
 
 # First steps with the repository
@@ -50,8 +55,9 @@ life much easier when it comes to verification of the main result). Here is summ
 
 
 The total computation time for 291 problems amounted to less than 3000 hours on a single core of a Linux computer equipped with
-Intel Xeon 5620 @ 2.4 Ghz and 24 GB of RAM. Computations were performed with Gurobi 6.05 and Gurobi 6.5 optimizers. We 
-currently recalculate all results with Gurobi 6.5 with approximately half of the computation time spent on 20 most difficult instances listed in the table. 
+Intel Xeon 5620 @ 2.4 Ghz and 24 GB of RAM.  Approximately half of the computation time was spent on 20 most difficult instances listed in the table.  Computations were performed with Gurobi 6.05 and Gurobi 6.5 optimizers. We 
+currently recalculate all results with Gurobi 6.5. 
+
 
 The data in the table can be used for verification of results stated in [our paper on Morpion Solitaire 5D ](http://duch.mimuw.edu.pl/~henrykm/lib/exe/fetch.php?media=morpion5d.pdf). Let us consider a specific instances, namely the box [5,4,2,4] listed in row 18 of the table and an easy instance [4,2,0,2] not listed in this table which computes in under
 60 seconds. 
