@@ -1,34 +1,38 @@
 #!/usr/bin/python
+import MySQLdb
 import os
 import sys
 from gurobipy import *
 import time
 import math
-import sqlite3
-
-""" 
- First create a database
-
-   sqlite3 data?.db
-
- Then inside of the database perform the following 
-
-   sqlite>  create table cases(problem_id, problem, command, r_time, r_solved, r_locked, r_feasible, r_bound);
-   sqlite> .separator "\t"
-   sqlite> .import data?.csv cases  
-
- It may be useful to install a browser extension to browse the current state of the database
-""" 
 
 echo = True
 best_known_bound = 82
 
-conn = sqlite3.connect('data1.db')
-conn.isolation_level = None
-cur = conn.cursor()
+#db = MySQLdb.connect(host="127.0.0.1", # your host, usually localhost
+#                     user="morpion", # your username
+#                     passwd="morpion", # your password
+#                     db="morpion_gemmate",
+#                     port=8889) # name of the data base
+
+db = MySQLdb.connect(host="127.0.0.1", # your host, usually localhost
+                     user="henrykm", # your username
+                     passwd="MumigMyppEb4", # your password
+                     db="henrykm",
+                     port=9870) # name of the data base
+
+# you must create a Cursor object. It will let
+# you execute all the queries you need
+cur = db.cursor() 
 
 def query():
-   cur.execute("select * from cases where (not r_solved or r_solved is null) and (not r_locked or r_locked is null)")
+   cur.execute("select * from tree where (not solved or solved is null) and (not locked or locked is null) order by e_bound desc")
+
+def lock():
+  cur.execute("lock tables tree write")
+
+def unlock():
+  cur.execute("unlock tables")
 
 callback_interrupt = False
 
@@ -45,32 +49,31 @@ def gurobi_callback(model, where):
         model.terminate()
 
 while True:
+  lock()
   query()
   rows = cur.fetchall()
   if not rows:
+    unlock()
     break
   row = rows[0]
-  row_name = str(row[1])
-  row_name = row_name.replace("[","")
-  row_name = row_name.replace("]","")
-  row_name = row_name.replace(", ","_")
 
   def update(colname, value, echo = False):
-    query = "UPDATE cases SET " + colname + "=" + str(value) + " WHERE problem_id = '"+str(row[0] + "'")
+    query = "UPDATE tree SET " + colname + "=" + str(value) + " WHERE problem_id = '"+str(row[1] + "'")
     if echo:
       print query
     cur.execute(query)
 
-  update("r_locked", 1)
+  update("locked", 1)
+  unlock()
 
   start_time = time.time() * 1000.0
   
-  print "./generator -o " + row_name + ".lp " + str(row[2])
-  os.system("./generator -o " + row_name + ".lp " + str(row[2]))
+  os.system("./generator -o " + str(row[1]) + ".lp " + str(row[2]))
 
   callback_interrupt = False
-  model = read(row_name + ".lp")
+  model = read(str(row[1]) + ".lp")
   model.params.threads = 1
+#  model.params.MIPfocus = row[5]
   model.params.MIPfocus = 3
   model.optimize(gurobi_callback)
 
@@ -79,21 +82,26 @@ while True:
   if model.Status != GRB.OPTIMAL and model.Status != GRB.INFEASIBLE and \
           model.Status != GRB.INF_OR_UNBD and not callback_interrupt and\
           not (model.Status == GRB.CUTOFF and problem['cutoff']):
-      update("r_locked", 0)
+      update("locked", 0)
       print "Computation interrupted, terminating."
       break
+
+  lock()
 
   if model.SolCount > 0:
     update("r_feasible", 1)
     update("r_bound", model.ObjBound)
     update("r_time", elapsed_time)  
-    update("r_solved", 1)
+    update("solved", True)
     
-    model.write(row_name + ".sol")
+    model.write(str(row[1]) + ".sol")
   else:
     update("r_feasible", 0)
     update("r_bound", -1.0)
     update("r_time", elapsed_time)
-    update("r_solved", 1)
+    update("solved", True)
 
-  update("r_locked", 0)
+  update("locked", 0)
+  unlock()
+
+db.commit()
