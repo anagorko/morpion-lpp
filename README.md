@@ -28,7 +28,7 @@ The main computation in this paper is performed in two steps:
 2. on each box we solve a respective linear program described in the paper. 
 
 These two steps are done simultaneously, but for the sake of presentation consider this as a two step procedure (this makes
-life much easier when it comes to verification of the main result). Here is summary of 12 most time consuming computations
+life much easier when it comes to verification of the main result). Here is summary of 20 most time consuming computations
 
 | box 	| parameters passed to the generator 	| time in ms 	|
 |:------------:	|:---------------------------------------------------------------------------------:	|------------------------	|
