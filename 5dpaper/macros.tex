@@ -7,11 +7,14 @@
 \usepackage{xspace}
 \usepackage{float}
 \usepackage{comment}
+\usepackage{listings}
 
 %%%% Packages needed by Matteo
 \usepackage[all]{xy}
 \usepackage{stmaryrd}
 \usepackage{amssymb}
+\let\proof\relax     % so amsmath ok about redefining proof
+\let\endproof\relax  % so amsmath ok about redefining proof
 \usepackage{amsmath}
 \usepackage{verbatim}
 
@@ -116,7 +119,7 @@
 %\usepackage[english]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
-%\usepackage{amsthm}
+\usepackage{amsthm}
 \usepackage{amsmath}
 \usepackage[colorinlistoftodos]{todonotes}
 

@@ -1,4 +1,4 @@
-all: small1.pdf small2.pdf empty.pdf 85.pdf 94.pdf uncon.pdf uncon_small.pdf uncon_big.pdf uncon_corrected.pdf rules.pdf
+all: small1.pdf small2.pdf empty.pdf 85.pdf 85_box.pdf 94.pdf uncon.pdf uncon_small.pdf uncon_big.pdf uncon_corrected.pdf rules.pdf
 	# Done
 %.pdf: %.tex
 	pdflatex $<

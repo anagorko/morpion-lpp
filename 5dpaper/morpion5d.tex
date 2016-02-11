@@ -1,45 +1,37 @@
-\documentclass[a4paper,UKenglish]{lipics}
-%This is a template for producing LIPIcs articles. 
-%See lipics-manual.pdf for further information.
-%for A4 paper format use option "a4paper", for US-letter use option "letterpaper"
-%for british hyphenation rules use option "UKenglish", for american hyphenation rules use option "USenglish"
-% for section-numbered lemmas etc., use "numberwithinsect"
- 
-\usepackage{microtype}%if unwanted, comment out or use option "draft"
+\documentclass{llncs}
+\usepackage{fullpage}
 \usepackage{graphicx}
 \usepackage{enumerate}
 \usepackage{fixltx2e}
 
 \input{macros}
 
-% Author macros::begin %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\title{{An upper bound of 84 for Morpion Solitaire 5D}}%\footnote{This work was partially supported by someone.}}
+\usepackage{breakurl}
+
+\def\ourttl{An upper bound of 84 for Morpion Solitaire 5D}
+
+% PDFMARK for TeX and GhostScript
+% Uncomment and complete the following for
+% metadata if your paper is typeset using TeX and
+% GhostScript (e.g if you use .ps or .eps files in your paper):
+\special{! /pdfmark where
+{pop} {userdict /pdfmark /cleartomark load put} ifelse
+[ /Author (Henryk Michalewski, Andrzej Nagórko, Jakub Pawlewicz)
+/Title (\ourttl)
+/Subject (Input the Proceedings Title Here)
+/Keywords (Input your paper’s keywords here)
+/DOCINFO pdfmark
+}
+
+\setcounter{secnumdepth}{2}
+
+\title{\ourttl}
 \titlerunning{A Morpion 5D bound} %optional, in case that the title is too long; the running title should fit into the top page column
-
-\author[1]{Henryk Michalewski}
-\author[1]{Andrzej Nagórko}
-\author[1]{Jakub Pawlewicz}
-\affil[1]{Department of Mathematics, Informatics and Mechanics\\ University of Warsaw\\ \{H.Michalewski,A.Nagorko,J.Pawlewicz\}@mimuw.edu.pl} %\\ \texttt{open@dummyuni.org}}
-\authorrunning{H. Michalewski, A. Nagórko and J. Pawlewicz} %mandatory. First: Use abbreviated first/middle names. Second (only in severe cases): Use first author plus 'et. al.'
-
-\Copyright{Henryk Michalewski, Andrzej Nagórko and Jakub Pawlewicz}%mandatory, please use full first names. LIPIcs license is "CC-BY";  http://creativecommons.org/licenses/by/3.0/
-
-\subjclass{Dummy classification -- please refer to \url{http://www.acm.org/about/class/ccs98-html}}% mandatory: Please choose ACM 1998 classifications from http://www.acm.org/about/class/ccs98-html . E.g., cite as "F.1.1 Models of Computation". 
-\keywords{Morpion, linear optimization, relaxation}% mandatory: Please provide 1-5 keywords
-% Author macros::end %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%Editor-only macros:: begin (do not touch as author)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\serieslogo{}%please provide filename (without suffix)
-\volumeinfo%(easychair interface)
-  {Billy Editor and Bill Editors}% editors
-  {2}% number of editors: 1, 2, ....
-  {Conference title on which this volume is based on}% event
-  {1}% volume
-  {1}% issue
-  {1}% starting page number
-\EventShortName{}
-\DOI{10.4230/LIPIcs.xxx.yyy.p}% to be completed by the volume editor
-% Editor-only macros::end %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\author{Henryk Michalewski\inst{1} \and Andrzej Nagórko\inst{1} \and Jakub Pawlewicz\inst{1}}
+\institute{Department of Mathematics, Informatics and Mechanics\\ University of Warsaw\\
+\email{\{H.Michalewski,A.Nagorko,J.Pawlewicz\}@mimuw.edu.pl}}
+\authorrunning{H. Michalewski, A. Nagórko and J. Pawlewicz}
+\date{}
 
 \begin{document}
 
