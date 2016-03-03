@@ -21,7 +21,7 @@ LPP* PotentialLPP::getLPP()
     
     // each dot is a structural variable
 
-    for (const Dot& d: b.getDotList()) {
+    for (Dot d: b.getDotList()) {
         std::string v_name = "dot_" + to_string(d);
 
         if (!b.hasDot(d)) {
@@ -31,7 +31,20 @@ LPP* PotentialLPP::getLPP()
         // dots are the only boolean variables        
         if (getFlag("exact")) {
             setVariableBoolean(v_name, true);
-            setVariableOrd(v_name, 1);
+            if (b.infeasibleDot(d + Dot(1,0)) ||
+                b.infeasibleDot(d + Dot(1,1)) ||
+                b.infeasibleDot(d + Dot(0,1)) ||
+                b.infeasibleDot(d + Dot(1,-1)) ||
+                b.infeasibleDot(d + Dot(0,-1)) ||
+                b.infeasibleDot(d + Dot(-1,-1)) ||
+                b.infeasibleDot(d + Dot(-1,0)) ||
+                b.infeasibleDot(d + Dot(-1,1))) 
+            {
+                Dot n = d - b.getCRef();
+                setVariableOrd(v_name, 1 + abs(n.x) + abs(n.y));
+            } else {            
+                setVariableOrd(v_name, -1);
+            }
         }
 
         // dots that are placed on board have dot variable equal to 1
@@ -51,6 +64,8 @@ LPP* PotentialLPP::getLPP()
     //   (3) sum of weights of dots - sum of weights of moves <= 36
 
     // (1)
+
+    // L4
     
     for (const Segment& s: b.getSegmentList()) {
         Constraint c;
@@ -64,7 +79,23 @@ LPP* PotentialLPP::getLPP()
         c.setBound(0.0);
         addConstraint(c);        
     }
+
+    // L3
     
+    for (const Dot& d: b.getDotList()) {
+        if (b.hasDot(d)) continue;
+        
+        Constraint c;
+        c.setName("L3_" + to_string(d));
+        c.addVariable("dot_" + to_string(d), 1.0f);
+        for (const Move& m: b.getMovesPlacingDot(d)) {
+            c.addVariable(to_string(m), -1.0f);
+        }
+        c.setBound(0.0f);
+        c.setType(Constraint::EQ);
+        addConstraint(c);
+    }
+/*          
     // (2)
     
     for (const Dot &d: b.getDotList()) {
@@ -81,7 +112,9 @@ LPP* PotentialLPP::getLPP()
         c.setType(Constraint::EQ);
         addConstraint(c);
     }
-    
+*/
+
+/*    
     // (3)
 
     {
@@ -99,11 +132,12 @@ LPP* PotentialLPP::getLPP()
     addConstraint(c);
     
     }
+*/
 
     // dots that are not placed have dot_ variable equal to 0
     // this is important for --hull option
     // use this not only for dot-acyclic problems
-    
+/*    
     for (const Dot& d: b.getDotList())
     {
         if (b.hasDot(d)) continue;
@@ -121,7 +155,7 @@ LPP* PotentialLPP::getLPP()
         c.setBound(0.0);
         addConstraint(c);                    
     }
-
+*/
     // Constraints that enforce that the board (if it is an octagon) is 
     // the convex hull of the solution
 
@@ -210,7 +244,7 @@ LPP* PotentialLPP::getLPP()
                     
                     if (b.infeasibleDot(b.centerSymmetry(Dot(x,y)))) continue;
                     
-                    c.setName("ordsym_");
+                    c.setName("ordsym_"+to_string(Dot(x,y)));
                     c.addVariable("ord_" + to_string(Dot(x,y)), 1.0);
                     c.addVariable("ord_" + to_string(b.centerSymmetry(Dot(x,y))), -1.0);
                     c.setType(Constraint::EQ);
