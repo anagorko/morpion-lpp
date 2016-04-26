@@ -8,6 +8,7 @@ generator = "../../build/generator/generator"
 parser = argparse.ArgumentParser()
 parser.add_argument('--db', help='directory where the problems are stored', action='store', default='hard_cases/')
 parser.add_argument('--problem', help='number of the problem', type=int, default=-1)
+parser.add_argument('--ord', help='use branch priorities', action='store_true')
 #parser.add_argument('--status', action='store_true')
 args = parser.parse_args()
 
@@ -83,10 +84,10 @@ if cur.fetchone() is None:
     print "\033[1m... preparation done.\033[0m"
     print ""
     
-if args.status:
-    print "--status not implemented."
+#if args.status:
+#    print "--status not implemented."
     # FIXME
-    pass
+#    pass
 
 cur.close()
 conn.close()
