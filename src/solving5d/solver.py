@@ -8,7 +8,7 @@ generator = "../../build/generator/generator"
 parser = argparse.ArgumentParser()
 parser.add_argument('--db', help='directory where the problems are stored', action='store', default='hard_cases/')
 parser.add_argument('--problem', help='number of the problem', type=int, default=-1)
-parser.add_argument('--status', action='store_true')
+#parser.add_argument('--status', action='store_true')
 args = parser.parse_args()
 
 print "\033[1;34mSolver for the hard cases of Morpion 5D\033[0m"
@@ -84,7 +84,8 @@ if cur.fetchone() is None:
     print ""
     
 if args.status:
-    # print status of the computation TODO
+    print "--status not implemented."
+    # FIXME
     pass
 
 cur.close()
