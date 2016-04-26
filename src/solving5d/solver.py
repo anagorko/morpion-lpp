@@ -128,6 +128,8 @@ while True:
     filename = problem[1]
     model = read(directory + '/' + filename + '.lp')
     model.params.LogFile = directory + '/' + filename + '.log'
+    if args.ord:
+        model.read(directory + '/' + filename + '.lp.ord')
     model.params.Threads = 1
     model.params.MIPFocus = 3
     model.params.Cutoff = 82.9
