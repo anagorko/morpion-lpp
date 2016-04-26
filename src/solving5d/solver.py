@@ -9,6 +9,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--db', help='directory where the problems are stored', action='store', default='hard_cases/')
 parser.add_argument('--problem', help='number of the problem', type=int, default=-1)
 parser.add_argument('--ord', help='use branch priorities', action='store_true')
+parser.add_argument('--threads', help='number of the problem', type=int, default=1)
 #parser.add_argument('--status', action='store_true')
 args = parser.parse_args()
 
@@ -130,7 +131,7 @@ while True:
     model.params.LogFile = directory + '/' + filename + '.log'
     if args.ord:
         model.read(directory + '/' + filename + '.lp.ord')
-    model.params.Threads = 1
+    model.params.Threads = args.threads
     model.params.MIPFocus = 3
     model.params.Cutoff = 82.9
     
