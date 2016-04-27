@@ -69,7 +69,7 @@ if cur.fetchone() is None:
         box = str(problem[1])
         halfplanes = '%d 0 %d 0 %d 0 %d 0' % (problem[1][0] * 4 + 18, problem[1][1] * 4 + 18,
             problem[1][2] * 4 + 18, problem[1][3] * 4 + 18)
-        parameters = ' -w 40 -h 40 --halfplanes ' + halfplanes + ' -v 5d --exact --dot-acyclic --potential -o ' + directory + '/' + filename + '.lp --ord'
+        parameters = ' -w 40 -h 40 --rhull --halfplanes ' + halfplanes + ' -v 5d --exact --dot-acyclic --potential -o ' + directory + '/' + filename + '.lp --ord'
 
         cur.execute("INSERT into problems VALUES (%d, '%s', '%s', '%s', NULL, 0, NULL, NULL, NULL)" % (problem_id, filename, box, parameters))        
 
