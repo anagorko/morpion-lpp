@@ -1,0 +1,53 @@
+\begin{figure}[H]
+%\begin{minipage}[l]{0.45\textwidth}
+%\begin{center}
+\centering
+\begin{tikzpicture}[scale=0.25]
+\tikzstyle{every node}=[draw,%
+			circle,%
+			fill,%
+			minimum size  = 0.5*\unitsize,%
+			node distance = \unitsize] 
+\begin{scope}[shift={(-18,-3)}]
+ \morpion 
+\end{scope}
+\begin{scope}[shift={(-22,0)},scale=1.1]
+    \draw[red,thick] (10,20) -- (20,10);           
+    \node(v1) at (17,17) [draw,fill=green,inner sep=1pt] {$v_i$}; 
+    \draw[color=black] (17,0) edge[line width=2.7pt,dotted] (v1);    
+    \draw[color=black] (0,17) edge[line width=2.7pt,dotted] (v1); 
+	\node(u1) at (17,8) [draw,fill=green,inner sep=1pt] {$u_i$};     
+    \node(v) at (13,13) [draw,fill=green,inner sep=1pt] {$\ $}; 
+
+    \draw[color=black] (u1) edge[line width=2.7pt,->] ($(u1)+(0,3.3)$);
+    \draw[color=black] (v1) edge[line width=2.7pt,->] ($(v1)+(0,-3.3)$);
+   \draw[color=black] (v) edge[line width=2.7pt] (v1); 
+\end{scope}
+%\end{tikzpicture}
+%\end{minipage}%
+%\hfill
+%\begin{minipage{r}{0.45\textwidth}
+%\begin{tikzpicture}[scale=0.3]
+%\tikzstyle{every node}=[draw,%
+%			circle,%
+%			fill,%
+%			minimum size  = 0.5*\unitsize,%
+%			node distance = \unitsize] 
+\begin{scope}[shift={(9,-3)}]
+\morpion
+\end{scope}
+\begin{scope}[shift={(5,0)},scale=1.1]
+\draw[red,thick] (10,20) -- (20,10);                        
+%\begin{scope}[shift={(0,0)},scale=1]    
+    \node(v1) at (17,17) [draw,fill=green,inner sep=1pt] {$v_i$}; 
+    \draw[color=black] (17,0) edge[line width=2.7pt,dotted] (v1);    
+    \draw[color=black] (0,17) edge[line width=2.7pt,dotted] (v1);   
+    \node(v) at (13,13) [draw,fill=green,inner sep=1pt] {$\ $}; 
+   \draw[color=black] (v) edge[line width=2.7pt] (v1);
+\end{scope}
+\end{tikzpicture}
+%\end{minipage}
+\caption{Two cases appearing in the analysis of the corners. The figure on the left relates to Case I and the figure on the right to Case II. }
+\label{fig:corner}
+%\end{center}
+\end{figure}

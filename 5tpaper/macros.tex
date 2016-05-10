@@ -1,0 +1,302 @@
+\usepackage{array}
+\usepackage{epsfig}
+\usepackage[all]{xy}
+\usepackage{enumerate}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{xspace}
+\usepackage{float}
+
+%%%% Packages needed by Matteo
+\usepackage[all]{xy}
+\usepackage{stmaryrd}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{verbatim}
+
+
+%%%% End of Packages needed by Matteo
+
+\newcommand{\fun}[3]{\ensuremath{#1\colon #2 \to #3}}
+\newcommand{\parfun}[3]{\ensuremath{#1\colon #2 \rightharpoonup #3}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+% The record
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\therecord}{{$485$}\ }
+\newcommand{\theoctagons}{{$126912$}\ }
+\newcommand{\theinstances}{{$42889$}\ }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+% The biblatex requirements 
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage[backend=bibtex]{biblatex}
+\bibliography{games.bib}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+% Stuff needed for pictures
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{tikz}
+\usepackage{xifthen}
+\usepackage{intcalc}
+\usetikzlibrary{calc}
+\usetikzlibrary{arrows}
+\usepackage{pgfplots}
+\usepackage{wrapfig}
+\usepackage[font={scriptsize,it}]{caption}
+\usepackage{cutwin}
+%\usepackage{picins}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+% Added for the sake of internal 
+% references
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{enumitem, hyperref}
+\makeatletter
+\def\namedlabel#1#2{\begingroup
+    #2%
+    \def\@currentlabel{#2}%
+    \phantomsection\label{#1}\endgroup
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+% Added to have a sane enumeration 
+% of conditions in Lemma 4 (o1)-(o8)
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{mathtools} 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+% Commands needed by Andrzej
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+%\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage[colorinlistoftodos]{todonotes}
+
+
+\numberwithin{equation}{section}
+
+%\newtheorem{theorem}{Theorem}[section]
+%\newtheorem{lemma}[theorem]{Lemma}
+%\newtheorem{corollary}[theorem]{Corollary}
+%\newtheorem{proposition}[theorem]{Proposition}
+%\newtheorem{conjecture}[theorem]{Conjecture}
+%\newtheorem*{theorem*}{Theorem}
+
+%\theoremstyle{definition}
+%\newtheorem*{definition}{Definition}
+%\newtheorem{example}[theorem]{Example}
+\newtheorem{xca}[theorem]{Exercise}
+
+%\theoremstyle{remark}
+%\newtheorem{remark}[theorem]{Remark}
+%\newtheorem{question}[theorem]{Question}
+%\newtheorem*{remark*}{Remark}
+\newtheorem{convention}[theorem]{Convention}
+
+\DeclareMathOperator{\hull}{hull}
+\DeclareMathOperator{\external}{ex}
+\DeclareMathOperator{\modifier}{modifier}
+\DeclareMathOperator{\internal}{int}
+\DeclareMathOperator{\gap}{gap}
+\DeclareMathOperator{\param}{param}
+\DeclareMathOperator{\bd}{\partial}
+\DeclareMathOperator{\pot}{potential}
+\DeclareMathOperator{\dt}{dot}
+\DeclareMathOperator{\move}{mv}
+\DeclareMathOperator{\obj}{obj}
+\DeclareMathOperator{\oct}{octagon}
+
+
+\renewcommand{\comment}[1]{}
+
+
+\newcommand {\nat}{\mathbb{N}}
+\newcommand {\scc}{\mathsf{scc}}
+\newcommand {\ord}{\mathsf{ORD}}
+\newcommand {\un}{\mathsf{un}}
+\newcommand {\head}{\mathsf{head}}
+\newcommand {\tail}{\mathsf{tail}}
+\newcommand {\ad}{\mathsf{ad}}
+\newcommand {\sub}{\mathsf{sub}}
+\newcommand {\dom}{\mathsf{dom}}
+\newcommand {\rank}{\mathsf{rank}\xspace}
+\newcommand {\red}{\mathsf{red}}
+\newcommand {\LGA}{\mathsf{LGA}}
+\newcommand {\WAA}{\mathsf{WAA}}
+\newcommand {\SAA}{\mathsf{SAA}}
+\newcommand {\mybox}{\textrm{{\scriptsize $\,\Box\,$}}}
+\newcommand {\R}{${\mathcal R}$}
+\newcommand {\RR}{{\mathcal R}}
+\newcommand {\C}{${\mathcal C}$}
+\newcommand {\BC}{\mathsf{BC}}
+
+
+\newcommand{\dotcup}{\ensuremath{\mathaccent\cdot\cup}}
+
+
+% Letters and numbers
+
+\newcommand{\mathromnum}[1]{\ensuremath{\mathrm{#1}}\xspace}
+
+\newcommand{\rI}{\mathromnum{I}}
+\newcommand{\rII}{\mathromnum{II}}
+\newcommand{\rIII}{\mathromnum{III}}
+\newcommand{\rIV}{\mathromnum{IV}}
+\newcommand{\rV}{\mathromnum{V}}
+
+\newcommand{\mathcalsym}[1]{\ensuremath{\mathcal{#1}}\xspace}
+
+\newcommand{\Aa}{\mathcalsym{A}}
+\newcommand{\Bb}{\mathcalsym{B}}
+\newcommand{\Cc}{\mathcalsym{C}}
+\newcommand{\Dd}{\mathcalsym{D}}
+\newcommand{\Ee}{\mathcalsym{E}}
+\newcommand{\Ff}{\mathcalsym{F}}
+\newcommand{\Gg}{\mathcalsym{G}}
+\newcommand{\Hh}{\mathcalsym{H}}
+\newcommand{\Ii}{\mathcalsym{I}}
+\newcommand{\Jj}{\mathcalsym{J}}
+\newcommand{\Kk}{\mathcalsym{K}}
+\newcommand{\Ll}{\mathcalsym{L}}
+\newcommand{\Mm}{\mathcalsym{M}}
+\newcommand{\Nn}{\mathcalsym{N}}
+\newcommand{\Oo}{\mathcalsym{O}}
+\newcommand{\Pl}{\mathcalsym{P}}
+\newcommand{\Ql}{\mathcalsym{Q}}
+\newcommand{\Rr}{\mathcalsym{R}}
+\newcommand{\Ss}{\mathcalsym{S}}
+\newcommand{\Tt}{\mathcalsym{T}}
+\newcommand{\Uu}{\mathcalsym{U}}
+\newcommand{\Vv}{\mathcalsym{V}}
+\newcommand{\Ww}{\mathcalsym{W}}
+\newcommand{\Xx}{\mathcalsym{X}}
+\newcommand{\Yy}{\mathcalsym{Y}}
+\newcommand{\Zz}{\mathcalsym{Z}}
+\newcommand{\W}{\mathrm{W}}
+\newcommand{\coR}{\mbox{co-}\Rr}
+
+%-------------------------------
+
+\newcommand{\trees}{\mathrm{Tr}\xspace}
+\newcommand{\runs}{\mathrm{Runs}\xspace}
+\newcommand{\otrees}{\mathrm{Tr}(\omega)\xspace}
+\newcommand{\WF}{\mathrm{WF}\xspace}
+
+
+\newcommand{\boldclass}[3]{\ensuremath{\mathbf{#1}^{#2}_{#3}}}
+\newcommand{\lightclass}[3]{\ensuremath{{#1}^{#2}_{#3}}}
+
+\newcommand{\borel}{\ensuremath{\mathcal B}\xspace}
+
+\newcommand{\bsigma}[1]{\boldclass{\Sigma}{0}{#1}}
+\newcommand{\bpi}[1]{\boldclass{\Pi}{0}{#1}}
+\newcommand{\bdelta}[1]{\boldclass{\Delta}{0}{#1}}
+
+\newcommand{\asigma}[1]{\boldclass{\Sigma}{1}{#1}}
+\newcommand{\api}[1]{\boldclass{\Pi}{1}{#1}}
+\newcommand{\adelta}[1]{\boldclass{\Delta}{1}{#1}}
+
+\newcommand{\esigma}[2]{\lightclass{\Sigma}{#1}{#2}}
+\newcommand{\epi}[2]{\lightclass{\Pi}{1}{#1}}
+\newcommand{\edelta}[2]{\lightclass{\Delta}{#1}{#2}}
+
+
+\newcommand{\bc}[1]{\mathcal{BC}({#1})}
+
+\newcommand{\textscsym}[1]{{\sc #1}}
+
+\newcommand{\eqdef}{\stackrel{\mathrm{def}}=}
+
+\newcommand{\N}{\nat}
+
+%\newcommand{\dL}{\mathrm{L}}
+%\newcommand{\dR}{\mathrm{R}}
+
+\newcommand{\rmin}{i}
+\newcommand{\rmax}{k}
+
+\newcommand{\G}{\mathcal{G}}
+
+\newcommand{\Plab}{{\mathrm{label}}}
+\newcommand{\guarantee}{{\mathrm{promise}}}
+
+\newcommand{\Pgar}{X}
+
+\newcommand{\eve}{\ensuremath{\exists}\xspace}
+\newcommand{\adam}{\ensuremath{\forall}\xspace}
+
+\newcommand{\ZFC}{{\sc ZFC}}
+\newcommand{\LTL}{{\sc LTL}}
+\newcommand{\CTL}{{\sc CTL}}
+\newcommand{\PCTL}{{\sc PCTL}}
+\newcommand{\CTLstar}{{\sc LTL$^\ast$}}
+\newcommand{\ZFCMA}{{\sc ZFC+MA$_{\aleph_{1}}$}}
+\newcommand{\MA}{{\sc MA$_{\aleph_{1}}$}}
+\newcommand{\ZFCVL}{{\sc ZFC+V=L}}
+\newcommand{\VL}{{\sc V=L}}
+\newcommand{\AD}{{\sc AD}}
+\newcommand{\CH}{{\sc CH}}
+
+\newcommand{\powerset}{{\mathcal P}}
+\newcommand{\la}{{\langle}}
+\newcommand{\ra}{{\rangle}}
+
+\newcommand{\hargame}{{H\Gg}}
+
+\newcommand{\restr}{\!\upharpoonright}
+
+\newcommand{\ignore}[1]{}
+\newcommand{\Souslin}{\mathcal A}
+
+
+\newenvironment{proofof}[1]
+	{\vspace{1ex}\noindent{\emph{Proof of #1}}\hspace{0.5em}}
+    {\hfill\qed\vspace{1ex}}
+    
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+% acknowledgments on the front page
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%    
+
+\newcommand*\samethanks[1][\value{footnote}]{\footnotemark[#1]}
+
+

@@ -1,0 +1,60 @@
+
+\documentclass[runningheads,a4paper]{llncs}
+
+\input{macros}
+
+
+\author{Henryk Michalewski %\thanks{Deep thanks to all sponsors.} 
+\and Andrzej Nagórko\and Jakub Pawlewicz}
+%
+\authorrunning{H.~Michalewski, A.~Nagórko, J.~Pawlewicz} %Lecture Notes in Computer Science: Authors' Instructions}
+% (feature abused for this document to repeat the title also on left hand pages)
+
+% the affiliations are given next; don't give your e-mail address
+% unless you accept that it will be published
+\institute{University of Warsaw\\
+Faculty of Mathematics, Informatics, and Mechanics\\
+\email{\{H.Michalewski,A.Nagorko,J.Pawlewicz\}@mimuw.edu.pl}}
+
+%
+% NB: a more complex sample for affiliations and the mapping to the
+% corresponding authors can be found in the file "llncs.dem"
+% (search for the string "\mainmatter" where a contribution starts).
+% "llncs.dem" accompanies the document class "llncs.cls".
+%
+
+%\toctitle{Lecture Notes in Computer Science}
+%\tocauthor{Authors' Instructions}
+
+\begin{document}
+
+\title{\therecord - a new upper bound for Morpion Solitaire}
+\maketitle
+
+\begin{abstract}
+%We express properties of a Morpion~5T position graph by a linear program.
+In \cite{demaine} an upper bound of 705  was proved on the number of moves in the 5T variant of the Morpion Solitaire game. We show a new upper bound of \therecord moves. This is achieved in the following way: we encode Morpion 5T rules as a linear program and solve \theoctagons instances of this program on 
+%restrict the infinite grid on which the Morpion~5T game is played to one of 
+ special octagonal boards. % and solve linear programs encoding Morpion 5T positions on these boards.
+In order to show correctness of this method we analyze rules of the game and use a concept of a potential of a given position. By solving continuous-valued relaxations of linear programs on these boards, we obtain an upper bound of $586$ moves.
+Further analysis of original, not relaxed, mixed-integer programs leads to an improvement of this bound to \therecord moves. However, this is achieved at a significantly higher computational cost. 
+\end{abstract}
+
+\input{introduction}
+
+\input{linear}
+
+\input{bound}
+
+\input{relaxation}
+
+\input{mip}
+
+\input{geometry}
+
+\printbibliography 
+%\bibliographystyle{chicago}
+%\bibliography{games.bib}
+
+
+\end{document}

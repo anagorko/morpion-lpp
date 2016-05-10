@@ -1,0 +1,145 @@
+% !TEX root = main.tex
+
+\section{Linear Relaxation}
+\label{linear}
+
+% Lattice graph, move.
+
+A \emph{lattice point} on a plane is a point with integer coordinates. A \emph{lattice graph} is a graph with vertices in lattice points and edges consisting of pairs $(p,q)$, where $p$ and $q$ are two different neighboring points, that is $p\neq q$ and $p=(n,m)$ and $q=(n\pm i,m\pm j)$ for some $i,j=0,1$. %Notice, that edges are congruent to segments from the point $(0,0)$ to one of the points $(0, 1), (0, 1), (1, 1), (1, 0)$.
+We call such edges the \emph{lattice edges}.
+
+% Morpion graph.
+
+A \emph{move} in a lattice graph $G = (V, E)$ is a set of four consecutive parallel lattice edges. 
+%The four edges must be horizontal, vertical or diagonal. 
+We let $\mathcal{M}(G)$ to be the set of all moves in a graph $G$.
+We start with the following observation, which simply rephrases the rules of Morpion 5T++ formulated in the Introduction. 
+
+\begin{lemma}%\todo{Optional: change this into a definition and just remark, that incidentally these are Morpion 5++ positions. This would save us a bit of work related to explanation of Morption 5++ tules.}
+\label{lem:char5pluplus}
+A graph $G = (V, E)$ is a Morpion 5T++ position graph if and only if it satisfies the following conditions
+  \begin{enumerate}
+  \item[\namedlabel{m1}{(M1)}] $G$ is a lattice graph,
+  \item[\namedlabel{m2}{(M2)}] $4 \cdot \# V - \# E = 144$,
+  \item[\namedlabel{m3}{(M3)}] The set $E$ of edges of $G$ can be decomposed into a collection of disjoint moves.
+  \end{enumerate}
+\end{lemma}
+%\begin{proof}
+%  basically induction on the number of moves (but we have a stash of unused dots)
+%\end{proof}
+
+% Linear constraints on 5++ position.
+
+Let $B = (V_B, E_B)$ be a fixed lattice graph that we shall call \emph{the board}. 
+In applications, it will be a sufficiently large octagonal lattice graph with a full set of edges.
+Below we define linear constraints that describe all subgraphs of $B$ that satisfy conditions \ref{m1}--- \ref{m3} of Lemma~\ref{lem:char5pluplus}.
+
+We define the following set of structural {\em binary} variables, that is variables assuming values $0,1$:
+\[
+  \tag{LP1}
+  \{ \dt_v \colon v \in V_B \} \cup \{ \move_m \colon m \in \mathcal{M}(B) \}.
+  \label{lp1}
+\]
+
+\noindent
+For each $e \in E_B$ and $v \in e$ we declare the following constraints:
+\begin{equation}
+  \tag{LP2}  \sum_{ m \in \mathcal{M}(B), e \in m } \move_m \leq \dt_v.
+  \label{lp2}
+\end{equation}
+
+\begin{equation}
+  \tag{LP3} \sum_{v \in V_B} \dt_v = 36 + \sum_{m \in \mathcal{M}(B)} \move_m. 
+  \label{lp3}
+\end{equation}
+
+The following two lemmas describe correspondence between binary-valued solutions of a mixed integer programming problem (\ref{lp1}) - (\ref{lp3}) and subgraphs of $B$ that are Morpion 5T++ positions.
+
+\begin{lemma} Let $G=(V_G,E_G)$ be a subgraph of $B$ and a Morpion 5T++ position obtained by a sequence $\mathcal{M}$ of moves. If
+\[
+  \dt_v = \left\{ 
+    \begin{array}{ll}
+      0 & \text{ if } v \not\in V_G \\
+      1 & \text{ if } v \in V_G
+    \end{array}
+  \right.
+    \text{ and }
+  \move_m = \left\{ 
+    \begin{array}{ll}
+      0 & \text{ if } v \not\in \mathcal{M} \\
+      1 & \text{ if } v \in \mathcal{M}
+    \end{array}
+  \right.,
+\]
+then conditions (\ref{lp1}), (\ref{lp2}) and (\ref{lp3}) hold. 
+\end{lemma}
+
+\begin{proof}
+If $\dt_v=0$, then there is no move passing through $v$, hence the left hand side of (\ref{lp2}) is equal to $0$. If $\dt_v=1$, then  condition (\ref{lp2}) means that every segment $e$ played in the game can appear in exactly one move.  Condition (\ref{lp3}) means that the number of dots placed is higher by 36 than the number of moves made.
+\end{proof}
+
+\begin{lemma} Assume that a set of variables defined by condition (\ref{lp1}) satisfies conditions (\ref{lp2}) and (\ref{lp3}).
+Let $G = (V_G, E_G)$ be a graph with a set of vertices
+\[
+  V_G = \{ v \in V_B \colon \dt_v = 1 \}
+\]
+and a set of edges
+\[
+  E_G = \{ e \in E_B \colon \exists_{m \in \mathcal{M}(B)}\ e \in m, \move_m = 1 \}.
+\]
+Then $G$ is a Morpion 5T++ position and a subgraph of $G$. 
+\end{lemma}
+\begin{proof}
+%Assume that we have a feasible binary-valued solution of the linear programming problem, that is
+% we have $\dt_v, \move_m \in \{ 0, 1 \}$ such that \ref{lp1}--\ref{lp3}  holds.
+We will show that $G$ satisfies conditions \ref{m1} --- \ref{m3} of Lemma~\ref{lem:char5pluplus}.
+
+By the definition of $E_G$, if $e \in E_G$ then there exists $m \in \mathcal{M}(B)$ such that $\move_m = 1$.
+By (\ref{lp2}), if $\move_m = 1$, then $\dt_v = 1$ for each $v \in V_B$ such that $v \in e \in m$. It means that graph $G$ contains vertices of its edges, therefore it is a well defined subgraph of $B$, hence it is a lattice graph and it satisfies \ref{m1}. 
+
+From (\ref{lp2}) follows, that the moves $\move_m$ must be disjoint in the sense, that they cannot contain the same edge twice. This implies condition \ref{m3} of Lemma \ref{lem:char5pluplus}. From disjointness and condition (\ref{lp3}) follows condition \ref{m2} of Lemma \ref{lem:char5pluplus}.
+\end{proof}
+
+% LPP
+
+We consider a linear relaxation of the MIP problem (\ref{lp1})---(\ref{lp3}). We let structural variables to be real-valued, subject to bounds
+\begin{equation}
+  \tag{LP4} 0 \leq \dt_v, \move_m \leq 1.
+  \label{lp4}
+\end{equation}
+\noindent
+In the relaxation we maximize the objective function 
+\begin{equation}
+  \tag{LP0} \sum_{m \in \mathcal{M}(B)}  \move_m  % \rightarrow max.
+  \label{lp0}
+\end{equation}%\todo{Shouln't it be formulated before the Lemma? Otherwise what is optimized there?}
+Clearly, an optimal solution to the linear programming problem (LP0) - (LP4) gives an upper bound for the length of a Morpion 5T++ game on a board $B$.
+
+\subsection{The problem of the infinite grid}
+\label{inf_grid}
+
+Observe that any lattice graph that consists of $9$ vertex-disjoint moves has $45$ vertices and $36$ edges and satisfies conditions \ref{m1} --- \ref{m3} of Lemma~\ref{lem:char5pluplus}, hence it is a Morpion 5T++ position graph and consequently Morpion 5T++ positions can have arbitrarily large diameter in the plane ${\mathbb R}^2$.
+
+The following table summarizes solutions of the linear relaxation of Morpion 5T++ on square $n \times n$ boards (where $n$ is the number of edges on the side).% with $n = 10, \ldots, 100$.
+%\todo{Tell about the reference machine.}
+\begin{figure}[H]
+
+\bgroup
+\def\arraystretch{1.5}
+\setlength\tabcolsep{1mm}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+\hline
+10 & 20 & 30 & 40 & 50 & 60 & 70 & 80 & 90 & 100 \\
+\hline
+64.00 & 278.50 & 619.53 & 876.55 & 1130.01 & 1387.54 & 1641.74 & 1898.13 & 2152.86 & 2408.54 \\
+\hline
+\end{tabular}
+\egroup
+\caption{The top row contains the length $n$ of the edge of a given square and the bottom row contains solutions to the relaxed problem (\ref{lp0})---(\ref{lp4}) on the $n\times n$ board. }
+\end{figure}
+
+We do not know whether the objective function (\ref{lp0}) is bounded or not on the infinite grid. However, the bound of $705$ moves derived in \cite{demaine} %from Brass formula~\cite{brass}\todo{Brass formula - maybe not such great idea to mention it here, unless we elaborate on this formula} 
+holds for Morpion 5T++. 
+This shows that we get no useful upper bound for positions satisfying \ref{m1} --- \ref{m3} using our linear relaxation method. To get a bound, we have to use another properties of Morpion 5T positions to bound the size of the board. This will be done in the next Section.%\todo[inline]{(Henryk) I added one paragraph at the end of introduction trying to explain the above and without a reference to brass. Here I would focus on explaining what is in this table.}
+
+

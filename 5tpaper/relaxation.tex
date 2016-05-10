@@ -1,0 +1,27 @@
+\section{Linear Relaxation Bound}
+\label{linear_bound}
+
+\begin{theorem}
+\label{thm:linear_relax}
+  Let $\obj_B$ denote the value of optimal solution of a linear programming problem (\ref{lp0}) - (\ref{lp3}).
+  If $B$ satisfies conditions (\ref{o1}) - (\ref{o8}) of Lemma~\ref{lem:octagons}, then 
+  \[
+    \obj_B \leq 586.82353.
+  \]
+  The maximum value is obtained for the octagon 
+  \[
+    B = (10, 8, 10, 12, 10, 8, 10, 12).
+  \]
+\end{theorem}
+\input{pictures/recordpdf.tex}
+%\todo{Do the record graph}
+
+The record solution can be found in Figure \ref{therecord}. All \theoctagons relaxed problems were solved by {\tt gurobi} optimization software (see \cite{gurobi}) within 24 hours on a single core of a Linux machine equipped with {\tt Intel\textsuperscript{\textregistered}} {\tt Xeon\textsuperscript{\textregistered}} {\tt CPU X3220@2.40GHz} with 8GB of RAM.
+\begin{proof}
+  The proof is a calculation of $\obj_B$ for all octagons satisfying conditions (\ref{o1}) --- (\ref{o8}) of Lemma~\ref{lem:octagons}. The source code of the program {\tt generator.cpp} generating the relevant linear programs can be found in the repository~\cite{thewebpage}.
+\end{proof}
+
+
+\begin{corollary}
+  The number of moves in a Morpion 5T game is bounded by $586$.
+\end{corollary}

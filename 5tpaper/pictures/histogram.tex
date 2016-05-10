@@ -1,0 +1,24 @@
+%\begin{figure}[H]
+\begin{wrapfigure}[10]{R}{0.55\textwidth}
+\centering
+\vspace{-50pt}
+\begin{tikzpicture}[scale=0.6]
+  \begin{semilogyaxis}[
+    ymin=1,
+    ymax=36033,
+    log origin=infty,
+    enlargelimits=false
+  ]
+    \addplot
+      [const plot,fill=orange,draw=black]
+      coordinates
+        {(0,36033)    (2000,4644)  (4000,1302)   (6000,503)
+         (8000,155) (10000,106)  (12000,71)  (14000,45)
+         (16000,21) (18000,8)  (20000,1)}
+  \closedcycle;
+  \end{semilogyaxis}
+\end{tikzpicture}
+\caption{The vertical axis shows the number of cases and the horizontal axis shows the computation time in seconds. }
+\label{histogram}
+%\end{figure}
+\end{wrapfigure}

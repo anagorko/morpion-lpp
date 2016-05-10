@@ -1,0 +1,142 @@
+  \begin{figure}[H]
+  \begin{center}
+  \begin{tikzpicture}[scale=0.35,>=stealth',thick]
+  
+  
+    \begin{scope}[shift={(-4cm,0cm)}]
+          \draw[fill=blue!10] (2,1) -- (2,4) -- (3,5) -- (6,5) -- (9,2) -- (8,1) -- cycle;
+    	\draw[color=gray, style=dotted] (0,0) 
+      grid[xstep=1cm, ystep=1cm] (11cm,6cm);
+      
+    
+  		\node(place) at (6,5) [draw=none] {};
+		\foreach \i in {1,2,3} 
+		{
+			\node(place) [draw,fill=yellow]  at ($(place)+(-1,0)$)  {};
+        	\foreach \x / \y in {-1 / 1, 0 / .9, 1 / 1} 
+			{
+				\path(place) [->] edge node {} ($(place)+(\x,\y)$);
+			}
+		}
+    \end{scope}
+        
+
+    
+    \begin{scope}[shift={(8cm,0cm)}]
+    \draw[fill=blue!10] (2,1) -- (2,4) -- (3,5) -- (6,5) -- (9,2) -- (8,1) -- cycle;
+    \draw[color=gray, style=dotted] (0,0) 
+      grid[xstep=1cm, ystep=1cm] (11cm,6cm);
+      
+    
+  	\node(place) at (9,2) [draw=none] {};
+	\foreach \i in {1,2,3} 
+	{
+		\node(place) [draw,fill=red]  at ($(place)+(-1,0)$)  {};
+		\path(place) [->] edge node {} ($(place)+(.9,.9)$);
+        \node(place) [draw,fill=red]  at ($(place)+(0,1)$)  {};
+        \foreach \x / \y in {1 / 0, 1 / 1, 0 / 1} 
+		{
+			\path(place) [->] edge node {} ($(place)+(\x,\y)$);
+		}
+	}
+    \end{scope}
+    
+    \begin{scope}[shift={(20cm,0cm)}]
+        \draw[fill=blue!10] (2,1) -- (2,4) -- (3,5) -- (6,5) -- (9,2) -- (8,1) -- cycle;
+    	\draw[color=gray, style=dotted] (0,0) 
+      grid[xstep=1cm, ystep=1cm] (11cm,6cm);
+      
+    
+  		\node(place) at (9,2) [draw=none] {};
+		\foreach \i in {1} 
+		{
+			\node(place) [draw,fill=green]  at ($(place)+(-1,0)$)  {};
+			\path(place) [->] edge node {} ($(place)+(.9,-.9)$);
+        	\node(place) [draw,fill=green]  at ($(place)+(1,0)$) {};
+        	\foreach \x / \y in {0 / -1, 1 / 0, 1 / -1} 
+			{
+				\path(place) [->] edge node {} ($(place)+(\x,\y)$);
+			}
+		}
+    \end{scope}
+    
+    \begin{scope}[shift={(-4cm,-7cm)}]
+        \draw[fill=blue!10] (2,1) -- (2,4) -- (3,5) -- (6,5) -- (9,2) -- (8,1) -- cycle;
+    	\draw[color=gray, style=dotted] (0,0) 
+      grid[xstep=1cm, ystep=1cm] (11cm,6cm);
+      
+    
+  		\node(place) at (9,1) [draw=none] {};
+		\foreach \i in {1,2,3,4,5,6} 
+		{
+			\node(place) [draw,fill=orange]  at ($(place)+(-1,0)$)  {};
+        	\foreach \x / \y in {-1 / -1, 0 / -.9, 1 / -1} 
+			{
+				\path(place) [->] edge node {} ($(place)+(\x,\y)$);
+			}
+		}
+    \end{scope}
+    
+    
+    \begin{scope}[shift={(8cm,-7cm)}]
+        \draw[fill=blue!10] (2,1) -- (2,4) -- (3,5) -- (6,5) -- (9,2) -- (8,1) -- cycle;
+    	\draw[color=gray, style=dotted] (0,0) 
+      grid[xstep=1cm, ystep=1cm] (11cm,6cm);
+      
+    
+  		\node(place) at (2,0) [draw=none] {};
+		\foreach \i in {1,2,3} 
+		{
+			\node(place) [draw,fill=gray]  at ($(place)+(0,1)$)  {};
+        	\foreach \x / \y in {-1 / -1, -.9 / 0, -1 / 1} 
+			{
+				\path(place) [->] edge node {} ($(place)+(\x,\y)$);
+			}
+		}
+    \end{scope}
+    
+    \begin{scope}[shift={(20cm,-7cm)}]
+        \draw[fill=blue!10] (2,1) -- (2,4) -- (3,5) -- (6,5) -- (9,2) -- (8,1) -- cycle;
+    	\draw[color=gray, style=dotted] (0,0) 
+      grid[xstep=1cm, ystep=1cm] (11cm,6cm);
+      
+    
+  		\node(place) at (2,4) [draw=none] {};
+		\foreach \i in {1} 
+		{
+			\node(place) [draw,fill=cyan]  at ($(place)+(1,0)$)  {};
+			\path(place) [->] edge node {} ($(place)+(-.9,.9)$);
+        	\node(place) [draw,fill=cyan]  at ($(place)+(-1,0)$) {};
+        	\foreach \x / \y in {-1 / 0, 0 / 1, -1 / 1} 
+			{
+				\path(place) [->] edge node {} ($(place)+(\x,\y)$);
+			}
+		}
+    \end{scope}
+    
+    \begin{scope}[shift={(8cm,-14cm)}]
+        \draw[fill=blue!10] (2,1) -- (2,4) -- (3,5) -- (6,5) -- (9,2) -- (8,1) -- cycle;
+    	\draw[color=gray, style=dotted] (0,0) 
+      grid[xstep=1cm, ystep=1cm] (11cm,6cm);
+      
+    
+  		\node(place) at (2,1) [draw,fill=black] {};
+        \path(place) [->] edge node {} ($(place)+(1,-1)$);
+        \path(place) [->] edge node {} ($(place)+(0,-1)$);
+  		\node(place) at (2,4) [draw,fill=black] {};
+        \path(place) [->] edge node {} ($(place)+(-1,-1)$);
+  		\node(place) at (3,5) [draw,fill=black] {};
+        \path(place) [->] edge node {} ($(place)+(-1,0)$);
+  		\node(place) at (6,5) [draw,fill=black] {};
+        \path(place) [->] edge node {} ($(place)+(-1,1)$);
+  		\node(place) at (9,2) [draw,fill=black] {};
+        \path(place) [->] edge node {} ($(place)+(0,1)$);
+        \path(place) [->] edge node {} ($(place)+(1,1)$);
+  		\node(place) at (8,1) [draw,fill=black] {};
+        \path(place) [->] edge node {} ($(place)+(1,0)$);
+    \end{scope}
+  \end{tikzpicture}
+  \caption{The octagon $(3,3,0,1,6,0,3,1)$.The top 6 figures represent potential associated with $3a_1=3\cdot 3 = 9$, $4a_2=4\cdot 3=12$, $4a_4=4\cdot 1 = 4$, $3a_5=3\cdot 6$, $3a_7=3\cdot 3=9$, $4a_8=4\cdot 1=4$. The bottom figure represents missing $8$ edges of the potential. }
+  \label{potential_dist}
+  \end{center}
+  \end{figure}

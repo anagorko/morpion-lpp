@@ -1,0 +1,284 @@
+% !TEX root = main.tex
+
+\section{Geometry of the problem}
+\label{geometry}
+
+In this Section we will show a proof of Theorem \ref{thm:octagonalization}. The key technical ingredient is Lemma \ref{lem:morpion_graphs}.
+Let $\mathcal{M} = \mathcal{M}(G)$ be the set of all possible moves in a graph $G$. 
+A lattice graph with a vertex set $V$ is \emph{full} if its edge set is maximal, i.e.
+\[ 
+  E = \{ (u,v) \colon  u, v \in V, u \neq v,   |u_x - v_x| \leq 1, | u_y - v_y | \leq 1 \}.
+\]
+
+
+A graph $G = (V, E)$ is \emph{$1$-connected} if a full lattice graph with a vertex set $V$ is connected.
+A \emph{boundary} of a lattice graph $G = (V, E)$ is a set 
+\[
+  \mathcal{B}(G) = \{ \langle u, v \rangle \in \mathbb{Z}^2 \times \mathbb{Z}^2 \colon u \in V, (u, v) \not\in E \}.
+\]
+Observe that elements of $\mathcal{B}(G)$ are directed edges with start points in $V$ such that the corresponding undirected edge is not in $E$. Let us notice, that 
+\[
+  \pot(G) = \# \mathcal{B}(G).
+\]
+where $\pot(G)$ is the number defined at the beginning of Section \ref{board_bound}. Here we will analyze the potential more closely and divide it into {\em external} and {\em internal} potentials. 
+
+An edge $e = \langle u, v \rangle \in \mathcal{B}(G)$ is an \emph{external edge} if $u + k \cdot (v - u) \not\in V$ for every
+$k \geq 1$. Let $\mathcal{B}^{\external}(G)$ denote the set of all external edges of $G$.
+
+An edge $e \in \mathcal{B}(G)$ is an \emph{internal edge} if it is not an external edge. Let $\mathcal{B}^{\internal}(G)$ denote the set of all internal edges of $G$.
+
+%\begin{definition}We define potential  of a graph $G$\footnote{The notion of potential introduced in \cite[Section 3.1]{demaine} is equivalent to the notion introduced here.} \todo{How does it relate to the definition in Section 3?} as the size of its boundary, i.e.
+%\[
+%  \pot(G) = \# \mathcal{B}(G).
+%\]
+The \emph{external potential} $\pot^{\external}(G)$ is the cardinality of the set $\mathcal{B}^{\external}(G)$. 
+The \emph{internal potential} $\pot^{\internal}(G)$ is the cardinality of the set $\mathcal{B}^{\internal}(G)$.
+%\end{definition}
+
+\begin{lemma}
+%  For $G = (V, E)$, $\pot(G) = 8 \cdot \# V - 2\cdot \# E$. In particular, 
+ If $G$ is a Morpion position graph, then $\pot(G) = 288$.
+\end{lemma}
+\begin{proof}
+  From the definition of potential at the beginning of Section \ref{board_bound} we have %$\mathcal{B}(G)$ tha
+%  \[
+%    \pot(G) = 
+%     \# \{ \la u, v \ra \colon u \in V \} 
+%     - \# \{ \la u, v \ra \colon u \in V, (u, v) \in E \} =
+%  \]
+  \[
+     \pot(G) = 8 \# V - 2 \# E.
+  \]
+ The number $288$ for Morpion position graphs follows from property \ref{m2} in Lemma \ref{lem:char5pluplus}.
+\end{proof}
+
+%\noindent
+%{\bf Remark.} At the beginning of Section \ref{board_bound} we defined $\hull(G)$. %Let us notice, that there are just $8$ potential\todo{Remark seems out of place.} assignments of constants $a,b$ in Definition \ref{def:half-plane}, in correspondence with with {\em directions}
+%More specifically
+%Let us notice, that we can identify $\hull(G)$ with a mapping \[\param_G:{\mathcal D}\to{\mathbb Z},\]
+%where 
+%\[ \mathcal{D} = \{ -1, 0, 1 \}^2 \setminus \{ (0,0) \}. \]
+%and $\param_G(\la a,b\ra)$ is the {\em optimal} constant $c$ such that $G$ is contained in a half--plane $ax+by+c\geq 0$. If the original graph $G$ does not play a role in a given reasoning, then we write $\param$ instead of $\param_G$. 
+
+\noindent
+In the proof of Theorem \ref{thm:octagonalization} we need some additional definitions. 
+\begin{definition}
+Let $\mathcal{L}$  denote the 
+\[
+  \mathcal{L} = \{ l_{a,b,c} \colon (a,b) \in \mathcal{D},c \in \mathbb{Z} \}.
+\]
+where
+\[
+  l_{a,b,c} = \{ (x,y) \in \mathbb{Z}^2 \colon ax + by + c = 0 \}
+\]
+A line $l_{a,b,c}\in \mathcal{L}$ is called diagonal if $\la a,b\ra\in \{ -1,1\}^2$. 
+A graph $G = (V,E)$ is \emph{degenerated} if there exists a line $l \in \mathcal{L}$ such that $V \subset l$. %A graph is \emph{non-degenerated} if it is not degenerated.
+\end{definition}
+
+\begin{definition}
+  A line $l \in \mathcal{L}$ is a \emph{gap line} for graph $G$ if $l$ is diagonal, 
+    does not contain any vertices of $G$,
+    but there are vertices of $G$ on both sides of $l$.
+    We let $\gap(G)$ be the number of gap lines of a graph $G$.
+\end{definition}
+
+\begin{lemma}
+% geometry of octagons
+\label{lem:geo_of_oct}
+If a lattice graph $G=\la V,E\ra$ is an octagon, then for every $l \in \mathcal{L}$ the intersection $V \cap l$ is $1$--connected and  $\pot(G) = \pot^{\external}(G)$.
+\end{lemma}
+\begin{proof}
+For every $l_{a,b,c}\in\mathcal{L}$ the intersection in ${\mathbb R}^2$ of $\{ (x,y)\in \mathbb{R}^2: ax + by + c = 0\}$ with the convex hull of $G$ in ${\mathbb R}^2$ is an interval in ${\mathbb R}^2$ and the lattice points of this interval are $1$--connected and coincide with $V\cap l$. %\todo{Better Lemma about $0$--potential halfplanes and their intersections. Finally we want to remove all Morpion-indepdent statements about potential into a separate section. }
+%A formal proof of the equality follows from the decomposition into lines. 
+\end{proof}
+
+
+\begin{lemma}
+If $G$ is not degenerated, then $\gap(\hull(G)) = 0$.
+\label{lem:gap_hull_0}
+\end{lemma}
+\begin{proof}
+Fix a diagonal line $l$. We will show that $l$ is not a gap line for $\hull(G)$.
+Take vertices $u, v \in \hull(G)$ on both sides of $l$.
+Since $G$ is non-degenerated, we may assume that $u$ and $v$ are not on a same line perpendicular to $l$ (first we select arbitrary two points on both sides of $l$ and if they are located on the same line then from degeneracy we can find another either on the side of $u$ or on the side of $v$).
+%\todo{Include the second configuration as another figure next to the above figure.}
+
+From the definition, $\hull(G)$ contains the intersection of all half-planes that contain $u$ and $v$, hence it contains a parallelogram with the following characteristics:
+\begin{itemize}
+\item opposite vertices of the parallelogram are $u$ and $v$,
+\item a pair of edges of parallelogram is horizontal (or vertical)
+\item another pair of edges is diagonal (see Figure~\ref{gaphull2}).
+\end{itemize}
+% Observe that every line parallel to $l$ that is between $u$ and $v$ intersects this parallelogram in at least one vertex. 
+
+\noindent
+   \begin{minipage}[l]{0.45\textwidth}
+	   \input{pictures/gaphull2}
+   \end{minipage}%
+   \hfill
+   \begin{minipage}[r]{0.5\textwidth} 
+We start from the vertex $v$ and mark the black dots along the horizontal/vertical edge. Then along the diagonal edge we mark ``the staircase'' as in Figure~\ref{gaphull2}. Notice, that $l$ passes through one of the black dots of the staircase. Indeed, since $u$ and $v$ are not on a line perpendicular to $l$, if $l$ intersect the parallelogram between two points on the diagonal edge, then $l$ necessarily pass through a black dot between these two points. 
+\end{minipage}
+
+If $l$ intersects one of the horizontal/vertical edges of the parallelogram, then $l$ passes through one of the black dots located on the edge.  
+Hence $l$ has a non--empty intersection with $\hull(G)$ and it follows that $l$ is not a gap line for $\hull(G)$.
+\end{proof}
+The following Lemma provides a sufficient condition  for a line in ${\mathcal L}$ to be a gap line. 
+\begin{lemma}
+  Let $G$ be a $1$-connected, bounded and non-degenerated lattice graph and $l \in \mathcal{L}$.
+  If $l$ does not contain a vertex of $G$
+     and contains a vertex of $\hull(G)$,
+     then $l$ is a gap line for $G$.
+     \label{lem:crit_gap_lines}
+\end{lemma}
+\begin{proof}
+  Every half-plane graph that contains $l$ must contain at least one vertex of $G$, since $l$ has a vertex in $\hull(G)$ (otherwise the opposite half-plane with $l$ removed would contain whole $G$ and hence also $\hull(G)$, so $\hull(G)$ would be disjoint from $l$).
+Therefore both half-planes that have $l$ as a boundary contain vertices of $G$.  
+Since $G$ is disjoint with $l$, there are vertices of $G$ on both sides of~$l$.
+In order to prove that $l$ is a gap line it is enough to verify that $l$ is diagonal.
+
+Indeed, observe that horizontal and vertical lines disconnect the grid $\mathbb{Z}^2$ into two $1$-connected components. Since $G$ contains vertices on both sides of $l$ and is $1$-connected, the line $l$ must be diagonal, hence it is a gap line for $G$.
+\end{proof}
+
+The above Lemma \ref{lem:crit_gap_lines} along with Lemma \ref{lem:gap_hull_0} shows a characterization of gap lines among lines in ${\mathcal L}$. 
+
+\begin{lemma}\label{def:diagonal-gaps}
+If $G$ is a $1$-connected, non--degenerated lattice graph, then 
+  \[ \pot(\hull(G)) = \pot^{\external}(G)+2\gap(G).\] 
+\end{lemma}
+
+\begin{proof}
+In this proof it will be convenient to mark as  $\overline{e}$ the set consisting of two vertices at the ends of a given edge $e$. 
+Observe that for any graph $\Gamma$ and any line $l \in \mathcal{L}$
+\[
+\tag{*}
+  \# \{ \overline{e}  \colon e\in \mathcal{B}^{\external}(\Gamma),\ \overline{e} \subset l \}
+\]
+is $0$ iff $V_\Gamma \cap l = \emptyset$ and $2$ otherwise.
+By Lemma~\ref{lem:geo_of_oct},
+\[
+  \pot(\hull(G)) = \pot^{\external}(\hull(G)).
+\]
+
+We have
+\[
+\pot^{\external} (\hull(G)) =  \sum_{l \in \mathcal{L}} \# (l \cap \mathcal{B}^{\external}(\hull(G)))
+\]
+and%\todo{Eliminate unbounded graphs, because they can have intersections of size $1$ with the external potential.}
+\[
+  \pot^{\external} (G) = \sum_{l \in \mathcal{L}} \# (l \cap \mathcal{B}^{\external}(G)).
+\]
+
+By (*) and by Lemma~\ref{lem:crit_gap_lines}, for a given $l\in{\mathcal L}$ either
+  $\# (l \cap \mathcal{B}^{\external}(\hull(G))) =
+  \# (l \cap \mathcal{B}^{\external}(G))
+  $
+or
+  $l$ is a gap line for $G$ and $\# (l \cap \mathcal{B}^{\external}(\hull(G))) = 2$, $\# (l \cap \mathcal{B}^{\external}(G)) = 0$. Hence
+    \[ \pot(\hull(G)) = \pot^{\external}(G)+2\gap(G).\] 
+\end{proof}
+ 
+\noindent
+
+The main technical difficulty in the Section is the following geometric Lemma. This Lemma together with Lemma \ref{def:diagonal-gaps} finish the proof of Theorem \ref{thm:octagonalization}.
+\begin{lemma}
+\label{lem:morpion_graphs}
+If $G$ is a position of the Morpion 5T then \[ 2\gap(G) \leq \pot^{\internal}(G)+\modifier(\hull(G)). \]
+\end{lemma}
+The notion of $\modifier$ was defined in Theorem \ref{thm:octagonalization}.
+
+
+\begin{proof}
+Let $G = (V, E)$. Let $\mathcal{L}(G)$ denote the set of all gap lines of $G$. Let $l \in \mathcal{L}(G)$. The two halfplanes bounded by $l$ decompose the set $V$ of vertices of $G$ into two disjoint subsets, one of which contains all dots of the initial cross. If the other set contains only a single vertex, then we say that $l$ is a singular gap line. Otherwise we say that $l$ is a non-singular gap line. If $l$ is a singular gap line, then we let $v_l$ denote the single vertex of $V$ separated from the initial cross by line $l$ and call $v_l$ the singular vertex of $l$.
+
+
+\noindent
+   \begin{minipage}[l]{0.45\textwidth}
+	\input{pictures/key_lemma_pic}
+   \end{minipage}%
+   \hfill
+   \begin{minipage}[r]{0.5\textwidth} 
+Let $m_1, m_2, \ldots, m_n$ be a sequence of the Morpion 5T moves that lead to a position $G$. Let $l$ be a singular gap line and let $m_k$ be a move that puts the singular vertex $v_l$ on board. Since there are no other vertices in the halfplane bounded by $l$ that contains $v_l$, no move in sequence $m_1, m_2, \ldots$ requires dot $v_l$ and the sequence $m_1, m_2, \ldots, m_{k-1}, m_{k+1}, \ldots, m_n$ is a valid move sequence. Likewise $m_1, m_2, \ldots, m_{k-1}, m_{k+1}, \ldots, m_n, m_k$ is valid.
+Hence we may modify our sequence so that the moves that put singular dots on board are at the very end of the move sequence.
+   \end{minipage}
+
+
+Let $m_1, m_2, \ldots, m_k, m_{k+1}, \ldots, m_n$ be a sequence of Morpion 5T moves that lead to a position $G$ such that moves $m_1, m_2, \ldots, m_k$ put non-singular dots on board and moves $m_{k+1}, \ldots, m_n$ put singular dots on board.
+Let $H = (V_H, E_H)$ be a Morpion 5T position obtained by a sequence $m_1, m_2, \ldots, m_k$. We will show that
+\[
+2\gap(H) \leq \pot^{\internal}(H).
+\]
+Observe that $H$ has no singular gap lines as removing a singular vertex cannot make a non-singular vertex singular.
+
+Let $l \in \mathcal{L}(H)$. Since $l$ is non-singular and $H$ is obtained as a position in Morpion 5T game, there are two edges $e^1_l, e^2_l \in E_H$ that cross $l$. 
+Consider labeling of dots as in Figure~\ref{key_lemma_pic}. Note that $d^1_l$ and $d^2_l$ are picked on $l$ between $e^1_l$ and $e^2_l$ (and they may be the same point when $e^1_l$ and $e^2_l$ are next to each other).
+
+
+We will construct a map that assigns to each $e^i_l$ ($i = 1,2$, $l \in \mathcal{L}(H)$) one edge from the list
+\[
+  (u^i_l, d^i_l), (v^i_l, d^i_l) \tag{$**^i_l$}
+\]
+in such a way that the following conditions are satisfied.
+\begin{enumerate}
+\item The assigned edges realize the internal potential of $H$, i.e. they belong to $\mathcal{B}^{\internal}(H)$.
+\item We do not assign the same edge twice.
+\end{enumerate}
+
+First we'll show that at least one edge from the edge list $(**^i_l)$ belongs to $\mathcal{B}^{\internal}(H)$.
+Without a loss of generality we may assume that $i = 1$.
+Consider two half-lines starting at $d^1_l$ in directions $(u^1_l, d^1_l)$ and $(v^1_l, d^1_l)$ (the dotted arrows in Figure~\ref{key_lemma_pic}). 
+They disconnect the grid of lattice points into two $1$-connected components. 
+Both components contain vertices of $H$ (e.g. $v^1_l$ and $v^{2}_l$ are in different components). 
+Since $H$, as a Morpion 5T position, is $1$-connected, 
+  there must be a vertex of $H$ on at least 
+  one of those half-lines. 
+Since $d^1_l$ does not belong to $V_H$ 
+  (as $d^1_l \in l$ and $l$ is disjoint from $V_H$ 
+  as a gap line), at least one of the 
+  edges $(u^1_l, d^1_l), (v^1_l, d^1_l)$ belongs 
+  to $\mathcal{B}^{\internal}(H)$. 
+
+Second, we'll show how to pick edges from the edge list $(**^i_l)$ in such a way that the assignment is unique (one-to-one).
+\input{pictures/key_lemma_two_gap_lines}
+
+\vspace{-20pt}
+Consider edge $e^1_l$ that crosses a gap line $l$. There may be only one gap line $m$ such that the edge lists $(**^1_m)$ or $(**^2_m)$ overlap with the edge list $(**^i_l)$. We consider four cases about how edges $e^2_l$, $e^1_m$, $e^2_m$ are placed around $e^i_l$.
+
+Case 1. If both $e^1_m$ and $e^2_m$ are vertex disjoint from $e^1_l$, then we assign to $e^1_l$ any edge from $(**^1_l)$ that belongs to $\mathcal{B}^{\internal}(H)$.
+
+Case 2. Exactly one of $e^1_m$ and $e^2_m$ has a common vertex with $e^1_l$. Without a loss of generality we may assume that $e^1_m$ has a common vertex $u^1_l = u^1_m$ with $e^1_l$.
+We must be careful to not assign edge $(u^1_l, d^1_l)$ to both edges $e^1_l$ and $e^1_m$.
+We assign $(v^1_l, d^1_l)$ to $e^1_l$ and
+  $(v^1_m, d^1_m)$ to $e^1_m$.
+
+Case 3. Both $e^1_m$ and $e^2_m$ have a common vertex with $e^1_l$ but $e^2_l$ is vertex disjoint from $e^1_m$ and $e^2_m$. Assume that $v^1_m$ and $u^2_m$ are vertices of $e^1_m$ and $e^2_m$ that are disjoint from $e^i_l$. 
+We assign $(v^1_m, d^1_m)$ to $e^1_m$, $(u^2_m, d^2_m)$ to $e^2_m$ and $(u^1_l, d^1_l)$ to $e^1_l$.
+
+Case 4. Edges $e^1_l$, $e^2_l$, $e^1_m$, $e^2_m$ form a small "diamond" (they pairwise intersect) with $d^1_l = d^2_l = d^1_m = d^2_m$ inside. Assuming that the vertices are labeled in such a way that $u^j_k$ are disjoint, we assign $(u^j_k, d^j_k)$ to $e^j_k$.
+
+\noindent
+This concludes the argument that
+$
+2\gap(H) \leq \pot^{\internal}(H)$.
+
+
+\noindent
+\input{pictures/key_lemma_corners}
+
+We will now show that the singular moves $m_{k+1}, \ldots, m_n$ add at least $2 \cdot(n -k) - \modifier(\hull(G))$ to the internal potential of the position (i.e. $\pot(G) - \pot(H) \geq 2 \cdot(n -k) - \modifier(\hull(G))$.
+
+First, observe that there are at most $4$ singular moves, that is $n - k \leq 4$. This is because there are two diagonal directions and two sides of a line where the initial cross may be.
+
+Assume that move $m_i$ ($i > k$) places a singular vertex $v_i$. 
+Let $l^1_i$, $l^2_i$ be half-lines starting from $v_i$ in the direction of the gap line created by move $m_i$ (the dashed lines in Figure~\ref{fig:corner}).
+There are two possibilities.
+
+Case I. At least one of the half-lines $l^1_i$, $l^2_i$ contain a vertex of the position graph. Let $u_i$ denote this vertex. If so, then placing of $v_i$ creates two new edges of internal potential (one starting in $v_i$ in the direction of $u_i$ and another one in $u_i$ in the direction of $v_i$). The new gap line is compensated.
+
+Case II. Neither of the half-lines $l^1_i$ and $l^2_i$ contain a vertex of the position graph. Observe that this is possible only for at most two of the singular moves and each of those moves must create a corner in the hull of $G$. Moreover, if there are two such moves, the corners are opposite corners of $\hull(G)$.
+
+\noindent
+This concludes the proof of the Lemma.
+
+
+\end{proof}
