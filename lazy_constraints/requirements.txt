@@ -1,0 +1,5 @@
+lark-parser
+numpy
+pycairo
+Pillow
+networkx
