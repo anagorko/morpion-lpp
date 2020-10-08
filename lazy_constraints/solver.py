@@ -167,6 +167,11 @@ def create_model(dots: List[Dot], moves: List[Move], label: str) -> pyscipopt.Mo
             space.add(dot)
         space.add(move.dot)
 
+    lx = min([dot.x for dot in space])
+    ux = max([dot.x for dot in space])
+    ly = min([dot.y for dot in space])
+    uy = max([dot.y for dot in space])
+
     dot_var = dict()
 
     for dot in space:
@@ -216,6 +221,24 @@ def create_model(dots: List[Dot], moves: List[Move], label: str) -> pyscipopt.Mo
             if dot in move.required_dots():
                 moves_requiring_dot.append(move_var[move])
         model.addCons(pyscipopt.quicksum(moves_requiring_dot) <= 4 * dot_var[dot])
+
+    # boundary constraints
+    model.addCons(pyscipopt.quicksum([dot_var[dot] for dot in space if dot.x == lx]) >= 1)
+    model.addCons(pyscipopt.quicksum([dot_var[dot] for dot in space if dot.x == ux]) >= 1)
+    model.addCons(pyscipopt.quicksum([dot_var[dot] for dot in space if dot.y == ly]) >= 1)
+    model.addCons(pyscipopt.quicksum([dot_var[dot] for dot in space if dot.y == uy]) >= 1)
+
+    # objective cutoff
+
+    model.addCons(pyscipopt.quicksum(dot_var.values()) - 36 >= 83.0)
+
+    # branch priority
+
+    for dot in space:
+        if dot.x == lx or dot.x == ux:
+            model.chgVarBranchPriority(dot_var[dot], 1)
+        if dot.y == ly or dot.y == uy:
+            model.chgVarBranchPriority(dot_var[dot], 1)
 
     # objective
     model.setObjective(pyscipopt.quicksum(dot_var.values()) - 36, sense='maximize')
