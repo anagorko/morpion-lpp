@@ -3,3 +3,4 @@ numpy
 pycairo
 Pillow
 networkx
+termcolor

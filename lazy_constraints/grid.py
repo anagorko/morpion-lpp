@@ -65,6 +65,16 @@ class Move:
     def __repr__(self):
         return repr(self.dot) + '_' + repr(self.segs[0].dot) + '_' + str(self.segs[0].dir)
 
+    @property
+    def direction(self) -> int:
+        """Direction of the move."""
+        return self.segs[0].dir
+
+    @property
+    def starting_dot(self) -> Dot:
+        """The starting dot."""
+        return self.segs[0].dot
+
     def required_dots(self) -> List[Dot]:
         """A list of dots required to play the move."""
 
